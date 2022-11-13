@@ -1,34 +1,71 @@
-import { ApolloServer, gql } from "apollo-server";
+import { ApolloServer, gql } from 'apollo-server';
 
-let users = [
+let todos = [
   {
-    id: "1",
-    name: "유저1",
+    id: '1',
+    text: '청소하기',
+    completed: false,
   },
   {
-    id: "2",
-    name: "유저2",
+    id: '2',
+    text: '밥먹기',
+    completed: true,
+  },
+  {
+    id: '3',
+    text: '......?',
+    completed: false,
   },
 ];
 
 const typeDefs = gql`
-  type Query {
-    user(id: String!): User
-    allUsers: [User!]!
-  }
-  type User {
+  type Todo {
     id: String!
-    name: String!
+    text: String!
+    completed: Boolean!
+  }
+  type Query {
+    allTodos: [Todo]!
+    todo(id: String!): Todo
+  }
+  type Mutation {
+    createTodo(text: String!): Todo
+    updateTodo(id: String!, completed: Boolean!): Todo
+    removeTodo(id: String!): Todo
   }
 `;
 
 const resolvers = {
   Query: {
-    user(_, { id }) {
-      return users.find((user) => user.id === id);
+    allTodos: () => {
+      return todos;
     },
-    allUsers() {
-      return users;
+    todo: (_, { id }) => {
+      return todos.find((todo) => todo.id === id);
+    },
+  },
+  Mutation: {
+    createTodo: (_, { text }) => {
+      let createId = String(todos.length + 1);
+      const newTodo = {
+        id: createId,
+        text: text,
+        completed: false,
+      };
+      todos.push(newTodo);
+      return newTodo;
+    },
+
+    updateTodo: (_, { id, completed }) => {
+      let updateTodo = todos.forEach((todo) => {
+        if (todo.id === id) {
+          todo.completed = !completed;
+        }
+      });
+      return updateTodo;
+    },
+    removeTodo: (_, { id }) => {
+      todos = todos.filter((todo) => todo.id !== id);
     },
   },
 };
