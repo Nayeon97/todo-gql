@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const TodoItem = ({ todo }) => {
-  return <TextWrapper completed={todo.toggleComplete}>{todo.text}</TextWrapper>;
+  return <TextWrapper completed={todo.completed}>{todo.text}</TextWrapper>;
 };
 
 export default TodoItem;

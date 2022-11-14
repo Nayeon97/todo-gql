@@ -1,5 +1,5 @@
-import { gql, useMutation } from '@apollo/client';
-import styled from 'styled-components';
+import { gql, useMutation } from "@apollo/client";
+import styled from "styled-components";
 
 const RemoveTodo = gql`
   mutation removeTodo($id: String!) {
@@ -15,7 +15,7 @@ const DeleteTodo = ({ id }) => {
       cache.modify({
         fields: {
           allTodos(existingTodos, { readField }) {
-            return existingTodos.filter((todo) => id !== readField('id', todo));
+            return existingTodos.filter((todo) => id !== readField("id", todo));
           },
         },
       });

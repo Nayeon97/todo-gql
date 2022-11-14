@@ -1,17 +1,17 @@
 import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
 
-const UpdateTodo = gql`
-  mutation updateTodo($id: String!, $toggleComplete: Boolean!) {
-    updateTodo(id: $id, toggleComplete: $toggleComplete) {
+const ToggleTodo = gql`
+  mutation toggleTodo($id: String!, $completed: Boolean!) {
+    toggleTodo(id: $id, completed: $completed) {
       id
-      toggleComplete
+      completed
     }
   }
 `;
 
-const CompleteTodo = ({ id, toggleComplete }) => {
-  const [completeTodo] = useMutation(UpdateTodo, {
+const ToggleCompleteTodo = ({ id, completed }) => {
+  const [toggleTodo] = useMutation(ToggleTodo, {
     // update(cache) {
     // id: cache.identify({ id, __typename: "Todo" }),
     //   cache.modify({
@@ -33,12 +33,12 @@ const CompleteTodo = ({ id, toggleComplete }) => {
   });
 
   const toggleShowComplete = () => {
-    completeTodo({ variables: { id: id, toggleComplete: toggleComplete } });
+    toggleTodo({ variables: { id: id, completed: completed } });
   };
 
   return (
-    <ButtonWrapper onClick={toggleShowComplete} toggleComplete={toggleComplete}>
-      {toggleComplete ? "완료" : "미완"}
+    <ButtonWrapper onClick={toggleShowComplete} completed={completed}>
+      {completed ? "완료" : "미완"}
     </ButtonWrapper>
   );
 };
@@ -46,6 +46,6 @@ const CompleteTodo = ({ id, toggleComplete }) => {
 export default CompleteTodo;
 
 const ButtonWrapper = styled.button`
-  color: ${(props) => (props.toggleComplete ? "black" : "red")};
+  color: ${(props) => (props.completed ? "black" : "red")};
   cursor: pointer;
 `;
