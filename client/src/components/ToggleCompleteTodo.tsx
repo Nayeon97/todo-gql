@@ -1,3 +1,4 @@
+import React from "react";
 import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
 
@@ -43,7 +44,7 @@ const ToggleCompleteTodo = ({ id, completed }) => {
   );
 };
 
-export default CompleteTodo;
+export default ToggleCompleteTodo;
 
 const ButtonWrapper = styled.button`
   color: ${(props) => (props.completed ? "black" : "red")};

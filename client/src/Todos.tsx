@@ -1,3 +1,4 @@
+import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
 import ToggleCompleteTodo from "./components/ToggleCompleteTodo";
@@ -17,9 +18,6 @@ export const GetAllTodos = gql`
 
 const Todos = () => {
   const { data, loading, error } = useQuery(GetAllTodos); //
-
-  if (loading) return "Loading";
-  if (error) return `Error! ${error}`;
 
   return (
     <AppContainer>

@@ -1,5 +1,5 @@
-import { gql, useMutation } from "@apollo/client";
 import React, { useState } from "react";
+import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
 
 const CreateTodo = gql`
@@ -15,8 +15,8 @@ const CreateTodo = gql`
 const TodoInput = () => {
   const [todo, setTodo] = useState("");
 
-  const onChange = (e) => {
-    setTodo(e.target.value);
+  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setTodo(e.currentTarget.value);
   };
 
   const [createTodo, { error }] = useMutation(CreateTodo, {
@@ -41,8 +41,6 @@ const TodoInput = () => {
     },
   });
 
-  if (error) return `Error! ${error}`;
-
   const onCreate = () => {
     if (todo) {
       createTodo({ variables: { text: todo } });
@@ -51,10 +49,10 @@ const TodoInput = () => {
   };
 
   return (
-    <div>
+    <>
       <InputWrapper type="text" value={todo} onChange={onChange} />
       <ButtonWrapper onClick={onCreate}>+</ButtonWrapper>
-    </div>
+    </>
   );
 };
 
