@@ -6,6 +6,12 @@ import DeleteTodo from "./components/DeleteTodo";
 import TodoInput from "./components/TodoInput";
 import TodoItem from "./components/TodoItem";
 
+interface TodoType {
+  id: string;
+  text: string;
+  completed: boolean;
+}
+
 export const GetAllTodos = gql`
   query getTodos {
     allTodos {
@@ -23,10 +29,10 @@ const Todos = () => {
     <AppContainer>
       <TodosContainer>
         <TodoInput />
-        {data?.allTodos.map((todo) => (
+        {data?.allTodos.map((todo: TodoType) => (
           <TodoItemContainer key={todo.id}>
             <ToggleCompleteTodo completed={todo.completed} id={todo.id} />
-            <TodoItem todo={todo} />
+            <TodoItem completed={todo.completed} text={todo.text} />
             <DeleteTodo id={todo.id} />
           </TodoItemContainer>
         ))}

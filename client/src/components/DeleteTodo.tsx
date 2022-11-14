@@ -1,6 +1,10 @@
 import React from "react";
-import { gql, useMutation } from "@apollo/client";
+import { gql, Reference, StoreObject, useMutation } from "@apollo/client";
 import styled from "styled-components";
+
+interface DeleteTodoProps {
+  id: string;
+}
 
 const RemoveTodo = gql`
   mutation removeTodo($id: String!) {
@@ -10,13 +14,16 @@ const RemoveTodo = gql`
   }
 `;
 
-const DeleteTodo = ({ id }) => {
+const DeleteTodo = ({ id }: DeleteTodoProps) => {
   const [deleteTodo] = useMutation(RemoveTodo, {
     update(cache) {
       cache.modify({
         fields: {
           allTodos(existingTodos, { readField }) {
-            return existingTodos.filter((todo) => id !== readField("id", todo));
+            return existingTodos.filter(
+              (todo: Reference | StoreObject | undefined) =>
+                id !== readField("id", todo)
+            );
           },
         },
       });

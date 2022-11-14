@@ -2,6 +2,11 @@ import React from "react";
 import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
 
+interface ToggleCompleteTodoProps {
+  id: string;
+  completed: boolean;
+}
+
 const ToggleTodo = gql`
   mutation toggleTodo($id: String!, $completed: Boolean!) {
     toggleTodo(id: $id, completed: $completed) {
@@ -11,7 +16,7 @@ const ToggleTodo = gql`
   }
 `;
 
-const ToggleCompleteTodo = ({ id, completed }) => {
+const ToggleCompleteTodo = ({ id, completed }: ToggleCompleteTodoProps) => {
   const [toggleTodo] = useMutation(ToggleTodo, {
     // update(cache) {
     // id: cache.identify({ id, __typename: "Todo" }),
@@ -46,7 +51,7 @@ const ToggleCompleteTodo = ({ id, completed }) => {
 
 export default ToggleCompleteTodo;
 
-const ButtonWrapper = styled.button`
+const ButtonWrapper = styled.button<{ completed: boolean }>`
   color: ${(props) => (props.completed ? "black" : "red")};
   cursor: pointer;
 `;
