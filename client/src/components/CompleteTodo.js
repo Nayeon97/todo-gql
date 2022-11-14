@@ -1,5 +1,5 @@
-import { gql, useMutation } from '@apollo/client';
-import styled from 'styled-components';
+import { gql, useMutation } from "@apollo/client";
+import styled from "styled-components";
 
 const UpdateTodo = gql`
   mutation updateTodo($id: String!, $completed: Boolean!) {
@@ -12,20 +12,24 @@ const UpdateTodo = gql`
 
 const CompleteTodo = ({ id, iscompleted }) => {
   const [completeTodo] = useMutation(UpdateTodo, {
-    update(cache) {
-      cache.modify({
-        fields: {
-          allTodos(existingTodos, { readField }) {
-            let updateTodo = existingTodos.forEach((todo) => {
-              if (id === readField('id', todo)) {
-                // ?
-              }
-            });
-            return updateTodo;
-          },
-        },
-      });
-    },
+    // update(cache) {
+    // id: cache.identify({ id, __typename: "Todo" }),
+    //   cache.modify({
+    //     fields: {
+    //       // todo(existingTodos, { readField }) {
+    //       //   const newTodos = [...existingTodos];
+    //       //   const index = newTodos.findIndex(
+    //       //     (todo) => id === readField("id", todo)
+    //       //   );
+    //       //   console.log(newTodos[index].completed);
+    //       //   return newTodos;
+    //       //},
+    //       completed(cacheComplete) {
+    //         return !cacheComplete;
+    //       },
+    //     },
+    //   });
+    // },
   });
 
   const onComplete = () => {
@@ -33,8 +37,8 @@ const CompleteTodo = ({ id, iscompleted }) => {
   };
 
   return (
-    <ButtonWrapper onClick={onComplete}>
-      {iscompleted ? '완료' : ' '}
+    <ButtonWrapper onClick={onComplete} iscompleted={iscompleted}>
+      {iscompleted ? "완료" : "미완"}
     </ButtonWrapper>
   );
 };
@@ -42,6 +46,6 @@ const CompleteTodo = ({ id, iscompleted }) => {
 export default CompleteTodo;
 
 const ButtonWrapper = styled.button`
-  color: red;
+  color: ${(props) => (props.iscompleted ? "black" : "red")};
   cursor: pointer;
 `;

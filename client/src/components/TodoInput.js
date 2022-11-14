@@ -1,6 +1,6 @@
-import { gql, useMutation } from '@apollo/client';
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import { gql, useMutation } from "@apollo/client";
+import React, { useState } from "react";
+import styled from "styled-components";
 
 const CreateTodo = gql`
   mutation createTodo($text: String!) {
@@ -13,13 +13,13 @@ const CreateTodo = gql`
 `;
 
 const TodoInput = () => {
-  const [todo, setTodo] = useState('');
+  const [todo, setTodo] = useState("");
 
   const onChange = (e) => {
     setTodo(e.target.value);
   };
 
-  const [createTodo, { loading, error }] = useMutation(CreateTodo, {
+  const [createTodo, { error }] = useMutation(CreateTodo, {
     update(cache, { data: { createTodo } }) {
       cache.modify({
         fields: {
@@ -41,13 +41,12 @@ const TodoInput = () => {
     },
   });
 
-  if (loading) return 'Loading';
   if (error) return `Error! ${error}`;
 
   const onCreate = () => {
     if (todo) {
       createTodo({ variables: { text: todo } });
-      setTodo('');
+      setTodo("");
     }
   };
 

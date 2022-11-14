@@ -1,19 +1,19 @@
-import { ApolloServer, gql } from 'apollo-server';
+import { ApolloServer, gql } from "apollo-server";
 
 let todos = [
   {
-    id: '1',
-    text: '청소하기',
+    id: "1",
+    text: "청소하기",
     completed: false,
   },
   {
-    id: '2',
-    text: '밥먹기',
+    id: "2",
+    text: "밥먹기",
     completed: true,
   },
   {
-    id: '3',
-    text: '......?',
+    id: "3",
+    text: "......?",
     completed: false,
   },
 ];
@@ -57,13 +57,11 @@ const resolvers = {
     },
 
     updateTodo: (_, { id, completed }) => {
-      let updateTodo = todos.forEach((todo) => {
-        if (todo.id === id) {
-          todo.completed = !completed;
-        }
-      });
-      return updateTodo;
+      let index = todos.findIndex((todo) => id === todo.id);
+      todos[index].completed = !completed;
+      return todos[index];
     },
+
     removeTodo: (_, { id }) => {
       todos = todos.filter((todo) => todo.id !== id);
     },
