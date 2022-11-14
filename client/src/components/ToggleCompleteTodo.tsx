@@ -1,20 +1,21 @@
 import React from "react";
 import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
+import { graphql } from "../gql";
 
 interface ToggleCompleteTodoProps {
   id: string;
   completed: boolean;
 }
 
-const ToggleTodo = gql`
+const ToggleTodo = graphql(`
   mutation toggleTodo($id: String!, $completed: Boolean!) {
     toggleTodo(id: $id, completed: $completed) {
       id
       completed
     }
   }
-`;
+`);
 
 const ToggleCompleteTodo = ({ id, completed }: ToggleCompleteTodoProps) => {
   const [toggleTodo] = useMutation(ToggleTodo, {

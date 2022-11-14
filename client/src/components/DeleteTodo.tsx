@@ -1,18 +1,19 @@
 import React from "react";
 import { gql, Reference, StoreObject, useMutation } from "@apollo/client";
 import styled from "styled-components";
+import { graphql } from "../gql";
 
 interface DeleteTodoProps {
   id: string;
 }
 
-const RemoveTodo = gql`
+const RemoveTodo = graphql(`
   mutation removeTodo($id: String!) {
     removeTodo(id: $id) {
       id
     }
   }
-`;
+`);
 
 const DeleteTodo = ({ id }: DeleteTodoProps) => {
   const [deleteTodo] = useMutation(RemoveTodo, {

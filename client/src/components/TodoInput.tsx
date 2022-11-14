@@ -1,6 +1,17 @@
 import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
+import { graphql } from "../gql";
+
+// const CreateTodo = graphql(`
+//   mutation createTodo($text: String!) {
+//     createTodo(text: $text) {
+//       id
+//       text
+//       completed
+//     }
+//   }
+// `);
 
 const CreateTodo = gql`
   mutation createTodo($text: String!) {
@@ -49,10 +60,10 @@ const TodoInput = () => {
   };
 
   return (
-    <>
+    <div>
       <InputWrapper type="text" value={todo} onChange={onChange} />
       <ButtonWrapper onClick={onCreate}>+</ButtonWrapper>
-    </>
+    </div>
   );
 };
 

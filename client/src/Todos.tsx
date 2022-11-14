@@ -1,10 +1,10 @@
-import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
 import ToggleCompleteTodo from "./components/ToggleCompleteTodo";
 import DeleteTodo from "./components/DeleteTodo";
 import TodoInput from "./components/TodoInput";
 import TodoItem from "./components/TodoItem";
+import { graphql } from "../src/gql";
 
 interface TodoType {
   id: string;
@@ -23,7 +23,7 @@ export const GetAllTodos = gql`
 `;
 
 const Todos = () => {
-  const { data, loading, error } = useQuery(GetAllTodos); //
+  const { data, loading, error } = useQuery(GetAllTodos); // fragments 사용해보자.
 
   return (
     <AppContainer>
