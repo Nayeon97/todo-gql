@@ -1,24 +1,24 @@
-import { gql, useQuery } from '@apollo/client';
-import styled from 'styled-components';
-import TodoComplete from './components/CompleteTodo';
-import DeleteTodo from './components/DeleteTodo';
-import TodoInput from './components/TodoInput';
-import TodoItem from './components/TodoItem';
+import { gql, useQuery } from "@apollo/client";
+import styled from "styled-components";
+import TodoComplete from "./components/CompleteTodo";
+import DeleteTodo from "./components/DeleteTodo";
+import TodoInput from "./components/TodoInput";
+import TodoItem from "./components/TodoItem";
 
 export const GetAllTodos = gql`
   query getTodos {
     allTodos {
       id
       text
-      completed
+      toggleComplete
     }
   }
 `;
 
 const Todos = () => {
-  const { data, loading, error } = useQuery(GetAllTodos);
+  const { data, loading, error } = useQuery(GetAllTodos); //
 
-  if (loading) return 'Loading';
+  if (loading) return "Loading";
   if (error) return `Error! ${error}`;
 
   return (
@@ -27,7 +27,7 @@ const Todos = () => {
         <TodoInput />
         {data?.allTodos.map((todo) => (
           <TodoItemContainer key={todo.id}>
-            <TodoComplete iscompleted={todo.completed} id={todo.id} />
+            <TodoComplete toggleComplete={todo.toggleComplete} id={todo.id} />
             <TodoItem todo={todo} />
             <DeleteTodo id={todo.id} />
           </TodoItemContainer>

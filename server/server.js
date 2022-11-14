@@ -4,17 +4,17 @@ let todos = [
   {
     id: "1",
     text: "청소하기",
-    completed: false,
+    toggleComplete: false,
   },
   {
     id: "2",
     text: "밥먹기",
-    completed: true,
+    toggleComplete: true,
   },
   {
     id: "3",
     text: "......?",
-    completed: false,
+    toggleComplete: false,
   },
 ];
 
@@ -22,7 +22,7 @@ const typeDefs = gql`
   type Todo {
     id: String!
     text: String!
-    completed: Boolean!
+    toggleComplete: Boolean!
   }
   type Query {
     allTodos: [Todo]!
@@ -30,7 +30,7 @@ const typeDefs = gql`
   }
   type Mutation {
     createTodo(text: String!): Todo
-    updateTodo(id: String!, completed: Boolean!): Todo
+    updateTodo(id: String!, toggleComplete: Boolean!): Todo
     removeTodo(id: String!): Todo
   }
 `;
@@ -50,18 +50,16 @@ const resolvers = {
       const newTodo = {
         id: createId,
         text: text,
-        completed: false,
+        toggleComplete: false,
       };
       todos.push(newTodo);
       return newTodo;
     },
-
-    updateTodo: (_, { id, completed }) => {
+    updateTodo: (_, { id, toggleComplete }) => {
       let index = todos.findIndex((todo) => id === todo.id);
-      todos[index].completed = !completed;
+      todos[index].toggleComplete = !toggleComplete;
       return todos[index];
     },
-
     removeTodo: (_, { id }) => {
       todos = todos.filter((todo) => todo.id !== id);
     },
