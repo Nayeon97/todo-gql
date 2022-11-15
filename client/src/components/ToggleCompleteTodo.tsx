@@ -7,7 +7,7 @@ interface ToggleCompleteTodoProps {
 }
 
 const ToggleCompleteTodo = ({ id, completed }: ToggleCompleteTodoProps) => {
-  const [toggleTodo] = useToggleTodoMutation({
+  const [toggleTodo, { error }] = useToggleTodoMutation({
     // update(cache) {
     // id: cache.identify({ id, __typename: "Todo" }),
     //   cache.modify({
@@ -27,6 +27,8 @@ const ToggleCompleteTodo = ({ id, completed }: ToggleCompleteTodoProps) => {
     //   });
     // },
   });
+
+  if (error) return <p>`Error! ${error.message}`</p>;
 
   const toggleShowComplete = () => {
     toggleTodo({ variables: { id: id, completed: completed } });

@@ -9,6 +9,8 @@ import { useGetTodosQuery } from "./gql/generated/graphql";
 const Todos = () => {
   const { data, loading, error } = useGetTodosQuery();
 
+  if (error) return <p>`Error! ${error.message}`</p>;
+
   return (
     <AppContainer>
       <TodosContainer>

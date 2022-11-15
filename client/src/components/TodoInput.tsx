@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { gql } from "@apollo/client";
 import styled from "styled-components";
 import { useCreateTodoMutation } from "./TodoInput.generated";
+import { Todo } from "../types";
 
 const TodoInput = () => {
   const [todo, setTodo] = useState<string>("");
@@ -14,7 +15,7 @@ const TodoInput = () => {
     update(cache, { data }) {
       cache.modify({
         fields: {
-          allTodos(existingTodos) {
+          allTodos(existingTodos: Todo[]) {
             const newTodoRef = cache.writeFragment({
               data: data?.createTodo,
               fragment: gql`
@@ -32,7 +33,7 @@ const TodoInput = () => {
     },
   });
 
-  if (error) return <p>`${error.message}`</p>;
+  if (error) return <p>`Error! ${error.message}`</p>;
 
   const onCreate = () => {
     if (todo) {

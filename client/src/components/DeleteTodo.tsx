@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { useRemoveTodoMutation } from "./DeleteTodo.generated";
-import { Todo } from "../gql/generated/graphql";
+import { Todo } from "../types";
 
 interface DeleteTodoProps {
   id: string;
 }
 
 const DeleteTodo = ({ id }: DeleteTodoProps) => {
-  const [deleteTodo] = useRemoveTodoMutation({
+  const [deleteTodo, { error }] = useRemoveTodoMutation({
     update(cache) {
       cache.modify({
         fields: {
@@ -18,6 +18,8 @@ const DeleteTodo = ({ id }: DeleteTodoProps) => {
       });
     },
   });
+
+  if (error) return <p>`Error! ${error.message}`</p>;
 
   const onDelete = () => {
     deleteTodo({ variables: { id: id } });
