@@ -1,7 +1,7 @@
-import React from "react";
-import { gql, Reference, StoreObject, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import styled from "styled-components";
 import { graphql } from "../gql";
+import { RemoveTodoMutation, Todo } from "../gql/graphql";
 
 interface DeleteTodoProps {
   id: string;
@@ -16,15 +16,12 @@ const RemoveTodo = graphql(`
 `);
 
 const DeleteTodo = ({ id }: DeleteTodoProps) => {
-  const [deleteTodo] = useMutation(RemoveTodo, {
+  const [deleteTodo] = useMutation<RemoveTodoMutation>(RemoveTodo, {
     update(cache) {
       cache.modify({
         fields: {
-          allTodos(existingTodos, { readField }) {
-            return existingTodos.filter(
-              (todo: Reference | StoreObject | undefined) =>
-                id !== readField("id", todo)
-            );
+          allTodos(existingTodos: Todo[], { readField }) {
+            return existingTodos.filter((todo) => id !== readField("id", todo));
           },
         },
       });

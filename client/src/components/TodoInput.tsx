@@ -25,7 +25,7 @@ const TodoInput = () => {
     update(cache, { data }) {
       cache.modify({
         fields: {
-          allTodos(oldTodos) {
+          allTodos(existingTodos) {
             const newTodoRef = cache.writeFragment({
               data: data?.createTodo,
               fragment: gql`
@@ -36,7 +36,7 @@ const TodoInput = () => {
                 }
               `,
             });
-            return [...oldTodos, newTodoRef];
+            return [...existingTodos, newTodoRef];
           },
         },
       });
