@@ -1,18 +1,7 @@
 import React, { useState } from "react";
-import { gql, useMutation } from "@apollo/client";
+import { gql } from "@apollo/client";
 import styled from "styled-components";
-import { graphql } from "../gql";
-import { CreateTodoMutation, Todo } from "../gql/graphql";
-
-const CreateTodo = graphql(`
-  mutation createTodo($text: String!) {
-    createTodo(text: $text) {
-      id
-      text
-      completed
-    }
-  }
-`);
+import { useCreateTodoMutation } from "./TodoInput.generated";
 
 const TodoInput = () => {
   const [todo, setTodo] = useState<string>("");
@@ -21,11 +10,11 @@ const TodoInput = () => {
     setTodo(e.currentTarget.value);
   };
 
-  const [createTodo, { error }] = useMutation<CreateTodoMutation>(CreateTodo, {
+  const [createTodo, { error }] = useCreateTodoMutation({
     update(cache, { data }) {
       cache.modify({
         fields: {
-          allTodos(existingTodos: Todo[]) {
+          allTodos(existingTodos) {
             const newTodoRef = cache.writeFragment({
               data: data?.createTodo,
               fragment: gql`

@@ -4,21 +4,10 @@ import TodoInput from "./components/TodoInput";
 import ToggleCompleteTodo from "./components/ToggleCompleteTodo";
 import TodoItem from "./components/TodoItem";
 import DeleteTodo from "./components/DeleteTodo";
-import { graphql } from "../src/gql";
-import { GetTodosQuery, Todo } from "./gql/graphql";
-
-export const GetAllTodos = graphql(`
-  query getTodos {
-    allTodos {
-      id
-      text
-      completed
-    }
-  }
-`);
+import { useGetTodosQuery } from "./gql/generated/graphql";
 
 const Todos = () => {
-  const { data, loading, error } = useQuery<GetTodosQuery>(GetAllTodos);
+  const { data, loading, error } = useGetTodosQuery();
 
   return (
     <AppContainer>

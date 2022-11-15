@@ -1,22 +1,13 @@
-import { useMutation } from "@apollo/client";
 import styled from "styled-components";
-import { graphql } from "../gql";
-import { RemoveTodoMutation, Todo } from "../gql/graphql";
+import { useRemoveTodoMutation } from "./DeleteTodo.generated";
+import { Todo } from "../gql/generated/graphql";
 
 interface DeleteTodoProps {
   id: string;
 }
 
-const RemoveTodo = graphql(`
-  mutation removeTodo($id: String!) {
-    removeTodo(id: $id) {
-      id
-    }
-  }
-`);
-
 const DeleteTodo = ({ id }: DeleteTodoProps) => {
-  const [deleteTodo] = useMutation<RemoveTodoMutation>(RemoveTodo, {
+  const [deleteTodo] = useRemoveTodoMutation({
     update(cache) {
       cache.modify({
         fields: {
