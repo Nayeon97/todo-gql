@@ -26,7 +26,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    allTodos: [Todo]!
+    allTodos: [Todo!]!
     todo(id: String!): Todo
   }
 

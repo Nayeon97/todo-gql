@@ -1,18 +1,13 @@
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import styled from "styled-components";
-import ToggleCompleteTodo from "./components/ToggleCompleteTodo";
-import DeleteTodo from "./components/DeleteTodo";
 import TodoInput from "./components/TodoInput";
+import ToggleCompleteTodo from "./components/ToggleCompleteTodo";
 import TodoItem from "./components/TodoItem";
+import DeleteTodo from "./components/DeleteTodo";
 import { graphql } from "../src/gql";
+import { GetTodosQuery, Todo } from "./gql/graphql";
 
-interface TodoType {
-  id: string;
-  text: string;
-  completed: boolean;
-}
-
-export const GetAllTodos = gql`
+export const GetAllTodos = graphql(`
   query getTodos {
     allTodos {
       id
@@ -20,22 +15,24 @@ export const GetAllTodos = gql`
       completed
     }
   }
-`;
+`);
 
 const Todos = () => {
-  const { data, loading, error } = useQuery(GetAllTodos); // fragments 사용해보자.
+  const { data, loading, error } = useQuery<GetTodosQuery>(GetAllTodos);
 
   return (
     <AppContainer>
       <TodosContainer>
         <TodoInput />
-        {data?.allTodos.map((todo: TodoType) => (
-          <TodoItemContainer key={todo.id}>
-            <ToggleCompleteTodo completed={todo.completed} id={todo.id} />
-            <TodoItem completed={todo.completed} text={todo.text} />
-            <DeleteTodo id={todo.id} />
-          </TodoItemContainer>
-        ))}
+        {data?.allTodos.map((todo) => {
+          return (
+            <TodoItemContainer key={todo.id}>
+              <ToggleCompleteTodo completed={todo.completed} id={todo.id} />
+              <TodoItem completed={todo.completed} text={todo.text} />
+              <DeleteTodo id={todo.id} />
+            </TodoItemContainer>
+          );
+        })}
       </TodosContainer>
     </AppContainer>
   );

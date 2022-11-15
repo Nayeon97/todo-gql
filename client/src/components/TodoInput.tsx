@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
 import { graphql } from "../gql";
-import { CreateTodoMutation } from "../gql/graphql";
+import { CreateTodoMutation, Todo } from "../gql/graphql";
 
 const CreateTodo = graphql(`
   mutation createTodo($text: String!) {
@@ -15,7 +15,7 @@ const CreateTodo = graphql(`
 `);
 
 const TodoInput = () => {
-  const [todo, setTodo] = useState("");
+  const [todo, setTodo] = useState<string>("");
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     setTodo(e.currentTarget.value);
@@ -25,7 +25,7 @@ const TodoInput = () => {
     update(cache, { data }) {
       cache.modify({
         fields: {
-          allTodos(existingTodos) {
+          allTodos(existingTodos: Todo[]) {
             const newTodoRef = cache.writeFragment({
               data: data?.createTodo,
               fragment: gql`
