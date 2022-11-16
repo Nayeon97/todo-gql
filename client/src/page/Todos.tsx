@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import TodoInput from "./components/molecules/TodoInput";
-import { useGetTodosQuery } from "./gql/generated/graphql";
-import TodoItem from "./components/organisms/TodoItem";
+import TodoInput from "../components/molecules/TodoInput";
+import TodoItem from "../components/organisms/TodoItem";
+import { useGetTodosQuery } from "./Todos.generated";
 
 const Todos = () => {
   const { data, error } = useGetTodosQuery();
@@ -29,9 +29,7 @@ const AppContainer = styled.div`
   background: white;
   border-radius: 16px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.09);
-
   margin: 0 auto;
-
   margin-top: 50px;
   overflow: auto;
 `;

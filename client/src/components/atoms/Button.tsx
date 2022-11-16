@@ -17,8 +17,7 @@ const Button = ({ name, disabled, onClick, btnType }: ButtonProps) => {
 
 export default Button;
 
-// btnType : delete(삭제), edit(편집),
-
+// btnType : delete(삭제), edit(편집)
 const ButtonWrapper = styled.button<{ btnType: string }>`
   font-size: 15px;
   color: ${(props) => {

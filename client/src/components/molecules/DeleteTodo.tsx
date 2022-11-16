@@ -1,12 +1,15 @@
 import { useRemoveTodoMutation } from "./DeleteTodo.generated";
 import { Todo } from "../../types";
 import Button from "../atoms/Button";
+import { gql } from "@apollo/client";
+import { DeleteTodo_TodoFragment } from "../../gql/generated/graphql";
 
 interface DeleteTodoProps {
-  id: string;
+  todo: DeleteTodo_TodoFragment;
 }
 
-const DeleteTodo = ({ id }: DeleteTodoProps) => {
+const DeleteTodo = ({ todo }: DeleteTodoProps) => {
+  const { id } = todo;
   const [deleteTodo, { error }] = useRemoveTodoMutation({
     update(cache) {
       cache.modify({
@@ -29,3 +32,9 @@ const DeleteTodo = ({ id }: DeleteTodoProps) => {
 };
 
 export default DeleteTodo;
+
+gql`
+  fragment DeleteTodo_Todo on Todo {
+    id
+  }
+`;

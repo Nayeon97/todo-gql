@@ -1,14 +1,22 @@
+import { gql } from "@apollo/client";
 import styled from "styled-components";
+import { TodoItem_TodoFragment } from "../../gql/generated/graphql";
 import DeleteTodo from "../molecules/DeleteTodo";
 import TodoText from "../molecules/TodoText";
 import ToggleCompleteTodo from "../molecules/ToggleCompleteTodo";
 
-const TodoItem = ({ todo }: any) => {
+interface TodoItemProps {
+  todo: TodoItem_TodoFragment;
+}
+
+const TodoItem = ({ todo }: TodoItemProps) => {
+  const { id, completed } = todo;
+
   return (
-    <TodoItemContainer key={todo.id}>
-      <ToggleCompleteTodo completed={todo.completed} id={todo.id} />
+    <TodoItemContainer key={id}>
+      <ToggleCompleteTodo todo={todo} />
       <TodoText todo={todo} />
-      <DeleteTodo id={todo.id} />
+      <DeleteTodo todo={todo} />
     </TodoItemContainer>
   );
 };
@@ -19,4 +27,12 @@ const TodoItemContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin-top: 10px;
+`;
+
+gql`
+  fragment TodoItem_Todo on Todo {
+    id
+    text
+    completed
+  }
 `;

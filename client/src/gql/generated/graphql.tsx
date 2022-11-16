@@ -1,11 +1,9 @@
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -56,23 +54,21 @@ export type Todo = {
   text: Scalars['String'];
 };
 
+export type DeleteTodo_TodoFragment = { __typename?: 'Todo', id: string };
+
 export type NewTodoFragment = { __typename?: 'Todo', id: string, text: string, completed: boolean };
 
 export type TodoFragmentFragment = { __typename?: 'Todo', id: string, text: string, completed: boolean };
 
-export type GetTodosQueryVariables = Exact<{ [key: string]: never; }>;
+export type ToggleCompleteTodo_TodoFragment = { __typename?: 'Todo', id: string, completed: boolean };
 
+export type TodoItem_TodoFragment = { __typename?: 'Todo', id: string, text: string, completed: boolean };
 
-export type GetTodosQuery = { __typename?: 'Query', allTodos: Array<{ __typename?: 'Todo', id: string, text: string, completed: boolean }> };
-
-export type ToggleTodoMutationVariables = Exact<{
-  id: Scalars['String'];
-  completed: Scalars['Boolean'];
-}>;
-
-
-export type ToggleTodoMutation = { __typename?: 'Mutation', toggleTodo?: { __typename?: 'Todo', id: string, completed: boolean } | null };
-
+export const DeleteTodo_TodoFragmentDoc = gql`
+    fragment DeleteTodo_Todo on Todo {
+  id
+}
+    `;
 export const NewTodoFragmentDoc = gql`
     fragment NewTodo on Todo {
   id
@@ -87,72 +83,16 @@ export const TodoFragmentFragmentDoc = gql`
   completed
 }
     `;
-export const GetTodosDocument = gql`
-    query getTodos {
-  allTodos {
-    ...TodoFragment
-  }
-}
-    ${TodoFragmentFragmentDoc}`;
-
-/**
- * __useGetTodosQuery__
- *
- * To run a query within a React component, call `useGetTodosQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTodosQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTodosQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetTodosQuery(baseOptions?: Apollo.QueryHookOptions<GetTodosQuery, GetTodosQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTodosQuery, GetTodosQueryVariables>(GetTodosDocument, options);
-      }
-export function useGetTodosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTodosQuery, GetTodosQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTodosQuery, GetTodosQueryVariables>(GetTodosDocument, options);
-        }
-export type GetTodosQueryHookResult = ReturnType<typeof useGetTodosQuery>;
-export type GetTodosLazyQueryHookResult = ReturnType<typeof useGetTodosLazyQuery>;
-export type GetTodosQueryResult = Apollo.QueryResult<GetTodosQuery, GetTodosQueryVariables>;
-export const ToggleTodoDocument = gql`
-    mutation toggleTodo($id: String!, $completed: Boolean!) {
-  toggleTodo(id: $id, completed: $completed) {
-    id
-    completed
-  }
+export const ToggleCompleteTodo_TodoFragmentDoc = gql`
+    fragment ToggleCompleteTodo_Todo on Todo {
+  id
+  completed
 }
     `;
-export type ToggleTodoMutationFn = Apollo.MutationFunction<ToggleTodoMutation, ToggleTodoMutationVariables>;
-
-/**
- * __useToggleTodoMutation__
- *
- * To run a mutation, you first call `useToggleTodoMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useToggleTodoMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [toggleTodoMutation, { data, loading, error }] = useToggleTodoMutation({
- *   variables: {
- *      id: // value for 'id'
- *      completed: // value for 'completed'
- *   },
- * });
- */
-export function useToggleTodoMutation(baseOptions?: Apollo.MutationHookOptions<ToggleTodoMutation, ToggleTodoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<ToggleTodoMutation, ToggleTodoMutationVariables>(ToggleTodoDocument, options);
-      }
-export type ToggleTodoMutationHookResult = ReturnType<typeof useToggleTodoMutation>;
-export type ToggleTodoMutationResult = Apollo.MutationResult<ToggleTodoMutation>;
-export type ToggleTodoMutationOptions = Apollo.BaseMutationOptions<ToggleTodoMutation, ToggleTodoMutationVariables>;
+export const TodoItem_TodoFragmentDoc = gql`
+    fragment TodoItem_Todo on Todo {
+  id
+  text
+  completed
+}
+    `;
