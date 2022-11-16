@@ -1,4 +1,3 @@
-import { useQuery } from "@apollo/client";
 import styled from "styled-components";
 import TodoInput from "./components/TodoInput";
 import ToggleCompleteTodo from "./components/ToggleCompleteTodo";
@@ -7,7 +6,7 @@ import DeleteTodo from "./components/DeleteTodo";
 import { useGetTodosQuery } from "./gql/generated/graphql";
 
 const Todos = () => {
-  const { data, loading, error } = useGetTodosQuery();
+  const { data, error } = useGetTodosQuery();
 
   if (error) return <p>`Error! ${error.message}`</p>;
 
