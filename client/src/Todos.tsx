@@ -1,7 +1,8 @@
+import { useState } from "react";
 import styled from "styled-components";
 import TodoInput from "./components/TodoInput";
 import ToggleCompleteTodo from "./components/ToggleCompleteTodo";
-import TodoItem from "./components/TodoItem";
+import TodoText from "./components/TodoText";
 import DeleteTodo from "./components/DeleteTodo";
 import { useGetTodosQuery } from "./gql/generated/graphql";
 
@@ -18,7 +19,7 @@ const Todos = () => {
           return (
             <TodoItemContainer key={todo.id}>
               <ToggleCompleteTodo completed={todo.completed} id={todo.id} />
-              <TodoItem completed={todo.completed} text={todo.text} />
+              <TodoText todo={todo} />
               <DeleteTodo id={todo.id} />
             </TodoItemContainer>
           );

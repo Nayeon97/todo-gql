@@ -56,6 +56,10 @@ export type Todo = {
   text: Scalars['String'];
 };
 
+export type NewTodoFragment = { __typename?: 'Todo', id: string, text: string, completed: boolean };
+
+export type TodoFragmentFragment = { __typename?: 'Todo', id: string, text: string, completed: boolean };
+
 export type GetTodosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -69,16 +73,27 @@ export type ToggleTodoMutationVariables = Exact<{
 
 export type ToggleTodoMutation = { __typename?: 'Mutation', toggleTodo?: { __typename?: 'Todo', id: string, completed: boolean } | null };
 
-
+export const NewTodoFragmentDoc = gql`
+    fragment NewTodo on Todo {
+  id
+  text
+  completed
+}
+    `;
+export const TodoFragmentFragmentDoc = gql`
+    fragment TodoFragment on Todo {
+  id
+  text
+  completed
+}
+    `;
 export const GetTodosDocument = gql`
     query getTodos {
   allTodos {
-    id
-    text
-    completed
+    ...TodoFragment
   }
 }
-    `;
+    ${TodoFragmentFragmentDoc}`;
 
 /**
  * __useGetTodosQuery__
