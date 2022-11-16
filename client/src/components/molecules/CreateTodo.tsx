@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { gql } from "@apollo/client";
-import { useCreateTodoMutation } from "./TodoInput.generated";
+import { useCreateTodoMutation } from "./CreateTodo.generated";
 import { Todo } from "../../types";
 import Button from "../atoms/Button";
 import Input from "../atoms/Input";
 
-const TodoInput = () => {
+const CreateTodo = () => {
   const [todo, setTodo] = useState<string>("");
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -51,4 +51,4 @@ const TodoInput = () => {
   );
 };
 
-export default TodoInput;
+export default CreateTodo;

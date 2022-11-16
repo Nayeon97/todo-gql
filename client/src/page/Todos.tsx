@@ -1,21 +1,35 @@
+import { useState } from "react";
 import styled from "styled-components";
-import TodoInput from "../components/molecules/TodoInput";
+import CreateTodo from "../components/molecules/CreateTodo";
+import EditTodo from "../components/molecules/EditTodo";
 import TodoItem from "../components/organisms/TodoItem";
+import { Todo } from "../types";
 import { useGetTodosQuery } from "./Todos.generated";
 
 const Todos = () => {
   const { data, error } = useGetTodosQuery();
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [editTodo, setEditTodo] = useState<Todo[]>([]);
 
   if (error) return <p>`Error! ${error.message}`</p>;
 
   return (
     <AppContainer>
       <TodosContainer>
-        <TodoInput />
-        {data?.allTodos.map((todo) => {
-          return <TodoItem todo={todo} />;
-        })}
+        <CreateTodo />
+        <TodoItemsContainer>
+          {data?.allTodos.map((todo) => {
+            return (
+              <TodoItem
+                todo={todo}
+                setIsEdit={setIsEdit}
+                setEditTodo={setEditTodo}
+              />
+            );
+          })}
+        </TodoItemsContainer>
       </TodosContainer>
+      {isEdit && <EditTodo editTodo={editTodo} setIsEdit={setIsEdit} />}
     </AppContainer>
   );
 };
@@ -38,4 +52,10 @@ const TodosContainer = styled.div`
   display: grid;
   justify-items: center;
   padding-top: 60px;
+`;
+
+const TodoItemsContainer = styled.div`
+  overflow: auto;
+  margin: 20px 0px;
+  height: 300px;
 `;

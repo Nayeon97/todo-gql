@@ -34,6 +34,7 @@ const typeDefs = gql`
     createTodo(text: String!): Todo
     toggleTodo(id: String!, completed: Boolean!): Todo
     removeTodo(id: String!): Todo
+    editTodo(id: String!, text: String!): Todo
   }
 `;
 
@@ -64,6 +65,11 @@ const resolvers = {
     },
     removeTodo: (_, { id }) => {
       todos = todos.filter((todo) => todo.id !== id);
+    },
+    editTodo: (_, { id, text }) => {
+      let index = todos.findIndex((todo) => id === todo.id);
+      todos[index].text = text;
+      return todos[index];
     },
   },
 };
