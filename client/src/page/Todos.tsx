@@ -22,6 +22,7 @@ const Todos = () => {
             return (
               <TodoItem
                 todo={todo}
+                isEdit={isEdit}
                 setIsEdit={setIsEdit}
                 setEditTodo={setEditTodo}
               />

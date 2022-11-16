@@ -37,6 +37,5 @@ const ButtonWrapper = styled.button<{ btnType: string }>`
     cursor: default;
     opacity: 0.5;
     color: white;
-    background-color: #ced4da;
   }
 `;

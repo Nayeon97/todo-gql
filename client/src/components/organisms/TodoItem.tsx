@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 import { TodoItem_TodoFragment } from "../../gql/generated/graphql";
 import { Todo } from "../../types";
@@ -8,11 +8,12 @@ import ToggleCompleteTodo from "../molecules/ToggleCompleteTodo";
 
 interface TodoItemProps {
   todo: TodoItem_TodoFragment;
+  isEdit: boolean;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
   setEditTodo: Dispatch<SetStateAction<Todo[]>>;
 }
 
-const TodoItem = ({ todo, setEditTodo, setIsEdit }: TodoItemProps) => {
+const TodoItem = ({ todo, setEditTodo, isEdit, setIsEdit }: TodoItemProps) => {
   const clickEditTodo = () => {
     setIsEdit(true);
     setEditTodo([todo]);
@@ -24,7 +25,12 @@ const TodoItem = ({ todo, setEditTodo, setIsEdit }: TodoItemProps) => {
       <TextWrapper id={todo.id} completed={todo.completed}>
         {todo.text}
       </TextWrapper>
-      <Button onClick={clickEditTodo} name="edit" btnType="default" />
+      <Button
+        onClick={clickEditTodo}
+        name="edit"
+        btnType="default"
+        disabled={isEdit ? true : false || todo.completed ? true : false}
+      />
       <DeleteTodo todo={todo} />
     </TodoItemContainer>
   );

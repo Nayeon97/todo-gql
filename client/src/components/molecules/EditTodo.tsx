@@ -16,7 +16,7 @@ const EditTodo = ({ editTodo, setIsEdit }: EditTodoProps) => {
     setEditTodoText(e.currentTarget.value);
   };
 
-  const [editTodoItem, { error }] = useEditTodoMutation();
+  const [editTodoItem] = useEditTodoMutation();
 
   const clickEdit = () => {
     editTodoItem({ variables: { id: editTodo[0].id, text: editTodoText } });
