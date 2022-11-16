@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import Button from "../atoms/Button";
 import { useToggleTodoMutation } from "./ToggleCompleteTodo.generated";
 
 interface ToggleCompleteTodoProps {
@@ -35,15 +35,12 @@ const ToggleCompleteTodo = ({ id, completed }: ToggleCompleteTodoProps) => {
   };
 
   return (
-    <ButtonWrapper onClick={toggleShowComplete} completed={completed}>
-      {completed ? "완료" : "미완"}
-    </ButtonWrapper>
+    <Button
+      onClick={toggleShowComplete}
+      btnType="completed"
+      name="완료체크버튼...."
+    />
   );
 };
 
 export default ToggleCompleteTodo;
-
-const ButtonWrapper = styled.button<{ completed: boolean }>`
-  color: ${(props) => (props.completed ? "black" : "red")};
-  cursor: pointer;
-`;

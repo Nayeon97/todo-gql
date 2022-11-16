@@ -1,6 +1,6 @@
-import styled from "styled-components";
 import { useRemoveTodoMutation } from "./DeleteTodo.generated";
 import { Todo } from "../../types";
+import Button from "../atoms/Button";
 
 interface DeleteTodoProps {
   id: string;
@@ -25,11 +25,7 @@ const DeleteTodo = ({ id }: DeleteTodoProps) => {
     deleteTodo({ variables: { id: id } });
   };
 
-  return <ButtonWrapper onClick={onDelete}>삭제</ButtonWrapper>;
+  return <Button onClick={onDelete} name="삭제" btnType="delete" />;
 };
 
 export default DeleteTodo;
-
-const ButtonWrapper = styled.button`
-  color: blue;
-`;

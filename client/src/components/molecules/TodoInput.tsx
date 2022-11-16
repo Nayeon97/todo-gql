@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { gql } from "@apollo/client";
-import styled from "styled-components";
 import { useCreateTodoMutation } from "./TodoInput.generated";
 import { Todo } from "../../types";
+import Button from "../atoms/Button";
+import Input from "../atoms/Input";
 
 const TodoInput = () => {
   const [todo, setTodo] = useState<string>("");
@@ -44,29 +45,10 @@ const TodoInput = () => {
 
   return (
     <div>
-      <InputWrapper type="text" value={todo} onChange={onChange} />
-      <ButtonWrapper onClick={onCreate}>+</ButtonWrapper>
+      <Input type="text" value={todo} onChange={onChange} name="todo" />
+      <Button onClick={onCreate} name="+" btnType="default" />
     </div>
   );
 };
 
 export default TodoInput;
-
-const InputWrapper = styled.input`
-  width: 300px;
-  height: 10px;
-  margin-right: 30px;
-  margin-bottom: 20px;
-  color: black;
-  background-color: #f1f3f5;
-  padding: 20px;
-  border: none;
-  border-radius: 10px;
-  outline: none;
-  font-size: 15px;
-  cursor: text;
-`;
-
-const ButtonWrapper = styled.button`
-  font-size: 20px;
-`;
