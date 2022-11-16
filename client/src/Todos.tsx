@@ -1,10 +1,7 @@
-import { useState } from "react";
 import styled from "styled-components";
-import TodoInput from "./components/TodoInput";
-import ToggleCompleteTodo from "./components/ToggleCompleteTodo";
-import TodoText from "./components/TodoText";
-import DeleteTodo from "./components/DeleteTodo";
+import TodoInput from "./components/molecules/TodoInput";
 import { useGetTodosQuery } from "./gql/generated/graphql";
+import TodoItem from "./components/organisms/TodoItem";
 
 const Todos = () => {
   const { data, error } = useGetTodosQuery();
@@ -16,13 +13,7 @@ const Todos = () => {
       <TodosContainer>
         <TodoInput />
         {data?.allTodos.map((todo) => {
-          return (
-            <TodoItemContainer key={todo.id}>
-              <ToggleCompleteTodo completed={todo.completed} id={todo.id} />
-              <TodoText todo={todo} />
-              <DeleteTodo id={todo.id} />
-            </TodoItemContainer>
-          );
+          return <TodoItem todo={todo} />;
         })}
       </TodosContainer>
     </AppContainer>
@@ -49,10 +40,4 @@ const TodosContainer = styled.div`
   display: grid;
   justify-items: center;
   padding-top: 60px;
-`;
-
-const TodoItemContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: 10px;
 `;

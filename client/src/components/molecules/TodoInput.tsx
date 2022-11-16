@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { gql } from "@apollo/client";
 import styled from "styled-components";
 import { useCreateTodoMutation } from "./TodoInput.generated";
-import { Todo } from "../types";
+import { Todo } from "../../types";
 
 const TodoInput = () => {
   const [todo, setTodo] = useState<string>("");

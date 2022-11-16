@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { TodoFragmentFragment } from "../gql/generated/graphql";
+import { TodoFragmentFragment } from "../../gql/generated/graphql";
 
 interface TodoItemProps {
   todo: TodoFragmentFragment;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useRemoveTodoMutation } from "./DeleteTodo.generated";
-import { Todo } from "../types";
+import { Todo } from "../../types";
 
 interface DeleteTodoProps {
   id: string;
