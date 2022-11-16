@@ -21,7 +21,7 @@ const TodoItem = ({ todo, setEditTodo, isEdit, setIsEdit }: TodoItemProps) => {
 
   return (
     <TodoItemContainer key={todo.id}>
-      <ToggleCompleteTodo todo={todo} />
+      <ToggleCompleteTodo todo={todo} isEdit={isEdit} />
       <TextWrapper id={todo.id} completed={todo.completed}>
         {todo.text}
       </TextWrapper>
@@ -31,7 +31,7 @@ const TodoItem = ({ todo, setEditTodo, isEdit, setIsEdit }: TodoItemProps) => {
         btnType="default"
         disabled={isEdit ? true : false || todo.completed ? true : false}
       />
-      <DeleteTodo todo={todo} />
+      <DeleteTodo todo={todo} setIsEdit={setIsEdit} />
     </TodoItemContainer>
   );
 };

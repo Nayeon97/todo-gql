@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react';
 import { useRemoveTodoMutation } from './DeleteTodo.generated';
 import { Todo } from '../../types';
 import Button from '../atoms/Button';
@@ -6,9 +7,10 @@ import { DeleteTodo_TodoFragment } from '../../gql/generated/graphql';
 
 interface DeleteTodoProps {
   todo: DeleteTodo_TodoFragment;
+  setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
 
-const DeleteTodo = ({ todo }: DeleteTodoProps) => {
+const DeleteTodo = ({ todo, setIsEdit }: DeleteTodoProps) => {
   const { id } = todo;
   const [deleteTodo, { error }] = useRemoveTodoMutation({
     update(cache) {
@@ -26,6 +28,7 @@ const DeleteTodo = ({ todo }: DeleteTodoProps) => {
 
   const onDelete = () => {
     deleteTodo({ variables: { id: id } });
+    setIsEdit(false);
   };
 
   return <Button onClick={onDelete} name="삭제" btnType="delete" />;

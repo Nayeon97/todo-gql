@@ -4,9 +4,10 @@ import { useToggleTodoMutation } from './ToggleCompleteTodo.generated';
 
 interface ToggleCompleteTodoProps {
   todo: ToggleCompleteTodo_TodoFragment;
+  isEdit: boolean;
 }
 
-const ToggleCompleteTodo = ({ todo }: ToggleCompleteTodoProps) => {
+const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
   const { id, completed } = todo;
   const [toggleTodo, { error }] = useToggleTodoMutation();
 
@@ -21,6 +22,7 @@ const ToggleCompleteTodo = ({ todo }: ToggleCompleteTodoProps) => {
       onClick={toggleShowComplete}
       btnType={completed ? 'default' : 'inComplete'}
       name={completed ? '완료' : '미완료'}
+      disabled={isEdit ? true : false}
     />
   );
 };
