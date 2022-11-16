@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { gql } from "@apollo/client";
-import { useCreateTodoMutation } from "./CreateTodo.generated";
-import { Todo } from "../../types";
-import Button from "../atoms/Button";
-import Input from "../atoms/Input";
+import React, { useState } from 'react';
+import { gql } from '@apollo/client';
+import { useCreateTodoMutation } from './CreateTodo.generated';
+import { Todo } from '../../types';
+import Button from '../atoms/Button';
+import Input from '../atoms/Input';
 
 const CreateTodo = () => {
-  const [todo, setTodo] = useState<string>("");
+  const [todo, setTodo] = useState<string>('');
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     setTodo(e.currentTarget.value);
@@ -39,7 +39,7 @@ const CreateTodo = () => {
   const onCreate = () => {
     if (todo) {
       createTodo({ variables: { text: todo } });
-      setTodo("");
+      setTodo('');
     }
   };
 

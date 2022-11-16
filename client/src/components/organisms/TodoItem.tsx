@@ -1,10 +1,10 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import styled from "styled-components";
-import { TodoItem_TodoFragment } from "../../gql/generated/graphql";
-import { Todo } from "../../types";
-import Button from "../atoms/Button";
-import DeleteTodo from "../molecules/DeleteTodo";
-import ToggleCompleteTodo from "../molecules/ToggleCompleteTodo";
+import { Dispatch, SetStateAction } from 'react';
+import styled from 'styled-components';
+import { TodoItem_TodoFragment } from '../../gql/generated/graphql';
+import { Todo } from '../../types';
+import Button from '../atoms/Button';
+import DeleteTodo from '../molecules/DeleteTodo';
+import ToggleCompleteTodo from '../molecules/ToggleCompleteTodo';
 
 interface TodoItemProps {
   todo: TodoItem_TodoFragment;
@@ -48,6 +48,6 @@ const TodoItemContainer = styled.div`
 const TextWrapper = styled.div<{ completed: boolean }>`
   min-width: 200px;
   margin: 0px 20px;
-  color: ${(props) => (props.completed ? "lightgray" : "black")};
-  text-decoration: ${(props) => (props.completed ? "line-through" : "")};
+  color: ${(props) => (props.completed ? 'lightgray' : 'black')};
+  text-decoration: ${(props) => (props.completed ? 'line-through' : '')};
 `;

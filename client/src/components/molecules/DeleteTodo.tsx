@@ -1,8 +1,8 @@
-import { useRemoveTodoMutation } from "./DeleteTodo.generated";
-import { Todo } from "../../types";
-import Button from "../atoms/Button";
-import { gql } from "@apollo/client";
-import { DeleteTodo_TodoFragment } from "../../gql/generated/graphql";
+import { useRemoveTodoMutation } from './DeleteTodo.generated';
+import { Todo } from '../../types';
+import Button from '../atoms/Button';
+import { gql } from '@apollo/client';
+import { DeleteTodo_TodoFragment } from '../../gql/generated/graphql';
 
 interface DeleteTodoProps {
   todo: DeleteTodo_TodoFragment;
@@ -15,7 +15,7 @@ const DeleteTodo = ({ todo }: DeleteTodoProps) => {
       cache.modify({
         fields: {
           allTodos(existingTodos: Todo[], { readField }) {
-            return existingTodos.filter((todo) => id !== readField("id", todo));
+            return existingTodos.filter((todo) => id !== readField('id', todo));
           },
         },
       });

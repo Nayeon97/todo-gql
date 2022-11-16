@@ -1,7 +1,6 @@
-import { gql } from "@apollo/client";
-import { ToggleCompleteTodo_TodoFragment } from "../../gql/generated/graphql";
-import Button from "../atoms/Button";
-import { useToggleTodoMutation } from "./ToggleCompleteTodo.generated";
+import { ToggleCompleteTodo_TodoFragment } from '../../gql/generated/graphql';
+import Button from '../atoms/Button';
+import { useToggleTodoMutation } from './ToggleCompleteTodo.generated';
 
 interface ToggleCompleteTodoProps {
   todo: ToggleCompleteTodo_TodoFragment;
@@ -20,17 +19,10 @@ const ToggleCompleteTodo = ({ todo }: ToggleCompleteTodoProps) => {
   return (
     <Button
       onClick={toggleShowComplete}
-      btnType={completed ? "default" : "inComplete"}
-      name={completed ? "완료" : "미완료"}
+      btnType={completed ? 'default' : 'inComplete'}
+      name={completed ? '완료' : '미완료'}
     />
   );
 };
 
 export default ToggleCompleteTodo;
-
-gql`
-  fragment ToggleCompleteTodo_Todo on Todo {
-    id
-    completed
-  }
-`;

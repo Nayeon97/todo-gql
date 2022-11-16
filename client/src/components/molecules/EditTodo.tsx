@@ -1,9 +1,9 @@
-import { Dispatch, SetStateAction } from "react";
-import { useState } from "react";
-import styled from "styled-components";
-import { useEditTodoMutation } from "../../gql/generated/graphql";
-import { Todo } from "../../types";
-import Input from "../atoms/Input";
+import { Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
+import styled from 'styled-components';
+import { useEditTodoMutation } from '../../gql/generated/graphql';
+import { Todo } from '../../types';
+import Input from '../atoms/Input';
 
 interface EditTodoProps {
   editTodo: Todo[];
@@ -34,5 +34,7 @@ const EditTodo = ({ editTodo, setIsEdit }: EditTodoProps) => {
 export default EditTodo;
 
 const EditTodoContainer = styled.div`
-  background-color: pink;
+  display: grid;
+  padding: 30px;
+  grid-template-columns: repeat(2, 1fr);
 `;
