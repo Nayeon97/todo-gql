@@ -1,5 +1,0 @@
-query getTodos {
-  allTodos {
-    ...TodoItem_Todo
-  }
-}

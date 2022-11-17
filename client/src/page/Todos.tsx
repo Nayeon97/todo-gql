@@ -5,6 +5,7 @@ import EditTodo from "../components/molecules/EditTodo";
 import TodoItem from "../components/organisms/TodoItem";
 import { Todo } from "../types";
 import { useGetTodosQuery } from "../gql/generated/graphql";
+import { gql } from "@apollo/client";
 
 const Todos = () => {
   const { data, error } = useGetTodosQuery();
@@ -36,6 +37,14 @@ const Todos = () => {
 };
 
 export default Todos;
+
+gql`
+  query getTodos {
+    allTodos {
+      ...TodoItem_Todo
+    }
+  }
+`;
 
 const AppContainer = styled.div`
   width: 500px;

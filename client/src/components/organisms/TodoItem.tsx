@@ -59,5 +59,8 @@ gql`
     id
     text
     completed
+    ...EditTodoText_Todo
+    ...RemoveTodo_Todo
+    ...ToggleCompleteTodo_Todo
   }
 `;
