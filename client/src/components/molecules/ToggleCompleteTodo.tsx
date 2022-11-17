@@ -9,7 +9,28 @@ interface ToggleCompleteTodoProps {
 
 const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
   const { id, completed } = todo;
-  const [toggleTodo, { error }] = useToggleTodoMutation();
+  const [toggleTodo, { error }] = useToggleTodoMutation({
+    // 1. updateQuery 사용.
+    update(cache, { data }) {
+      console.log(data);
+      cache.updateQuery(
+        {
+          query: gql`
+            query UpdateTodo($id: String!) {
+              allTodos(id: $id) {
+                completed
+              }
+            }
+          `,
+        },
+        () => ({
+          allTodos: {
+            completed: !data?.toggleTodo?.completed,
+          },
+        })
+      );
+    },
+  });
 
   if (error) return <p>`Error! ${error.message}`</p>;
 

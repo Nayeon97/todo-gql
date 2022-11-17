@@ -22,7 +22,7 @@ const TodoItem = ({ todo, setEditTodo, isEdit, setIsEdit }: TodoItemProps) => {
   };
 
   return (
-    <TodoItemContainer key={todo.id}>
+    <TodoItemContainer>
       <ToggleCompleteTodo todo={todo} isEdit={isEdit} />
       <TextWrapper id={todo.id} completed={todo.completed}>
         {todo.text}

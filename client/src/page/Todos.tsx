@@ -1,11 +1,11 @@
 import { useState } from "react";
 import styled from "styled-components";
 import CreateTodo from "../components/molecules/CreateTodo";
-import EditTodo from "../components/molecules/EditTodo";
 import TodoItem from "../components/organisms/TodoItem";
 import { Todo } from "../types";
 import { useGetTodosQuery } from "../gql/generated/graphql";
 import { gql } from "@apollo/client";
+import EditTodo from "../components/molecules/EditTodo";
 
 const Todos = () => {
   const { data, error } = useGetTodosQuery();
@@ -22,6 +22,7 @@ const Todos = () => {
           {data?.allTodos.map((todo) => {
             return (
               <TodoItem
+                key={todo.id}
                 todo={todo}
                 isEdit={isEdit}
                 setIsEdit={setIsEdit}

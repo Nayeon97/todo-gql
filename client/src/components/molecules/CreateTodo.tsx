@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { gql } from "@apollo/client";
-import { useCreateTodoMutation } from "../../gql/generated/graphql";
+import {
+  GetTodosQuery,
+  GetTodosQueryVariables,
+  useCreateTodoMutation,
+} from "../../gql/generated/graphql";
 import { Todo } from "../../types";
 import Button from "../atoms/Button";
 import Input from "../atoms/Input";
@@ -14,23 +18,45 @@ const CreateTodo = () => {
 
   const [createTodo, { error }] = useCreateTodoMutation({
     update(cache, { data }) {
-      cache.modify({
-        fields: {
-          allTodos(existingTodos: Todo[]) {
-            const newTodoRef = cache.writeFragment({
-              data: data?.createTodo,
-              fragment: gql`
-                fragment NewTodo on Todo {
-                  id
-                  text
-                  completed
-                }
-              `,
-            });
-            return [...existingTodos, newTodoRef];
-          },
-        },
-      });
+      // 1. cache.modify 사용.
+      // cache.modify({
+      //   fields: {
+      //     allTodos(existingTodos: Todo[]) {
+      //       const newTodoRef = cache.writeFragment({
+      //         data: data?.createTodo,
+      //         fragment: gql`
+      //           fragment NewTodo on Todo {
+      //             id
+      //             text
+      //             completed
+      //           }
+      //         `,
+      //       });
+      //       return [...existingTodos, newTodoRef];
+      //     },
+      //   },
+      // });
+      // 2. readQuery, writeQuery 사용.
+      const query = gql`
+        query GetTodos {
+          allTodos {
+            id
+            text
+            completed
+          }
+        }
+      `;
+      // const todosData = cache.readQuery<GetTodosQuery, GetTodosQueryVariables>({
+      //   query,
+      // });
+      // if (todosData) {
+      //   cache.writeQuery({
+      //     query,
+      //     data: {
+      //       allTodos: [...todosData.allTodos, data?.createTodo],
+      //     },
+      //   });
+      // }
     },
   });
 
