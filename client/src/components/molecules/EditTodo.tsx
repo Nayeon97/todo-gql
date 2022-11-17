@@ -2,12 +2,14 @@ import { gql, useMutation } from "@apollo/client";
 import { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import styled from "styled-components";
-import { useEditTodoMutation } from "../../gql/generated/graphql";
-import { Todo } from "../../types";
+import {
+  useEditTodoMutation,
+  EditTodoText_TodoFragment,
+} from "../../gql/generated/graphql";
 import Input from "../atoms/Input";
 
 interface EditTodoProps {
-  editTodo: Todo[];
+  editTodo: EditTodoText_TodoFragment[];
   setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -41,7 +43,7 @@ const EditTodoContainer = styled.div`
 `;
 
 gql`
-  fragment EditTodoText on Todo {
+  fragment EditTodoText_Todo on Todo {
     id
     text
   }

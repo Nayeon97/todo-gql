@@ -65,9 +65,9 @@ export type Todo = {
 
 export type NewTodoFragment = { __typename?: 'Todo', id: string, text: string, completed: boolean };
 
-export type DeleteTodo_TodoFragment = { __typename?: 'Todo', id: string };
+export type RemoveTodo_TodoFragment = { __typename?: 'Todo', id: string };
 
-export type EditTodoTextFragment = { __typename?: 'Todo', id: string, text: string };
+export type EditTodoText_TodoFragment = { __typename?: 'Todo', id: string, text: string };
 
 export type ToggleCompleteTodo_TodoFragment = { __typename?: 'Todo', id: string, completed: boolean };
 
@@ -115,13 +115,13 @@ export const NewTodoFragmentDoc = gql`
   completed
 }
     `;
-export const DeleteTodo_TodoFragmentDoc = gql`
-    fragment DeleteTodo_Todo on Todo {
+export const RemoveTodo_TodoFragmentDoc = gql`
+    fragment RemoveTodo_Todo on Todo {
   id
 }
     `;
-export const EditTodoTextFragmentDoc = gql`
-    fragment EditTodoText on Todo {
+export const EditTodoText_TodoFragmentDoc = gql`
+    fragment EditTodoText_Todo on Todo {
   id
   text
 }
@@ -212,12 +212,10 @@ export type EditTodoMutationOptions = Apollo.BaseMutationOptions<EditTodoMutatio
 export const GetTodosDocument = gql`
     query getTodos {
   allTodos {
-    id
-    text
-    completed
+    ...TodoItem_Todo
   }
 }
-    `;
+    ${TodoItem_TodoFragmentDoc}`;
 
 /**
  * __useGetTodosQuery__

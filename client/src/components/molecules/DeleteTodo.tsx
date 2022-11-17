@@ -3,10 +3,10 @@ import { useRemoveTodoMutation } from "../../gql/generated/graphql";
 import { Todo } from "../../types";
 import Button from "../atoms/Button";
 import { gql } from "@apollo/client";
-import { DeleteTodo_TodoFragment } from "../../gql/generated/graphql";
+import { RemoveTodo_TodoFragment } from "../../gql/generated/graphql";
 
 interface DeleteTodoProps {
-  todo: DeleteTodo_TodoFragment;
+  todo: RemoveTodo_TodoFragment;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -37,7 +37,7 @@ const DeleteTodo = ({ todo, setIsEdit }: DeleteTodoProps) => {
 export default DeleteTodo;
 
 gql`
-  fragment DeleteTodo_Todo on Todo {
+  fragment RemoveTodo_Todo on Todo {
     id
   }
 `;

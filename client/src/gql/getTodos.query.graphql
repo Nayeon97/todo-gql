@@ -1,7 +1,5 @@
 query getTodos {
   allTodos {
-    id
-    text
-    completed
+    ...TodoItem_Todo
   }
 }
