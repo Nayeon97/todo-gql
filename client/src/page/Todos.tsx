@@ -4,7 +4,7 @@ import CreateTodo from "../components/molecules/CreateTodo";
 import EditTodo from "../components/molecules/EditTodo";
 import TodoItem from "../components/organisms/TodoItem";
 import { Todo } from "../types";
-import { useGetTodosQuery } from "./Todos.generated";
+import { useGetTodosQuery } from "../gql/generated/graphql";
 
 const Todos = () => {
   const { data, error } = useGetTodosQuery();

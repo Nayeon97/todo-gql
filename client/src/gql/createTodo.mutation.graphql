@@ -1,0 +1,7 @@
+mutation CreateTodo($text: String!) {
+  createTodo(text: $text) {
+    id
+    text
+    completed
+  }
+}

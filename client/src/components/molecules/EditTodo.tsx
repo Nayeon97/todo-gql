@@ -1,16 +1,17 @@
-import { Dispatch, SetStateAction } from 'react';
-import { useState } from 'react';
-import styled from 'styled-components';
-import { useEditTodoMutation } from '../../gql/generated/graphql';
-import { Todo } from '../../types';
-import Input from '../atoms/Input';
+import { gql, useMutation } from "@apollo/client";
+import { Dispatch, SetStateAction } from "react";
+import { useState } from "react";
+import styled from "styled-components";
+import { useEditTodoMutation } from "../../gql/generated/graphql";
+import { Todo } from "../../types";
+import Input from "../atoms/Input";
 
 interface EditTodoProps {
   editTodo: Todo[];
   setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
 
-const EditTodo = ({ editTodo, setIsEdit }: EditTodoProps) => {
+const EditTodoText = ({ editTodo, setIsEdit }: EditTodoProps) => {
   const [editTodoText, setEditTodoText] = useState(editTodo[0]?.text);
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     setEditTodoText(e.currentTarget.value);
@@ -31,10 +32,17 @@ const EditTodo = ({ editTodo, setIsEdit }: EditTodoProps) => {
   );
 };
 
-export default EditTodo;
+export default EditTodoText;
 
 const EditTodoContainer = styled.div`
   display: grid;
   padding: 30px;
   grid-template-columns: repeat(2, 1fr);
+`;
+
+gql`
+  fragment EditTodoText on Todo {
+    id
+    text
+  }
 `;
