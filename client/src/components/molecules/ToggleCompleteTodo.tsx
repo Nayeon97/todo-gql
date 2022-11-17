@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 import { ToggleCompleteTodo_TodoFragment } from "../../gql/generated/graphql";
 import Button from "../atoms/Button";
 import { useToggleTodoMutation } from "../../gql/generated/graphql";
+import { Todo } from "../../types";
 interface ToggleCompleteTodoProps {
   todo: ToggleCompleteTodo_TodoFragment;
   isEdit: boolean;
@@ -12,22 +13,17 @@ const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
   const [toggleTodo, { error }] = useToggleTodoMutation({
     // 1. updateQuery 사용.
     update(cache, { data }) {
-      console.log(data);
-      cache.updateQuery(
-        {
-          query: gql`
-            query UpdateTodo($id: String!) {
-              allTodos(id: $id) {
-                completed
-              }
-            }
-          `,
-        },
-        () => ({
-          allTodos: {
-            completed: !data?.toggleTodo?.completed,
-          },
-        })
+      const query = gql`
+        query ToggleCompeltetTodoQuery($id: String!) {
+          allTodos(id: $id) {
+            id
+            text
+            completed
+          }
+        }
+      `;
+      cache.updateQuery({ id: data?.toggleTodo?.id, query }, (todo) =>
+        console.log(todo)
       );
     },
   });
@@ -35,7 +31,7 @@ const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
   if (error) return <p>`Error! ${error.message}`</p>;
 
   const toggleShowComplete = () => {
-    toggleTodo({ variables: { id: id, completed: completed } });
+    toggleTodo({ variables: { id: id, completed: !completed } });
   };
 
   return (

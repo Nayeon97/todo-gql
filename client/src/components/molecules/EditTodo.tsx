@@ -13,13 +13,22 @@ interface EditTodoProps {
   setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
 
-const EditTodoText = ({ editTodo, setIsEdit }: EditTodoProps) => {
+const EditTodo = ({ editTodo, setIsEdit }: EditTodoProps) => {
   const [editTodoText, setEditTodoText] = useState(editTodo[0]?.text);
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     setEditTodoText(e.currentTarget.value);
   };
 
-  const [editTodoItem] = useEditTodoMutation();
+  const [editTodoItem] = useEditTodoMutation({
+    update(cache) {
+      cache.updateFragment(
+        {
+          fragment: EditTodoText,
+        },
+        (data) => console.log(data)
+      );
+    },
+  });
 
   const clickEdit = () => {
     editTodoItem({ variables: { id: editTodo[0].id, text: editTodoText } });
@@ -34,7 +43,7 @@ const EditTodoText = ({ editTodo, setIsEdit }: EditTodoProps) => {
   );
 };
 
-export default EditTodoText;
+export default EditTodo;
 
 const EditTodoContainer = styled.div`
   display: grid;
@@ -42,7 +51,7 @@ const EditTodoContainer = styled.div`
   grid-template-columns: repeat(2, 1fr);
 `;
 
-gql`
+const EditTodoText = gql`
   fragment EditTodoText_Todo on Todo {
     id
     text

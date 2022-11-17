@@ -46,17 +46,17 @@ const CreateTodo = () => {
           }
         }
       `;
-      // const todosData = cache.readQuery<GetTodosQuery, GetTodosQueryVariables>({
-      //   query,
-      // });
-      // if (todosData) {
-      //   cache.writeQuery({
-      //     query,
-      //     data: {
-      //       allTodos: [...todosData.allTodos, data?.createTodo],
-      //     },
-      //   });
-      // }
+      const todosData = cache.readQuery<GetTodosQuery, GetTodosQueryVariables>({
+        query,
+      });
+      if (todosData) {
+        cache.writeQuery({
+          query,
+          data: {
+            allTodos: [...todosData.allTodos, data?.createTodo],
+          },
+        });
+      }
     },
   });
 
