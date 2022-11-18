@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import styled from "styled-components";
@@ -20,14 +20,20 @@ const EditTodo = ({ editTodo, setIsEdit }: EditTodoProps) => {
   };
 
   const [editTodoItem] = useEditTodoMutation({
-    update(cache) {
-      cache.updateFragment(
-        {
-          fragment: EditTodoText,
-        },
-        (data) => console.log(data)
-      );
-    },
+    // update(cache, { data }) {
+    //   if (!data?.editTodo) {
+    //     return;
+    //   }
+    //   cache.updateFragment(
+    //     {
+    //       id: cache.identify(data?.editTodo),
+    //       fragment: EditTodoText_TodoFragmentDoc,
+    //     },
+    //     (todos) => {
+    //       console.log(todos);
+    //     }
+    //   );
+    // },
   });
 
   const clickEdit = () => {
@@ -51,7 +57,7 @@ const EditTodoContainer = styled.div`
   grid-template-columns: repeat(2, 1fr);
 `;
 
-const EditTodoText = gql`
+gql`
   fragment EditTodoText_Todo on Todo {
     id
     text

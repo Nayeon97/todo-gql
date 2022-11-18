@@ -2,7 +2,6 @@ import { gql } from "@apollo/client";
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { TodoItem_TodoFragment } from "../../gql/generated/graphql";
-
 import { Todo } from "../../types";
 import Button from "../atoms/Button";
 import DeleteTodo from "../molecules/DeleteTodo";

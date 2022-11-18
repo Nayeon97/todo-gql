@@ -7,6 +7,7 @@ import {
 import Button from "../atoms/Button";
 import { useToggleTodoMutation } from "../../gql/generated/graphql";
 import { Todo } from "../../types";
+
 interface ToggleCompleteTodoProps {
   todo: ToggleCompleteTodo_TodoFragment;
   isEdit: boolean;
@@ -15,7 +16,6 @@ interface ToggleCompleteTodoProps {
 const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
   const { id, completed } = todo;
   const [toggleTodo, { error }] = useToggleTodoMutation({
-    // 1. updateQuery 사용.
     update(cache, { data }) {
       cache.updateQuery({ query: GetTodosDocument }, (todos) => {
         const targetId = data?.toggleTodo?.id;

@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
 import { useRemoveTodoMutation } from "../../gql/generated/graphql";
-import { Todo } from "../../types";
 import Button from "../atoms/Button";
 import { gql } from "@apollo/client";
 import { RemoveTodo_TodoFragment } from "../../gql/generated/graphql";
+import { Todo } from "../../types";
 
 interface DeleteTodoProps {
   todo: RemoveTodo_TodoFragment;
@@ -12,12 +12,16 @@ interface DeleteTodoProps {
 
 const DeleteTodo = ({ todo, setIsEdit }: DeleteTodoProps) => {
   const { id } = todo;
+
   const [deleteTodo, { error }] = useRemoveTodoMutation({
-    update(cache) {
+    update(cache, { data }) {
+      if (!data?.removeTodo) {
+        return;
+      }
       cache.modify({
         fields: {
           allTodos(existingTodos: Todo[], { readField }) {
-            return existingTodos.filter((todo) => id !== readField("id", todo));
+            console.log(existingTodos);
           },
         },
       });
@@ -28,7 +32,6 @@ const DeleteTodo = ({ todo, setIsEdit }: DeleteTodoProps) => {
 
   const onDelete = () => {
     deleteTodo({ variables: { id: id } });
-    setIsEdit(false);
   };
 
   return <Button onClick={onDelete} name="삭제" btnType="delete" />;
