@@ -38,17 +38,24 @@ const typeDefs = gql`
   }
 `;
 
+const sleep = (sec) => {
+  return new Promise((resolve) => setTimeout(() => resolve(), sec));
+};
+
 const resolvers = {
   Query: {
-    allTodos: () => {
+    allTodos: async () => {
+      await sleep(2000);
       return todos;
     },
-    todo: (_, { id }) => {
+    todo: async (_, { id }) => {
+      await sleep(2000);
       return todos.find((todo) => todo.id === id);
     },
   },
   Mutation: {
-    createTodo: (_, { text }) => {
+    createTodo: async (_, { text }) => {
+      await sleep(2000);
       let createId = String(todos.length + 1);
       const newTodo = {
         id: createId,
@@ -58,15 +65,18 @@ const resolvers = {
       todos.push(newTodo);
       return newTodo;
     },
-    toggleTodo: (_, { id, completed }) => {
+    toggleTodo: async (_, { id, completed }) => {
+      // await sleep(2000);
       let index = todos.findIndex((todo) => id === todo.id);
       todos[index].completed = !completed;
       return todos[index];
     },
-    removeTodo: (_, { id }) => {
+    removeTodo: async (_, { id }) => {
+      await sleep(2000);
       todos = todos.filter((todo) => todo.id !== id);
     },
-    editTodo: (_, { id, text }) => {
+    editTodo: async (_, { id, text }) => {
+      await sleep(2000);
       let index = todos.findIndex((todo) => id === todo.id);
       todos[index].text = text;
       return todos[index];
