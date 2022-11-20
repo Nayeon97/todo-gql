@@ -1,9 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
-import { Query, useRemoveTodoMutation } from "../../gql/generated/graphql";
+import { useRemoveTodoMutation } from "../../gql/generated/graphql";
 import Button from "../atoms/Button";
 import { gql } from "@apollo/client";
 import { RemoveTodo_TodoFragment } from "../../gql/generated/graphql";
-import produce from "immer";
 import { updator } from "../../mutations/removeTodo/updator";
 
 interface DeleteTodoProps {

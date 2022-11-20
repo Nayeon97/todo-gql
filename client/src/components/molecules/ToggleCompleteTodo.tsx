@@ -1,11 +1,5 @@
 import { gql } from "@apollo/client";
-import produce from "immer";
-import {
-  GetTodosDocument,
-  GetTodosQuery,
-  GetTodosQueryVariables,
-  ToggleCompleteTodo_TodoFragment,
-} from "../../gql/generated/graphql";
+import { ToggleCompleteTodo_TodoFragment } from "../../gql/generated/graphql";
 import Button from "../atoms/Button";
 import { useToggleTodoMutation } from "../../gql/generated/graphql";
 import { updator } from "../../mutations/toggleTodo/updator";

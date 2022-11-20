@@ -1,14 +1,10 @@
 import { gql } from "@apollo/client";
-import produce from "immer";
 import { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import styled from "styled-components";
 import {
   useEditTodoMutation,
   EditTodoText_TodoFragment,
-  EditTodoText_TodoFragmentDoc,
-  EditTodoMutation,
-  EditTodoMutationVariables,
 } from "../../gql/generated/graphql";
 import { updator } from "../../mutations/editTodo/updator";
 import Input from "../atoms/Input";

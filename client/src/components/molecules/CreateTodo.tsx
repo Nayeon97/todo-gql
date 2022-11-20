@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { gql } from "@apollo/client";
 import { useCreateTodoMutation } from "../../gql/generated/graphql";
-import { Todo } from "../../gql/generated/graphql";
 import Button from "../atoms/Button";
 import Input from "../atoms/Input";
 import { updator } from "../../mutations/createTodo/updator";
