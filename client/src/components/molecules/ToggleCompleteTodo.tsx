@@ -8,7 +8,7 @@ import {
 } from "../../gql/generated/graphql";
 import Button from "../atoms/Button";
 import { useToggleTodoMutation } from "../../gql/generated/graphql";
-import { Todo } from "../../gql/generated/graphql";
+import { updator } from "../../mutations/toggleTodo/updator";
 
 interface ToggleCompleteTodoProps {
   todo: ToggleCompleteTodo_TodoFragment;
@@ -18,26 +18,7 @@ interface ToggleCompleteTodoProps {
 const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
   const { id, completed } = todo;
   const [toggleTodo, { error }] = useToggleTodoMutation({
-    update(cache, { data }) {
-      if (!data?.toggleTodo) {
-        return;
-      }
-      cache.updateQuery<GetTodosQuery, GetTodosQueryVariables>(
-        { query: GetTodosDocument },
-        (todos) => {
-          const targetId = data.toggleTodo.id;
-          return produce(todos, (draft) => {
-            if (!draft) {
-              return;
-            }
-            const index = draft.allTodos.findIndex(
-              (todo: Todo) => todo.id === targetId
-            );
-            if (index !== -1) draft.allTodos[index].completed = !completed;
-          });
-        }
-      );
-    },
+    update: updator(),
   });
 
   if (error) return <p>`Error! ${error.message}`</p>;
@@ -49,7 +30,7 @@ const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
         toggleTodo: {
           __typename: "Todo",
           id: id,
-          completed: !completed,
+          completed: completed,
         },
       },
     });

@@ -10,6 +10,7 @@ import {
   EditTodoMutation,
   EditTodoMutationVariables,
 } from "../../gql/generated/graphql";
+import { updator } from "../../mutations/editTodo/updator";
 import Input from "../atoms/Input";
 
 interface EditTodoProps {
@@ -24,20 +25,7 @@ const EditTodo = ({ editTodo, setIsEdit }: EditTodoProps) => {
   };
 
   const [editTodoItem] = useEditTodoMutation({
-    update(cache, { data }) {
-      if (!data?.editTodo) {
-        return;
-      }
-      cache.updateFragment<EditTodoMutation, EditTodoMutationVariables>(
-        {
-          id: cache.identify(data.editTodo),
-          fragment: EditTodoText_TodoFragmentDoc,
-        },
-        (todo) => {
-          return todo;
-        }
-      );
-    },
+    update: updator(),
   });
 
   const clickEdit = () => {

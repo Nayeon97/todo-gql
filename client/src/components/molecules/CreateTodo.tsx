@@ -4,6 +4,7 @@ import { useCreateTodoMutation } from "../../gql/generated/graphql";
 import { Todo } from "../../gql/generated/graphql";
 import Button from "../atoms/Button";
 import Input from "../atoms/Input";
+import { updator } from "../../mutations/createTodo/updator";
 
 interface CrateTodoProps {
   data?: number;
@@ -17,48 +18,7 @@ const CreateTodo = ({ data }: CrateTodoProps) => {
   };
 
   const [createTodo, { loading, error }] = useCreateTodoMutation({
-    update(cache, { data }) {
-      // 1. cache.modify 사용.
-      cache.modify({
-        fields: {
-          allTodos(existingTodos: Todo[]) {
-            const newTodoRef = cache.writeFragment({
-              data: data?.createTodo,
-              fragment: gql`
-                fragment NewTodo on Todo {
-                  id
-                  text
-                  completed
-                }
-              `,
-            });
-            return [...existingTodos, newTodoRef];
-          },
-        },
-      });
-
-      // 2. readQuery, writeQuery 사용.
-      // const query = gql`
-      //   query GetTodos {
-      //     allTodos {
-      //       id
-      //       text
-      //       completed
-      //     }
-      //   }
-      // `;
-      // const todosData = cache.readQuery<GetTodosQuery, GetTodosQueryVariables>({
-      //   query,
-      // });
-      // if (todosData) {
-      //   cache.writeQuery({
-      //     query,
-      //     data: {
-      //       allTodos: [...todosData.allTodos, data?.createTodo],
-      //     },
-      //   });
-      // }
-    },
+    update: updator(),
   });
 
   if (error) return <p>`Error! ${error.message}`</p>;
