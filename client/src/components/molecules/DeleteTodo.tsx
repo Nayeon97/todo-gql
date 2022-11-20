@@ -1,9 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
-import { useRemoveTodoMutation } from "../../gql/generated/graphql";
+import { Query, useRemoveTodoMutation } from "../../gql/generated/graphql";
 import Button from "../atoms/Button";
 import { gql } from "@apollo/client";
 import { RemoveTodo_TodoFragment } from "../../gql/generated/graphql";
 import { Todo } from "../../gql/generated/graphql";
+import produce from "immer";
 
 interface DeleteTodoProps {
   todo: RemoveTodo_TodoFragment;
@@ -20,8 +21,15 @@ const DeleteTodo = ({ todo }: DeleteTodoProps) => {
       }
       cache.modify({
         fields: {
-          allTodos(existingTodos: Todo[], { readField }) {
-            console.log(existingTodos);
+          allTodos(existingTodos: Query["allTodos"], { readField }) {
+            const targetId = data.removeTodo.id;
+            const deletedTodosArray = produce(existingTodos, (draft) => {
+              const index = draft.findIndex(
+                (todo) => readField("id", todo) === targetId
+              );
+              if (index !== -1) draft.splice(index, 1);
+            });
+            return [...deletedTodosArray];
           },
         },
       });

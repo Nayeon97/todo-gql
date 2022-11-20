@@ -19,7 +19,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createTodo: Todo;
   editTodo: Todo;
-  removeTodo: Array<Todo>;
+  removeTodo: Todo;
   toggleTodo: Todo;
 };
 
@@ -93,7 +93,7 @@ export type RemoveTodoMutationVariables = Exact<{
 }>;
 
 
-export type RemoveTodoMutation = { __typename?: 'Mutation', removeTodo: Array<{ __typename?: 'Todo', id: string }> };
+export type RemoveTodoMutation = { __typename?: 'Mutation', removeTodo: { __typename?: 'Todo', id: string } };
 
 export type ToggleTodoMutationVariables = Exact<{
   id: Scalars['String'];

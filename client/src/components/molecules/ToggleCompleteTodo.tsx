@@ -19,15 +19,12 @@ const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
     update(cache, { data }) {
       cache.updateQuery({ query: GetTodosDocument }, (todos) => {
         const targetId = data?.toggleTodo?.id;
-        const toggleCompleteTodoObj = produce(todos, (draft: any) => {
+        return produce(todos, (draft: any) => {
           const index = draft.allTodos.findIndex(
             (todo: Todo) => todo.id === targetId
           );
           if (index !== -1) draft.allTodos[index].completed = !completed;
         });
-        return {
-          ...toggleCompleteTodoObj,
-        };
       });
     },
   });
