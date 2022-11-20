@@ -8,7 +8,7 @@ import { gql } from "@apollo/client";
 import EditTodo from "../components/molecules/EditTodo";
 
 const Todos = () => {
-  const { data, error } = useGetTodosQuery();
+  const { data, error, loading } = useGetTodosQuery();
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [editTodo, setEditTodo] = useState<Todo[]>([]);
 
@@ -19,17 +19,21 @@ const Todos = () => {
       <TodosContainer>
         <CreateTodo data={data?.allTodos.length} />
         <TodoItemsContainer>
-          {data?.allTodos.map((todo) => {
-            return (
-              <TodoItem
-                key={todo.id}
-                todo={todo}
-                isEdit={isEdit}
-                setIsEdit={setIsEdit}
-                setEditTodo={setEditTodo}
-              />
-            );
-          })}
+          {loading ? (
+            <div>Loading...</div>
+          ) : (
+            data?.allTodos.map((todo) => {
+              return (
+                <TodoItem
+                  key={todo.id}
+                  todo={todo}
+                  isEdit={isEdit}
+                  setIsEdit={setIsEdit}
+                  setEditTodo={setEditTodo}
+                />
+              );
+            })
+          )}
         </TodoItemsContainer>
       </TodosContainer>
       {isEdit && <EditTodo editTodo={editTodo} setIsEdit={setIsEdit} />}

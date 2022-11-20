@@ -4,7 +4,6 @@ import {
   GetTodosDocument,
   GetTodosQuery,
   GetTodosQueryVariables,
-  Query,
   ToggleCompleteTodo_TodoFragment,
 } from "../../gql/generated/graphql";
 import Button from "../atoms/Button";

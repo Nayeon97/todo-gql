@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { gql } from "@apollo/client";
-import { Query, useCreateTodoMutation } from "../../gql/generated/graphql";
+import { useCreateTodoMutation } from "../../gql/generated/graphql";
 import { Todo } from "../../gql/generated/graphql";
 import Button from "../atoms/Button";
 import Input from "../atoms/Input";
@@ -16,7 +16,7 @@ const CreateTodo = ({ data }: CrateTodoProps) => {
     setText(e.currentTarget.value);
   };
 
-  const [createTodo, { error }] = useCreateTodoMutation({
+  const [createTodo, { loading, error }] = useCreateTodoMutation({
     update(cache, { data }) {
       // 1. cache.modify 사용.
       cache.modify({
