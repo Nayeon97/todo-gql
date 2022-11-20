@@ -38,24 +38,24 @@ const typeDefs = gql`
   }
 `;
 
-// const sleep = (sec) => {
-//   return new Promise((resolve) => setTimeout(() => resolve(), sec));
-// };
+const sleep = (sec) => {
+  return new Promise((resolve) => setTimeout(() => resolve(), sec));
+};
 
 const resolvers = {
   Query: {
-    allTodos: () => {
-      // await sleep(2000);
+    allTodos: async () => {
+      await sleep(2000);
       return todos;
     },
-    todo: (_, { id }) => {
-      // await sleep(2000);
+    todo: async (_, { id }) => {
+      await sleep(2000);
       return todos.find((todo) => todo.id === id);
     },
   },
   Mutation: {
-    createTodo: (_, { text }) => {
-      // await sleep(2000);
+    createTodo: async (_, { text }) => {
+      await sleep(2000);
       let createId = String(todos.length + 1);
       const newTodo = {
         id: createId,
@@ -65,19 +65,19 @@ const resolvers = {
       todos.push(newTodo);
       return newTodo;
     },
-    toggleTodo: (_, { id, completed }) => {
-      // await sleep(2000);
+    toggleTodo: async (_, { id, completed }) => {
+      await sleep(2000);
       let index = todos.findIndex((todo) => id === todo.id);
       todos[index].completed = !completed;
       return todos[index];
     },
-    removeTodo: (_, { id }) => {
-      // await sleep(2000);
+    removeTodo: async (_, { id }) => {
+      await sleep(2000);
       let index = todos.findIndex((todo) => todo.id === id);
       return todos[index];
     },
-    editTodo: (_, { id, text }) => {
-      // await sleep(2000);
+    editTodo: async (_, { id, text }) => {
+      await sleep(2000);
       let index = todos.findIndex((todo) => id === todo.id);
       todos[index].text = text;
       return todos[index];

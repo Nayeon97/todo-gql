@@ -3,7 +3,6 @@ import { Query, useRemoveTodoMutation } from "../../gql/generated/graphql";
 import Button from "../atoms/Button";
 import { gql } from "@apollo/client";
 import { RemoveTodo_TodoFragment } from "../../gql/generated/graphql";
-import { Todo } from "../../gql/generated/graphql";
 import produce from "immer";
 
 interface DeleteTodoProps {
@@ -39,7 +38,15 @@ const DeleteTodo = ({ todo }: DeleteTodoProps) => {
   if (error) return <p>`Error! ${error.message}`</p>;
 
   const onDelete = () => {
-    deleteTodo({ variables: { id: id } });
+    deleteTodo({
+      variables: { id: id },
+      optimisticResponse: {
+        removeTodo: {
+          __typename: "Todo",
+          id: id,
+        },
+      },
+    });
   };
 
   return <Button onClick={onDelete} name="삭제" btnType="delete" />;

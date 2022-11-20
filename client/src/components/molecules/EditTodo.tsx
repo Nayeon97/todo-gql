@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import produce from "immer";
 import { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import styled from "styled-components";
@@ -6,6 +7,8 @@ import {
   useEditTodoMutation,
   EditTodoText_TodoFragment,
   EditTodoText_TodoFragmentDoc,
+  EditTodoMutation,
+  EditTodoMutationVariables,
 } from "../../gql/generated/graphql";
 import Input from "../atoms/Input";
 
@@ -25,18 +28,29 @@ const EditTodo = ({ editTodo, setIsEdit }: EditTodoProps) => {
       if (!data?.editTodo) {
         return;
       }
-      cache.updateFragment(
+      cache.updateFragment<EditTodoMutation, EditTodoMutationVariables>(
         {
-          id: cache.identify(data?.editTodo),
+          id: cache.identify(data.editTodo),
           fragment: EditTodoText_TodoFragmentDoc,
         },
-        (todos) => {}
+        (todo) => {
+          return todo;
+        }
       );
     },
   });
 
   const clickEdit = () => {
-    editTodoItem({ variables: { id: editTodo[0].id, text: editTodoText } });
+    editTodoItem({
+      variables: { id: editTodo[0].id, text: editTodoText },
+      optimisticResponse: {
+        editTodo: {
+          __typename: "Todo",
+          id: editTodo[0].id,
+          text: editTodoText,
+        },
+      },
+    });
     setIsEdit(false);
   };
 

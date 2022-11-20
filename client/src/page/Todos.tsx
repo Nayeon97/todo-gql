@@ -17,7 +17,7 @@ const Todos = () => {
   return (
     <AppContainer>
       <TodosContainer>
-        <CreateTodo />
+        <CreateTodo data={data?.allTodos.length} />
         <TodoItemsContainer>
           {data?.allTodos.map((todo) => {
             return (
