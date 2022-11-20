@@ -130,17 +130,9 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Todo",
-                    "ofType": null
-                  }
-                }
+                "kind": "OBJECT",
+                "name": "Todo",
+                "ofType": null
               }
             },
             "isDeprecated": false,

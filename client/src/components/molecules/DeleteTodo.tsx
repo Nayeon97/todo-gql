@@ -3,7 +3,7 @@ import { useRemoveTodoMutation } from "../../gql/generated/graphql";
 import Button from "../atoms/Button";
 import { gql } from "@apollo/client";
 import { RemoveTodo_TodoFragment } from "../../gql/generated/graphql";
-import { Todo } from "../../types";
+import { Todo } from "../../gql/generated/graphql";
 
 interface DeleteTodoProps {
   todo: RemoveTodo_TodoFragment;

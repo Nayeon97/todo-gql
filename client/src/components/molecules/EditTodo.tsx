@@ -5,6 +5,7 @@ import styled from "styled-components";
 import {
   useEditTodoMutation,
   EditTodoText_TodoFragment,
+  EditTodoText_TodoFragmentDoc,
 } from "../../gql/generated/graphql";
 import Input from "../atoms/Input";
 
@@ -20,20 +21,18 @@ const EditTodo = ({ editTodo, setIsEdit }: EditTodoProps) => {
   };
 
   const [editTodoItem] = useEditTodoMutation({
-    // update(cache, { data }) {
-    //   if (!data?.editTodo) {
-    //     return;
-    //   }
-    //   cache.updateFragment(
-    //     {
-    //       id: cache.identify(data?.editTodo),
-    //       fragment: EditTodoText_TodoFragmentDoc,
-    //     },
-    //     (todos) => {
-    //       console.log(todos);
-    //     }
-    //   );
-    // },
+    update(cache, { data }) {
+      if (!data?.editTodo) {
+        return;
+      }
+      cache.updateFragment(
+        {
+          id: cache.identify(data?.editTodo),
+          fragment: EditTodoText_TodoFragmentDoc,
+        },
+        (todos) => {}
+      );
+    },
   });
 
   const clickEdit = () => {

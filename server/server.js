@@ -74,7 +74,6 @@ const resolvers = {
     removeTodo: (_, { id }) => {
       // await sleep(2000);
       todos = todos.filter((todo) => todo.id !== id);
-      console.log(todos);
       return todos;
     },
     editTodo: (_, { id, text }) => {
