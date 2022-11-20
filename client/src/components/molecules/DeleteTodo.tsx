@@ -10,7 +10,7 @@ interface DeleteTodoProps {
   setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
 
-const DeleteTodo = ({ todo, setIsEdit }: DeleteTodoProps) => {
+const DeleteTodo = ({ todo }: DeleteTodoProps) => {
   const { id } = todo;
 
   const [deleteTodo, { error }] = useRemoveTodoMutation({

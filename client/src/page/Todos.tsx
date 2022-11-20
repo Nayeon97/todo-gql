@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import CreateTodo from "../components/molecules/CreateTodo";
 import TodoItem from "../components/organisms/TodoItem";
-import { Todo } from "../types";
+import { Todo } from "../gql/generated/graphql";
 import { useGetTodosQuery } from "../gql/generated/graphql";
 import { gql } from "@apollo/client";
 import EditTodo from "../components/molecules/EditTodo";

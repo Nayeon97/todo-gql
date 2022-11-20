@@ -73,8 +73,8 @@ const resolvers = {
     },
     removeTodo: (_, { id }) => {
       // await sleep(2000);
-      todos = todos.filter((todo) => todo.id !== id);
-      return todos;
+      let index = todos.findIndex((todo) => todo.id === id);
+      return todos[index];
     },
     editTodo: (_, { id, text }) => {
       // await sleep(2000);

@@ -6,7 +6,7 @@ import {
 } from "../../gql/generated/graphql";
 import Button from "../atoms/Button";
 import { useToggleTodoMutation } from "../../gql/generated/graphql";
-import { Todo } from "../../types";
+import { Todo } from "../../gql/generated/graphql";
 
 interface ToggleCompleteTodoProps {
   todo: ToggleCompleteTodo_TodoFragment;
