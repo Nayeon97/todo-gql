@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useCreateTodoMutation } from "../../gql/generated/graphql";
-import Input from "../atoms/Input";
+import Input from "../atoms/Input/Input";
 import { updator } from "../../mutations/createTodo/updator";
 
 interface CrateTodoProps {

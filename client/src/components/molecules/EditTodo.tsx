@@ -7,7 +7,7 @@ import {
   EditTodoText_TodoFragment,
 } from "../../gql/generated/graphql";
 import { updator } from "../../mutations/editTodo/updator";
-import Input from "../atoms/Input";
+import Input from "../atoms/Input/Input";
 
 interface EditTodoProps {
   editTodo: EditTodoText_TodoFragment[];
