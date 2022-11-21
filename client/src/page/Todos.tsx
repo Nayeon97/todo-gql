@@ -1,11 +1,12 @@
-import { useState } from "react";
-import styled from "styled-components";
-import CreateTodo from "../components/molecules/CreateTodo";
-import TodoItem from "../components/organisms/TodoItem";
-import { Todo } from "../gql/generated/graphql";
-import { useGetTodosQuery } from "../gql/generated/graphql";
-import { gql } from "@apollo/client";
-import EditTodo from "../components/molecules/EditTodo";
+import { useState } from 'react';
+import styled from 'styled-components';
+import CreateTodo from '../components/molecules/CreateTodo';
+import TodoItem from '../components/organisms/TodoItem';
+import { Todo } from '../gql/generated/graphql';
+import { useGetTodosQuery } from '../gql/generated/graphql';
+import { gql } from '@apollo/client';
+import EditTodo from '../components/molecules/EditTodo';
+import Spinner from '../components/atoms/Spinner';
 
 const Todos = () => {
   const { data, error, loading } = useGetTodosQuery();
@@ -20,7 +21,7 @@ const Todos = () => {
         <CreateTodo data={data?.allTodos.length} />
         <TodoItemsContainer>
           {loading ? (
-            <div>Loading...</div>
+            <Spinner />
           ) : (
             data?.allTodos.map((todo) => {
               return (
