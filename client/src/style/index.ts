@@ -6,6 +6,10 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;  
   }
 
+  body {
+     -webkit-font-smoothing: antialiased;
+  }
+
   button {
     border: none;
     cursor: pointer;
