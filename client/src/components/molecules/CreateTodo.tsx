@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useCreateTodoMutation } from "../../gql/generated/graphql";
-import Button from "../atoms/Button";
 import Input from "../atoms/Input";
 import { updator } from "../../mutations/createTodo/updator";
 
@@ -15,7 +14,7 @@ const CreateTodo = ({ data }: CrateTodoProps) => {
     setText(e.currentTarget.value);
   };
 
-  const [createTodo, { loading, error }] = useCreateTodoMutation({
+  const [createTodo, { error }] = useCreateTodoMutation({
     update: updator(),
   });
 
@@ -38,10 +37,21 @@ const CreateTodo = ({ data }: CrateTodoProps) => {
     }
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key === "Enter") {
+      onCreate();
+    }
+  };
+
   return (
     <div>
-      <Input type="text" value={text} onChange={onChange} name="todo" />
-      <Button onClick={onCreate} name="+" btnType="default" />
+      <Input
+        type="text"
+        value={text}
+        onChange={onChange}
+        name="todo"
+        onKeyPress={handleKeyPress}
+      />
     </div>
   );
 };

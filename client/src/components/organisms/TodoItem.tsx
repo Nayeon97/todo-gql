@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { TodoItem_TodoFragment } from "../../gql/generated/graphql";
 import { Todo } from "../../gql/generated/graphql";
-import Button from "../atoms/Button";
+import Button from "../atoms/Button/Button";
 import DeleteTodo from "../molecules/DeleteTodo";
 import ToggleCompleteTodo from "../molecules/ToggleCompleteTodo";
 
@@ -29,7 +29,7 @@ const TodoItem = ({ todo, setEditTodo, isEdit, setIsEdit }: TodoItemProps) => {
       <Button
         onClick={clickEditTodo}
         name="edit"
-        btnType="default"
+        btnType="edit"
         disabled={isEdit ? true : false || todo.completed ? true : false}
       />
       <DeleteTodo todo={todo} setIsEdit={setIsEdit} />

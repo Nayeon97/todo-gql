@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { ToggleCompleteTodo_TodoFragment } from "../../gql/generated/graphql";
-import Button from "../atoms/Button";
+import Button from "../atoms/Button/Button";
 import { useToggleTodoMutation } from "../../gql/generated/graphql";
 import { updator } from "../../mutations/toggleTodo/updator";
 
@@ -33,7 +33,7 @@ const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
   return (
     <Button
       onClick={toggleShowComplete}
-      btnType={completed ? "default" : "inComplete"}
+      btnType={completed ? "complete" : "incomplete"}
       name={completed ? "완료" : "미완료"}
       disabled={isEdit ? true : false}
     />

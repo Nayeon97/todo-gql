@@ -1,5 +1,5 @@
 import { gql, MutationUpdaterFn } from "@apollo/client";
-import { CreateTodoMutation, Todo } from "../../gql/generated/graphql";
+import { CreateTodoMutation, Query } from "../../gql/generated/graphql";
 
 export const updator =
   (): MutationUpdaterFn<CreateTodoMutation> =>
@@ -7,7 +7,7 @@ export const updator =
     if (!data) return;
     cache.modify({
       fields: {
-        allTodos(existingTodos: Todo[]) {
+        allTodos(existingTodos: Query["allTodos"]) {
           const newTodoRef = cache.writeFragment({
             data: data?.createTodo,
             fragment: gql`

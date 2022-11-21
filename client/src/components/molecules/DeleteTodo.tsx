@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { useRemoveTodoMutation } from "../../gql/generated/graphql";
-import Button from "../atoms/Button";
+import Button from "../atoms/Button/Button";
 import { gql } from "@apollo/client";
 import { RemoveTodo_TodoFragment } from "../../gql/generated/graphql";
 import { updator } from "../../mutations/removeTodo/updator";

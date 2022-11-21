@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 interface InputProps {
   name: string;
@@ -6,11 +7,18 @@ interface InputProps {
   type: string;
   placeholder?: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const Input = ({ name, value, type, onChange }: InputProps) => {
+const Input = ({ name, value, type, onChange, onKeyPress }: InputProps) => {
   return (
-    <InputWrapper name={name} value={value} onChange={onChange} type={type} />
+    <InputWrapper
+      name={name}
+      value={value}
+      onChange={onChange}
+      type={type}
+      onKeyPress={onKeyPress}
+    />
   );
 };
 
