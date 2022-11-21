@@ -31,7 +31,7 @@ const ButtonWrapper = styled.button<{ btnType: string }>`
       case "incomplete":
         return "#FFAB76";
       case "complete":
-        return "#548CFF";
+        return "white";
       case "default":
         return "black";
     }

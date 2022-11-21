@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useMemo } from "react";
 import GlobalStyle from "../src/style/index";
+import { ApolloProvider } from "@apollo/client";
+import client from "../../client/src/client";
 
 export const decorators = [
   (Story) => (
     <>
-      <GlobalStyle />
-      <Story />
+      <ApolloProvider client={client}>
+        <GlobalStyle />
+        <Story />
+      </ApolloProvider>
     </>
   ),
 ];
