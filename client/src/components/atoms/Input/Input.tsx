@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 interface InputProps {
-  name: string;
   value: string;
   type: string;
   placeholder?: string;
@@ -10,10 +9,9 @@ interface InputProps {
   onKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const Input = ({ name, value, type, onChange, onKeyPress }: InputProps) => {
+const Input = ({ value, type, onChange, onKeyPress }: InputProps) => {
   return (
     <InputWrapper
-      name={name}
       value={value}
       onChange={onChange}
       type={type}

@@ -40,7 +40,7 @@ const EditTodo = ({ editTodo, setIsEdit }: EditTodoProps) => {
 
   return (
     <EditTodoContainer>
-      <Input name="todo" type="text" value={editTodoText} onChange={onChange} />
+      <Input type="text" value={editTodoText} onChange={onChange} />
       <button onClick={clickEdit}>Edit!</button>
     </EditTodoContainer>
   );

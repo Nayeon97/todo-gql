@@ -49,7 +49,6 @@ const CreateTodo = ({ data }: CrateTodoProps) => {
         type="text"
         value={text}
         onChange={onChange}
-        name="todo"
         onKeyPress={handleKeyPress}
       />
     </div>
