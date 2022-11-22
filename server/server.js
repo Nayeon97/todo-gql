@@ -1,44 +1,44 @@
-import { ApolloServer, gql } from 'apollo-server';
-import _ from 'lodash';
+import { ApolloServer, gql } from "apollo-server";
+import _ from "lodash";
 
 let todos = [
   {
-    id: 'user1todo:12',
-    text: '청소하기',
+    id: "user1todo:12",
+    text: "청소하기",
     completed: false,
-    userId: 'user1',
+    userId: "user1",
   },
   {
-    id: 'user1todo:23',
-    text: '밥먹기',
+    id: "user1todo:23",
+    text: "밥먹기",
     completed: true,
-    userId: 'user1',
+    userId: "user1",
   },
   {
-    id: 'user1todo:34',
-    text: '......?',
+    id: "user1todo:34",
+    text: "......?",
     completed: false,
-    userId: 'user1',
+    userId: "user1",
   },
   ..._.times(200, (index) => ({
     id: `todo:${index}`,
     text: `${index}번째 할일`,
     completed: false,
-    userId: 'user2',
+    userId: "user2",
   })),
 ];
 
 let users = [
-  { id: 'user1' },
-  { id: 'user2' },
-  { id: 'user3' },
-  { id: 'user4' },
-  { id: 'user5' },
-  { id: 'user6' },
-  { id: 'user7' },
-  { id: 'user8' },
-  { id: 'user9' },
-  { id: 'user10' },
+  { id: "user1" },
+  { id: "user2" },
+  { id: "user3" },
+  { id: "user4" },
+  { id: "user5" },
+  { id: "user6" },
+  { id: "user7" },
+  { id: "user8" },
+  { id: "user9" },
+  { id: "user10" },
 ];
 
 const typeDefs = gql`
@@ -47,35 +47,29 @@ const typeDefs = gql`
     text: String!
     completed: Boolean!
   }
-
   type TodoEdge {
     node: Todo!
     cursor: String!
   }
-
   type PageInfo {
     hasNextPage: Boolean!
   }
-
   type TodoConnection {
     edges: [TodoEdge!]!
     pageInfo: PageInfo!
   }
-
   type User {
     id: ID!
     totalTodoCount: Int!
     offsetTodos(offset: Int, limit: Int): [Todo!]!
     cursorTodos(first: Int, after: String): TodoConnection!
   }
-
   type Query {
     allUsers: [User!]!
     user(id: ID!): User!
     allTodos: [Todo!]!
     todo(id: ID!): Todo!
   }
-
   type Mutation {
     createTodo(text: String!, userId: ID!): Todo!
     toggleTodo(id: String!, completed: Boolean!): Todo!
@@ -85,11 +79,11 @@ const typeDefs = gql`
 `;
 
 function cursorToId(id) {
-  return Buffer.from(id, 'base64').toString();
+  return Buffer.from(id, "base64").toString();
 }
 
 function idToCursor(id) {
-  return Buffer.from(id).toString('base64');
+  return Buffer.from(id).toString("base64");
 }
 
 const sleep = (sec) => {

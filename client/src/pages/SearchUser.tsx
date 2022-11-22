@@ -17,7 +17,7 @@ const SearchUser = () => {
   const [userId, setUserId] = useState("");
   const [getUser] = useLazyQuery(GET_USERS, {
     onCompleted: () => {
-      navigate(`todo/${userId}`);
+      navigate(`user/${userId}`);
     },
     onError: (error) => {
       console.log(error.message); // 입력한 userId 없다고 tostify ? 하면될듯
@@ -38,29 +38,17 @@ const SearchUser = () => {
   };
 
   return (
-    <AppContainer>
-      <TodosContainer>
+    <TodosContainer>
+      <div>
         <div>user Todo 검색 기능</div>
         <Input type="text" value={userId} onChange={onChange} />
         <button onClick={onClick}>검색</button>
-      </TodosContainer>
-    </AppContainer>
+      </div>
+    </TodosContainer>
   );
 };
 
 export default SearchUser;
-
-const AppContainer = styled.div`
-  width: 500px;
-  height: 700px;
-  position: relative;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.09);
-  margin: 0 auto;
-  margin-top: 50px;
-  overflow: auto;
-`;
 
 const TodosContainer = styled.div`
   display: grid;
