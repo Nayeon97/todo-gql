@@ -23,7 +23,7 @@ const CreateTodo = ({ data }: CrateTodoProps) => {
   const onCreate = () => {
     if (text) {
       createTodo({
-        variables: { text: text },
+        // variables: { text: text },
         optimisticResponse: {
           createTodo: {
             __typename: "Todo",

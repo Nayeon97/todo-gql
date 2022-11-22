@@ -26,6 +26,7 @@ export type Mutation = {
 
 export type MutationCreateTodoArgs = {
   text: Scalars['String'];
+  userId: Scalars['ID'];
 };
 
 
@@ -45,25 +46,67 @@ export type MutationToggleTodoArgs = {
   id: Scalars['String'];
 };
 
+export type PageInfo = {
+  __typename?: 'PageInfo';
+  hasNextPage: Scalars['Boolean'];
+};
+
 export type Query = {
   __typename?: 'Query';
   allTodos: Array<Todo>;
+  allUsers: Array<User>;
   todo: Todo;
+  user: User;
 };
 
 
 export type QueryTodoArgs = {
-  id: Scalars['String'];
+  id: Scalars['ID'];
+};
+
+
+export type QueryUserArgs = {
+  id: Scalars['ID'];
 };
 
 export type Todo = {
   __typename?: 'Todo';
   completed: Scalars['Boolean'];
-  id: Scalars['String'];
+  id: Scalars['ID'];
   text: Scalars['String'];
 };
 
-export type NewTodoFragment = { __typename?: 'Todo', id: string, text: string, completed: boolean };
+export type TodoConnection = {
+  __typename?: 'TodoConnection';
+  edges: Array<TodoEdge>;
+  pageInfo: PageInfo;
+};
+
+export type TodoEdge = {
+  __typename?: 'TodoEdge';
+  cursor: Scalars['String'];
+  node: Todo;
+};
+
+export type User = {
+  __typename?: 'User';
+  cursorTodos: TodoConnection;
+  id: Scalars['ID'];
+  offsetTodos: Array<Todo>;
+  totalTodoCount: Scalars['Int'];
+};
+
+
+export type UserCursorTodosArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type UserOffsetTodosArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+};
 
 export type RemoveTodo_TodoFragment = { __typename?: 'Todo', id: string };
 
@@ -75,46 +118,58 @@ export type TodoItem_TodoFragment = { __typename?: 'Todo', id: string, text: str
 
 export type CreateTodoMutationVariables = Exact<{
   text: Scalars['String'];
+  userId: Scalars['ID'];
 }>;
 
 
 export type CreateTodoMutation = { __typename?: 'Mutation', createTodo: { __typename?: 'Todo', id: string, text: string, completed: boolean } };
 
+export type NewTodoFragment = { __typename?: 'Todo', id: string, text: string, completed: boolean };
+
 export type EditTodoMutationVariables = Exact<{
-  id: Scalars['String'];
-  text: Scalars['String'];
+  editTodoId: Scalars['String'];
+  editTodoText2: Scalars['String'];
 }>;
 
 
-export type EditTodoMutation = { __typename?: 'Mutation', editTodo: { __typename?: 'Todo', id: string, text: string } };
+export type EditTodoMutation = { __typename?: 'Mutation', editTodo: { __typename?: 'Todo', id: string, text: string, completed: boolean } };
 
 export type RemoveTodoMutationVariables = Exact<{
-  id: Scalars['String'];
+  removeTodoId: Scalars['String'];
 }>;
 
 
-export type RemoveTodoMutation = { __typename?: 'Mutation', removeTodo: { __typename?: 'Todo', id: string } };
+export type RemoveTodoMutation = { __typename?: 'Mutation', removeTodo: { __typename?: 'Todo', id: string, text: string, completed: boolean } };
 
 export type ToggleTodoMutationVariables = Exact<{
-  id: Scalars['String'];
+  toggleTodoId: Scalars['String'];
   completed: Scalars['Boolean'];
 }>;
 
 
 export type ToggleTodoMutation = { __typename?: 'Mutation', toggleTodo: { __typename?: 'Todo', id: string, completed: boolean } };
 
+export type GetUserQueryVariables = Exact<{
+  userId: Scalars['ID'];
+  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetUserQuery = { __typename?: 'Query', user: { __typename?: 'User', totalTodoCount: number, offsetTodos: Array<{ __typename?: 'Todo', id: string, text: string, completed: boolean }> } };
+
 export type GetTodosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetTodosQuery = { __typename?: 'Query', allTodos: Array<{ __typename?: 'Todo', id: string, text: string, completed: boolean }> };
 
-export const NewTodoFragmentDoc = gql`
-    fragment NewTodo on Todo {
-  id
-  text
-  completed
-}
-    `;
+export type UserQueryVariables = Exact<{
+  userId: Scalars['ID'];
+}>;
+
+
+export type UserQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string } };
+
 export const EditTodoText_TodoFragmentDoc = gql`
     fragment EditTodoText_Todo on Todo {
   id
@@ -144,9 +199,16 @@ export const TodoItem_TodoFragmentDoc = gql`
     ${EditTodoText_TodoFragmentDoc}
 ${RemoveTodo_TodoFragmentDoc}
 ${ToggleCompleteTodo_TodoFragmentDoc}`;
+export const NewTodoFragmentDoc = gql`
+    fragment NewTodo on Todo {
+  id
+  text
+  completed
+}
+    `;
 export const CreateTodoDocument = gql`
-    mutation CreateTodo($text: String!) {
-  createTodo(text: $text) {
+    mutation CreateTodo($text: String!, $userId: ID!) {
+  createTodo(text: $text, userId: $userId) {
     id
     text
     completed
@@ -169,6 +231,7 @@ export type CreateTodoMutationFn = Apollo.MutationFunction<CreateTodoMutation, C
  * const [createTodoMutation, { data, loading, error }] = useCreateTodoMutation({
  *   variables: {
  *      text: // value for 'text'
+ *      userId: // value for 'userId'
  *   },
  * });
  */
@@ -180,10 +243,11 @@ export type CreateTodoMutationHookResult = ReturnType<typeof useCreateTodoMutati
 export type CreateTodoMutationResult = Apollo.MutationResult<CreateTodoMutation>;
 export type CreateTodoMutationOptions = Apollo.BaseMutationOptions<CreateTodoMutation, CreateTodoMutationVariables>;
 export const EditTodoDocument = gql`
-    mutation EditTodo($id: String!, $text: String!) {
-  editTodo(id: $id, text: $text) {
+    mutation EditTodo($editTodoId: String!, $editTodoText2: String!) {
+  editTodo(id: $editTodoId, text: $editTodoText2) {
     id
     text
+    completed
   }
 }
     `;
@@ -202,8 +266,8 @@ export type EditTodoMutationFn = Apollo.MutationFunction<EditTodoMutation, EditT
  * @example
  * const [editTodoMutation, { data, loading, error }] = useEditTodoMutation({
  *   variables: {
- *      id: // value for 'id'
- *      text: // value for 'text'
+ *      editTodoId: // value for 'editTodoId'
+ *      editTodoText2: // value for 'editTodoText2'
  *   },
  * });
  */
@@ -215,9 +279,11 @@ export type EditTodoMutationHookResult = ReturnType<typeof useEditTodoMutation>;
 export type EditTodoMutationResult = Apollo.MutationResult<EditTodoMutation>;
 export type EditTodoMutationOptions = Apollo.BaseMutationOptions<EditTodoMutation, EditTodoMutationVariables>;
 export const RemoveTodoDocument = gql`
-    mutation RemoveTodo($id: String!) {
-  removeTodo(id: $id) {
+    mutation RemoveTodo($removeTodoId: String!) {
+  removeTodo(id: $removeTodoId) {
     id
+    text
+    completed
   }
 }
     `;
@@ -236,7 +302,7 @@ export type RemoveTodoMutationFn = Apollo.MutationFunction<RemoveTodoMutation, R
  * @example
  * const [removeTodoMutation, { data, loading, error }] = useRemoveTodoMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      removeTodoId: // value for 'removeTodoId'
  *   },
  * });
  */
@@ -248,8 +314,8 @@ export type RemoveTodoMutationHookResult = ReturnType<typeof useRemoveTodoMutati
 export type RemoveTodoMutationResult = Apollo.MutationResult<RemoveTodoMutation>;
 export type RemoveTodoMutationOptions = Apollo.BaseMutationOptions<RemoveTodoMutation, RemoveTodoMutationVariables>;
 export const ToggleTodoDocument = gql`
-    mutation toggleTodo($id: String!, $completed: Boolean!) {
-  toggleTodo(id: $id, completed: $completed) {
+    mutation toggleTodo($toggleTodoId: String!, $completed: Boolean!) {
+  toggleTodo(id: $toggleTodoId, completed: $completed) {
     id
     completed
   }
@@ -270,7 +336,7 @@ export type ToggleTodoMutationFn = Apollo.MutationFunction<ToggleTodoMutation, T
  * @example
  * const [toggleTodoMutation, { data, loading, error }] = useToggleTodoMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      toggleTodoId: // value for 'toggleTodoId'
  *      completed: // value for 'completed'
  *   },
  * });
@@ -282,6 +348,48 @@ export function useToggleTodoMutation(baseOptions?: Apollo.MutationHookOptions<T
 export type ToggleTodoMutationHookResult = ReturnType<typeof useToggleTodoMutation>;
 export type ToggleTodoMutationResult = Apollo.MutationResult<ToggleTodoMutation>;
 export type ToggleTodoMutationOptions = Apollo.BaseMutationOptions<ToggleTodoMutation, ToggleTodoMutationVariables>;
+export const GetUserDocument = gql`
+    query getUser($userId: ID!, $offset: Int, $limit: Int) {
+  user(id: $userId) {
+    totalTodoCount
+    offsetTodos(offset: $offset, limit: $limit) {
+      id
+      text
+      completed
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserQuery__
+ *
+ * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      offset: // value for 'offset'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetUserQuery(baseOptions: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+      }
+export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+        }
+export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
+export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
+export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
 export const GetTodosDocument = gql`
     query getTodos {
   allTodos {
@@ -316,3 +424,38 @@ export function useGetTodosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetTodosQueryHookResult = ReturnType<typeof useGetTodosQuery>;
 export type GetTodosLazyQueryHookResult = ReturnType<typeof useGetTodosLazyQuery>;
 export type GetTodosQueryResult = Apollo.QueryResult<GetTodosQuery, GetTodosQueryVariables>;
+export const UserDocument = gql`
+    query User($userId: ID!) {
+  user(id: $userId) {
+    id
+  }
+}
+    `;
+
+/**
+ * __useUserQuery__
+ *
+ * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUserQuery(baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+      }
+export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+        }
+export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
+export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
+export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;

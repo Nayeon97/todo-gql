@@ -18,16 +18,16 @@ const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
   if (error) return <p>`Error! ${error.message}`</p>;
 
   const toggleShowComplete = () => {
-    toggleTodo({
-      variables: { id: id, completed: !completed },
-      optimisticResponse: {
-        toggleTodo: {
-          __typename: "Todo",
-          id: id,
-          completed: completed,
-        },
-      },
-    });
+    // toggleTodo({
+    //   variables: { id: id, completed: !completed },
+    //   optimisticResponse: {
+    //     toggleTodo: {
+    //       __typename: "Todo",
+    //       id: id,
+    //       completed: completed,
+    //     },
+    //   },
+    // });
   };
 
   return (

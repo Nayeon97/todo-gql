@@ -1,6 +1,7 @@
-mutation EditTodo($id: String!, $text: String!) {
-  editTodo(id: $id, text: $text) {
+mutation EditTodo($editTodoId: String!, $editTodoText2: String!) {
+  editTodo(id: $editTodoId, text: $editTodoText2) {
     id
     text
+    completed
   }
 }

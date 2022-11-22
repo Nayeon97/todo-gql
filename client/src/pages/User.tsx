@@ -1,26 +1,23 @@
-import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const User = () => {
   const navigate = useNavigate();
-  const params = useParams();
-  const [getTodos, setGetTodos] = useState<string>("");
 
   const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setGetTodos(event.currentTarget.name);
-    navigate(`todos`);
+    navigate(`${event.currentTarget.name}`);
   };
 
   return (
     <Container>
       <ButtonWrapper>
-        <button name={"cursor"} onClick={onClick}>
+        <button name={"cursor-todos"} onClick={onClick}>
           cursorPagination
         </button>
       </ButtonWrapper>
       <ButtonWrapper>
-        <button name={"offset"} onClick={onClick}>
+        <button name={"offset-todos"} onClick={onClick}>
           offsetPagination
         </button>
       </ButtonWrapper>

@@ -21,7 +21,7 @@ const GET_TODOS = gql`
   }
 `;
 
-const Todos = () => {
+const OffsetTodos = () => {
   const params = useParams();
   const [page, setPage] = useState(1);
   const { data, error, loading } = useQuery(GET_TODOS, {
@@ -42,6 +42,7 @@ const Todos = () => {
       <TodosContainer>
         <CreateTodo data={data?.user.totalTodoCount} />
         <TodosWrapper>
+          <div>offsetTodos</div>
           {loading ? (
             <Spinner />
           ) : (
@@ -72,7 +73,7 @@ const Todos = () => {
   );
 };
 
-export default Todos;
+export default OffsetTodos;
 
 gql`
   query getTodos {

@@ -24,7 +24,6 @@ const ButtonWrapper = styled.button<{ btnType: string }>`
   font-size: 15px;
   padding: 10px 10px;
   border-radius: 5px;
-  background-color: skyblue;
   outline: none;
   color: ${(props) => {
     switch (props.btnType) {

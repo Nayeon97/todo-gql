@@ -1,5 +1,5 @@
-mutation toggleTodo($id: String!, $completed: Boolean!) {
-  toggleTodo(id: $id, completed: $completed) {
+mutation toggleTodo($toggleTodoId: String!, $completed: Boolean!) {
+  toggleTodo(id: $toggleTodoId, completed: $completed) {
     id
     completed
   }

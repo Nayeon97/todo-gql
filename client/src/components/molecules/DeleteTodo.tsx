@@ -20,15 +20,15 @@ const DeleteTodo = ({ todo }: DeleteTodoProps) => {
   if (error) return <p>`Error! ${error.message}`</p>;
 
   const onDelete = () => {
-    deleteTodo({
-      variables: { id: id },
-      optimisticResponse: {
-        removeTodo: {
-          __typename: "Todo",
-          id: id,
-        },
-      },
-    });
+    // deleteTodo({
+    //   variables: { id: id },
+    //   optimisticResponse: {
+    //     removeTodo: {
+    //       __typename: "Todo",
+    //       id: id,
+    //     },
+    //   },
+    // });
   };
 
   return <Button onClick={onDelete} name="삭제" btnType="delete" />;

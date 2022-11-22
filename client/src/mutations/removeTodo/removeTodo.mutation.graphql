@@ -1,5 +1,7 @@
-mutation RemoveTodo($id: String!) {
-  removeTodo(id: $id) {
+mutation RemoveTodo($removeTodoId: String!) {
+  removeTodo(id: $removeTodoId) {
     id
+    text
+    completed
   }
 }

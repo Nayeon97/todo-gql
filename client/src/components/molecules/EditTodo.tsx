@@ -26,14 +26,14 @@ const EditTodo = ({ editTodo, setIsEdit }: EditTodoProps) => {
 
   const clickEdit = () => {
     editTodoItem({
-      variables: { id: editTodo[0].id, text: editTodoText },
-      optimisticResponse: {
-        editTodo: {
-          __typename: "Todo",
-          id: editTodo[0].id,
-          text: editTodoText,
-        },
-      },
+      // variables: { id: editTodo[0].id, text: editTodoText },
+      // optimisticResponse: {
+      //   editTodo: {
+      //     __typename: "Todo",
+      //     id: editTodo[0].id,
+      //     text: editTodoText,
+      //   },
+      // },
     });
     setIsEdit(false);
   };

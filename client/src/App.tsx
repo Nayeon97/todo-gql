@@ -1,8 +1,8 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SearchUser from "./pages/SearchUser";
-import Todos from "./pages/Todos";
+import OffsetTodos from "./pages/OffsetTodos";
 import User from "./pages/User";
+import CursorTodos from "./pages/CursorTodos";
 
 export default function App() {
   return (
@@ -10,7 +10,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<SearchUser />} />
         <Route path="user/:userId" element={<User />} />
-        <Route path="user/:userId/todos" element={<Todos />} />
+        <Route path="user/:userId/offset-todos" element={<OffsetTodos />} />
+        <Route path="user/:userId/cursor-todos" element={<CursorTodos />} />
       </Routes>
     </BrowserRouter>
   );
