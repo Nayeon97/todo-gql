@@ -1,43 +1,47 @@
+import React, { useState } from "react";
 import { gql } from "@apollo/client";
-import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import { TodoItem_TodoFragment } from "../../gql/generated/graphql";
 import { Todo } from "../../gql/generated/graphql";
 import Button from "../atoms/Button/Button";
 import DeleteTodo from "../molecules/DeleteTodo";
 import ToggleCompleteTodo from "../molecules/ToggleCompleteTodo";
 
 interface TodoItemProps {
-  todo: TodoItem_TodoFragment;
-  isEdit: boolean;
-  setIsEdit: Dispatch<SetStateAction<boolean>>;
-  setEditTodo: Dispatch<SetStateAction<Todo[]>>;
+  todos: Todo[];
+  onLoadMore: () => void;
 }
 
-const TodoItem = ({ todo, setEditTodo, isEdit, setIsEdit }: TodoItemProps) => {
+const TodoItems = ({ todos }: TodoItemProps) => {
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+
   const clickEditTodo = () => {
     setIsEdit(true);
-    setEditTodo([todo]);
   };
 
   return (
-    <TodoItemContainer completed={todo.completed}>
-      <ToggleCompleteTodo todo={todo} isEdit={isEdit} />
-      <TextWrapper id={todo.id} completed={todo.completed}>
-        {todo.text}
-      </TextWrapper>
-      <Button
-        onClick={clickEditTodo}
-        name="edit"
-        btnType="edit"
-        disabled={isEdit ? true : false || todo.completed ? true : false}
-      />
-      <DeleteTodo todo={todo} setIsEdit={setIsEdit} />
-    </TodoItemContainer>
+    <div>
+      {todos?.map((todo) => {
+        return (
+          <TodoItemContainer completed={todo.completed} key={todo.id}>
+            <ToggleCompleteTodo todo={todo} isEdit={isEdit} />
+            <TextWrapper id={todo.id} completed={todo.completed}>
+              {todo.text}
+            </TextWrapper>
+            <Button
+              onClick={clickEditTodo}
+              name="edit"
+              btnType="edit"
+              disabled={isEdit ? true : false || todo.completed ? true : false}
+            />
+            <DeleteTodo todo={todo} setIsEdit={setIsEdit} />
+          </TodoItemContainer>
+        );
+      })}
+    </div>
   );
 };
 
-export default TodoItem;
+export default TodoItems;
 
 const TodoItemContainer = styled.div<{ completed: boolean }>`
   display: grid;

@@ -2,14 +2,12 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
-import TodoItem from "../components/organisms/TodoItem";
-import { Todo } from "../gql/generated/graphql";
 import CreateTodo from "../components/molecules/CreateTodo";
-import EditTodo from "../components/molecules/EditTodo";
+import TodoItems from "../components/organisms/TodoItems";
 import Spinner from "../components/atoms/Spinner";
 
-const GET_TODOS = gql`
-  query getUser($userId: ID!, $offset: Int, $limit: Int) {
+const GET_OFFSET_TODOS = gql`
+  query getOffsetTodos($userId: ID!, $offset: Int, $limit: Int) {
     user(id: $userId) {
       totalTodoCount
       offsetTodos(offset: $offset, limit: $limit) {
@@ -24,39 +22,38 @@ const GET_TODOS = gql`
 const OffsetTodos = () => {
   const params = useParams();
   const [page, setPage] = useState(1);
-  const { data, error, loading } = useQuery(GET_TODOS, {
+  const { data, error, loading, fetchMore } = useQuery(GET_OFFSET_TODOS, {
     variables: {
       userId: params.userId,
       offset: page * 10 - 10,
-      limit: 5,
+      limit: 10,
     },
   });
 
-  const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [editTodo, setEditTodo] = useState<Todo[]>([]);
+  console.log("data", data);
 
   if (error) return <p>`Error! ${error.message}`</p>;
+
+  const handleLoadMore = () => {
+    fetchMore({
+      variables: {
+        offset: data?.user?.offsetTodos.length,
+      },
+    });
+  };
 
   return (
     <>
       <TodosContainer>
         <CreateTodo data={data?.user.totalTodoCount} />
         <TodosWrapper>
-          <div>offsetTodos</div>
           {loading ? (
             <Spinner />
           ) : (
-            data?.user.offsetTodos.map((todo: Todo) => {
-              return (
-                <TodoItem
-                  key={todo.id}
-                  todo={todo}
-                  isEdit={isEdit}
-                  setIsEdit={setIsEdit}
-                  setEditTodo={setEditTodo}
-                />
-              );
-            })
+            <TodoItems
+              todos={data?.user?.offsetTodos || []}
+              onLoadMore={handleLoadMore}
+            />
           )}
         </TodosWrapper>
       </TodosContainer>
@@ -68,7 +65,6 @@ const OffsetTodos = () => {
           <button onClick={() => setPage((prev) => prev + 1)}>next</button>
         </ButtonWrapper>
       </ButtonContainer>
-      {isEdit && <EditTodo editTodo={editTodo} setIsEdit={setIsEdit} />}
     </>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useCreateTodoMutation } from "../../gql/generated/graphql";
 import Input from "../atoms/Input/Input";
 import { updator } from "../../mutations/createTodo/updator";
+import { useParams } from "react-router-dom";
 
 interface CrateTodoProps {
   data?: number;
@@ -9,6 +10,8 @@ interface CrateTodoProps {
 
 const CreateTodo = ({ data }: CrateTodoProps) => {
   const [text, setText] = useState<string>("");
+  const params = useParams();
+  const userId = params?.userId;
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     setText(e.currentTarget.value);
@@ -21,9 +24,9 @@ const CreateTodo = ({ data }: CrateTodoProps) => {
   if (error) return <p>`Error! ${error.message}`</p>;
 
   const onCreate = () => {
-    if (text) {
+    if (text && userId) {
       createTodo({
-        // variables: { text: text },
+        variables: { text: text, userId: userId },
         optimisticResponse: {
           createTodo: {
             __typename: "Todo",

@@ -11,7 +11,7 @@ interface DeleteTodoProps {
 }
 
 const DeleteTodo = ({ todo }: DeleteTodoProps) => {
-  const { id } = todo;
+  const { id, text, completed } = todo;
 
   const [deleteTodo, { error }] = useRemoveTodoMutation({
     update: updator(),
@@ -20,15 +20,19 @@ const DeleteTodo = ({ todo }: DeleteTodoProps) => {
   if (error) return <p>`Error! ${error.message}`</p>;
 
   const onDelete = () => {
-    // deleteTodo({
-    //   variables: { id: id },
-    //   optimisticResponse: {
-    //     removeTodo: {
-    //       __typename: "Todo",
-    //       id: id,
-    //     },
-    //   },
-    // });
+    if (id) {
+      deleteTodo({
+        variables: { removeTodoId: id },
+        optimisticResponse: {
+          removeTodo: {
+            __typename: "Todo",
+            id: id,
+            text: text,
+            completed: completed,
+          },
+        },
+      });
+    }
   };
 
   return <Button onClick={onDelete} name="삭제" btnType="delete" />;
@@ -39,5 +43,7 @@ export default DeleteTodo;
 gql`
   fragment RemoveTodo_Todo on Todo {
     id
+    text
+    completed
   }
 `;
