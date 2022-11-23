@@ -170,7 +170,7 @@ export type GetOffsetTodosQueryVariables = Exact<{
 }>;
 
 
-export type GetOffsetTodosQuery = { __typename?: 'Query', user: { __typename?: 'User', totalTodoCount: number, offsetTodos: Array<{ __typename?: 'Todo', id: string, text: string, completed: boolean }> } };
+export type GetOffsetTodosQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, totalTodoCount: number, offsetTodos: Array<{ __typename?: 'Todo', id: string, text: string, completed: boolean }> } };
 
 export type UserQueryVariables = Exact<{
   userId: Scalars['ID'];
@@ -445,6 +445,7 @@ export type GetTodosQueryResult = Apollo.QueryResult<GetTodosQuery, GetTodosQuer
 export const GetOffsetTodosDocument = gql`
     query getOffsetTodos($userId: ID!, $offset: Int, $limit: Int) {
   user(id: $userId) {
+    id
     totalTodoCount
     offsetTodos(offset: $offset, limit: $limit) {
       id

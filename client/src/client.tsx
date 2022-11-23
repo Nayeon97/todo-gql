@@ -5,9 +5,22 @@ const client = new ApolloClient({
   uri: "http://localhost:4000/",
   cache: new InMemoryCache({
     typePolicies: {
+      User: {
+        fields: {
+          offsetTodos: {
+            ...offsetLimitPagination(),
+            read(existing, { args }) {
+              // console.log(existing);
+              // console.log(args);
+            },
+          },
+        },
+      },
       Query: {
         fields: {
-          offsetTodos: offsetLimitPagination(["userId", "offset", "limit"]),
+          user: {
+            keyArgs: ["userId"],
+          },
         },
       },
     },

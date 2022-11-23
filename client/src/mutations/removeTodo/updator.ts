@@ -9,16 +9,18 @@ export const updator =
       return;
     }
     cache.modify({
+      id: cache.identify(data.removeTodo),
       fields: {
-        allTodos(existingTodos: Query["allTodos"], { readField }) {
-          const targetId = data.removeTodo.id;
-          const deletedTodosArray = produce(existingTodos, (draft) => {
-            const index = draft.findIndex(
-              (todo) => readField("id", todo) === targetId
-            );
-            if (index !== -1) draft.splice(index, 1);
-          });
-          return [...deletedTodosArray];
+        id(existingTodos: Query["allTodos"], { readField }) {
+          console.log(existingTodos);
+          // const targetId = data.removeTodo.id;
+          // const deletedTodosArray = produce(existingTodos, () => {
+          //   // const index = draft.findIndex(
+          //   //   (todo) => readField("id", todo) === targetId
+          //   // );
+          //   // if (index !== -1) draft.splice(index, 1);
+          // });
+          // // return [...deletedTodosArray];
         },
       },
     });

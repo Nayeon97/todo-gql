@@ -6,12 +6,12 @@ import Button from "../atoms/Button/Button";
 import DeleteTodo from "../molecules/DeleteTodo";
 import ToggleCompleteTodo from "../molecules/ToggleCompleteTodo";
 
-interface TodoItemProps {
+interface TodoItemsProps {
   todos: Todo[];
   onLoadMore: () => void;
 }
 
-const TodoItems = ({ todos }: TodoItemProps) => {
+const TodoItems = ({ todos }: TodoItemsProps) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   const clickEditTodo = () => {

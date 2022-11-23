@@ -4,6 +4,7 @@ import Button from "../atoms/Button/Button";
 import { gql } from "@apollo/client";
 import { RemoveTodo_TodoFragment } from "../../gql/generated/graphql";
 import { updator } from "../../mutations/removeTodo/updator";
+import { useParams } from "react-router-dom";
 
 interface DeleteTodoProps {
   todo: RemoveTodo_TodoFragment;

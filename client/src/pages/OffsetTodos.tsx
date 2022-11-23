@@ -9,6 +9,7 @@ import Spinner from "../components/atoms/Spinner";
 const GET_OFFSET_TODOS = gql`
   query getOffsetTodos($userId: ID!, $offset: Int, $limit: Int) {
     user(id: $userId) {
+      id
       totalTodoCount
       offsetTodos(offset: $offset, limit: $limit) {
         id
@@ -29,8 +30,6 @@ const OffsetTodos = () => {
       limit: 10,
     },
   });
-
-  console.log("data", data);
 
   if (error) return <p>`Error! ${error.message}`</p>;
 
@@ -71,13 +70,15 @@ const OffsetTodos = () => {
 
 export default OffsetTodos;
 
-gql`
-  query getTodos {
-    allTodos {
-      ...TodoItem_Todo
-    }
-  }
-`;
+// gql`
+//   query getTodos {
+//     user {
+//       offsetTodos {
+//         ...TodoItem_Todo
+//       }
+//     }
+//   }
+// `;
 
 const TodosContainer = styled.div`
   display: grid;
