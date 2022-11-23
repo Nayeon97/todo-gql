@@ -70,16 +70,6 @@ const OffsetTodos = () => {
 
 export default OffsetTodos;
 
-// gql`
-//   query getTodos {
-//     user {
-//       offsetTodos {
-//         ...TodoItem_Todo
-//       }
-//     }
-//   }
-// `;
-
 const TodosContainer = styled.div`
   display: grid;
   justify-items: center;

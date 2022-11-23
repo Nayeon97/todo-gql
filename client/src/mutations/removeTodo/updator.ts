@@ -1,26 +1,26 @@
 import { MutationUpdaterFn } from "@apollo/client";
 import produce from "immer";
-import { Query, RemoveTodoMutation } from "../../gql/generated/graphql";
+import { Query, RemoveTodoMutation, Todo } from "../../gql/generated/graphql";
 
 export const updator =
-  (): MutationUpdaterFn<RemoveTodoMutation> =>
+  (userId: string): MutationUpdaterFn<RemoveTodoMutation> =>
   (cache, { data }) => {
     if (!data?.removeTodo) {
       return;
     }
     cache.modify({
-      id: cache.identify(data.removeTodo),
+      id: cache.identify({ __typename: "User", id: userId }),
       fields: {
-        id(existingTodos: Query["allTodos"], { readField }) {
+        offsetTodos(existingTodos: Query["user"], { readField }) {
+          const targetId = data.removeTodo.id;
           console.log(existingTodos);
-          // const targetId = data.removeTodo.id;
-          // const deletedTodosArray = produce(existingTodos, () => {
-          //   // const index = draft.findIndex(
-          //   //   (todo) => readField("id", todo) === targetId
-          //   // );
-          //   // if (index !== -1) draft.splice(index, 1);
-          // });
-          // // return [...deletedTodosArray];
+          const deletedTodosArray = produce(existingTodos, (draft: Todo[]) => {
+            const index = draft.findIndex(
+              (todo) => readField("id", todo) === targetId
+            );
+            if (index !== -1) draft.splice(index, 1);
+          });
+          return deletedTodosArray;
         },
       },
     });

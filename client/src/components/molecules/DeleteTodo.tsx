@@ -13,9 +13,11 @@ interface DeleteTodoProps {
 
 const DeleteTodo = ({ todo }: DeleteTodoProps) => {
   const { id, text, completed } = todo;
+  const params = useParams();
+  const userId = params.userId;
 
   const [deleteTodo, { error }] = useRemoveTodoMutation({
-    update: updator(),
+    update: updator(userId || ""),
   });
 
   if (error) return <p>`Error! ${error.message}`</p>;

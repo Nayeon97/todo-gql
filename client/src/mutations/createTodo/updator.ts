@@ -7,7 +7,8 @@ export const updator =
     if (!data) return;
     cache.modify({
       fields: {
-        allTodos(existingTodos: Query["allTodos"]) {
+        user(existingTodos: Query["user"]) {
+          console.log(existingTodos);
           const newTodoRef = cache.writeFragment({
             data: data?.createTodo,
             fragment: gql`
@@ -18,7 +19,7 @@ export const updator =
               }
             `,
           });
-          return [...existingTodos, newTodoRef];
+          // return [...existingTodos, newTodoRef];
         },
       },
     });
