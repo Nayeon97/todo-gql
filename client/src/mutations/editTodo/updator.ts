@@ -1,13 +1,13 @@
-import { MutationUpdaterFn } from "@apollo/client";
+import { MutationUpdaterFn } from '@apollo/client';
 import {
   EditTodoMutation,
   EditTodoMutationVariables,
   EditTodoText_TodoFragmentDoc,
-  User,
-} from "../../gql/generated/graphql";
+  CursorTodoItems_TodoFragment,
+} from '../../gql/generated/graphql';
 
 export const updator =
-  (user: User): MutationUpdaterFn<EditTodoMutation> =>
+  (user: CursorTodoItems_TodoFragment): MutationUpdaterFn<EditTodoMutation> =>
   (cache, { data }) => {
     if (!data?.editTodo) {
       return;

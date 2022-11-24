@@ -1,9 +1,13 @@
 import { MutationUpdaterFn } from '@apollo/client';
 import produce from 'immer';
-import { Query, RemoveTodoMutation, User } from '../../gql/generated/graphql';
+import {
+  Query,
+  RemoveTodoMutation,
+  CursorTodoItems_TodoFragment,
+} from '../../gql/generated/graphql';
 
 export const updator =
-  (user: User): MutationUpdaterFn<RemoveTodoMutation> =>
+  (user: CursorTodoItems_TodoFragment): MutationUpdaterFn<RemoveTodoMutation> =>
   (cache, { data }) => {
     if (!data?.removeTodo) {
       return;

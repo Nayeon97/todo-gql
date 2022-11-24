@@ -1,15 +1,18 @@
-import React, { useState } from "react";
-import { useCreateTodoMutation, User } from "../../gql/generated/graphql";
-import Input from "../atoms/Input/Input";
-import { updator } from "../../mutations/createTodo/updator";
-import { useParams } from "react-router-dom";
+import React, { useState } from 'react';
+import {
+  useCreateTodoMutation,
+  CursorTodoItems_TodoFragment,
+} from '../../gql/generated/graphql';
+import Input from '../atoms/Input/Input';
+import { updator } from '../../mutations/createTodo/updator';
+import { useParams } from 'react-router-dom';
 
 interface CrateTodoProps {
-  user: User;
+  user: CursorTodoItems_TodoFragment;
 }
 
 const CreateTodo = ({ user }: CrateTodoProps) => {
-  const [text, setText] = useState<string>("");
+  const [text, setText] = useState<string>('');
   const params = useParams();
   const userId = params?.userId;
 
@@ -35,12 +38,12 @@ const CreateTodo = ({ user }: CrateTodoProps) => {
         //   },
         // },
       });
-      setText("");
+      setText('');
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       onCreate();
     }
   };

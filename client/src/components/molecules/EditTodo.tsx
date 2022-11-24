@@ -1,17 +1,17 @@
-import { gql } from "@apollo/client";
-import { Dispatch, SetStateAction } from "react";
-import { useState } from "react";
-import styled from "styled-components";
+import { gql } from '@apollo/client';
+import { Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
+import styled from 'styled-components';
 import {
   useEditTodoMutation,
   EditTodoText_TodoFragment,
-  User,
-} from "../../gql/generated/graphql";
-import { updator } from "../../mutations/editTodo/updator";
-import Input from "../atoms/Input/Input";
+  CursorTodoItems_TodoFragment,
+} from '../../gql/generated/graphql';
+import { updator } from '../../mutations/editTodo/updator';
+import Input from '../atoms/Input/Input';
 
 interface EditTodoProps {
-  user: User;
+  user: CursorTodoItems_TodoFragment;
   editTodo: EditTodoText_TodoFragment[];
   setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
