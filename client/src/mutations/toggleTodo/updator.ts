@@ -1,11 +1,11 @@
-import { MutationUpdaterFn } from "@apollo/client";
-import produce from "immer";
+import { MutationUpdaterFn } from '@apollo/client';
+import produce from 'immer';
 import {
-  GetOffsetTodosQuery,
-  GetOffsetTodosQueryVariables,
-  GetOffsetTodosDocument,
   ToggleTodoMutation,
-} from "../../gql/generated/graphql";
+  GetCursorTodosQuery,
+  GetCursorTodosQueryVariables,
+  GetCursorTodosDocument,
+} from '../../gql/generated/graphql';
 
 export const updator =
   (): MutationUpdaterFn<ToggleTodoMutation> =>
@@ -13,19 +13,19 @@ export const updator =
     if (!data?.toggleTodo) {
       return;
     }
-    cache.updateQuery<GetOffsetTodosQuery, GetOffsetTodosQueryVariables>(
-      { query: GetOffsetTodosDocument },
+    cache.updateQuery<GetCursorTodosQuery, GetCursorTodosQueryVariables>(
+      { query: GetCursorTodosDocument },
       (todos) => {
         const targetId = data.toggleTodo.id;
         return produce(todos, (draft) => {
           if (!draft) {
             return;
           }
-          const index = draft.user.offsetTodos.findIndex(
-            (todo) => todo.id === targetId
+          const index = draft.user.cursorTodos.edges.findIndex(
+            (todo) => todo.node.id === targetId
           );
           if (index !== -1)
-            draft.user.offsetTodos[index].completed =
+            draft.user.cursorTodos.edges[index].node.completed =
               !data.toggleTodo.completed;
         });
       }

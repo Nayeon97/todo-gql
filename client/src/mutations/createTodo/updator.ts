@@ -1,11 +1,12 @@
-import { gql, MutationUpdaterFn } from "@apollo/client";
+import { gql, MutationUpdaterFn } from '@apollo/client';
 import {
   CreateTodoMutation,
   GetCursorTodosDocument,
   GetCursorTodosQuery,
   GetCursorTodosQueryVariables,
+  Query,
   User,
-} from "../../gql/generated/graphql";
+} from '../../gql/generated/graphql';
 
 export const updator =
   (user: User): MutationUpdaterFn<CreateTodoMutation> =>
@@ -22,9 +23,6 @@ export const updator =
     if (cacheData) {
       cache.writeQuery<GetCursorTodosQuery, GetCursorTodosQueryVariables>({
         query: GetCursorTodosDocument,
-        variables: {
-          userId: cacheData.user.id,
-        },
         data: {
           user: {
             id: user.id,
