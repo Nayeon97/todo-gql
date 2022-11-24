@@ -7,13 +7,12 @@ import DeleteTodo from "../molecules/DeleteTodo";
 import ToggleCompleteTodo from "../molecules/ToggleCompleteTodo";
 
 interface TodoItemsProps {
-  data: User;
+  user: User;
   onLoadMore: () => void;
 }
 
-const TodoItems = ({ data, onLoadMore }: TodoItemsProps) => {
+const TodoItems = ({ user, onLoadMore }: TodoItemsProps) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const userId = data.id;
 
   const clickEditTodo = () => {
     setIsEdit(true);
@@ -21,7 +20,7 @@ const TodoItems = ({ data, onLoadMore }: TodoItemsProps) => {
 
   return (
     <TodoItemsContainer>
-      {data?.offsetTodos.map((todo) => {
+      {user?.offsetTodos.map((todo) => {
         return (
           <TodoItemContainer completed={todo.completed} key={todo.id}>
             <ToggleCompleteTodo todo={todo} isEdit={isEdit} />
@@ -34,7 +33,7 @@ const TodoItems = ({ data, onLoadMore }: TodoItemsProps) => {
               btnType="edit"
               disabled={isEdit ? true : false || todo.completed ? true : false}
             />
-            <DeleteTodo data={data} setIsEdit={setIsEdit} todo={todo} />
+            <DeleteTodo user={user} setIsEdit={setIsEdit} todo={todo} />
           </TodoItemContainer>
         );
       })}

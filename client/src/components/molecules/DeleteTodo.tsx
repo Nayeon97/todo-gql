@@ -7,16 +7,16 @@ import { updator } from "../../mutations/removeTodo/updator";
 import { useParams } from "react-router-dom";
 
 interface DeleteTodoProps {
-  data: User;
+  user: User;
   todo: RemoveTodo_TodoFragment;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
 
-const DeleteTodo = ({ data, todo }: DeleteTodoProps) => {
+const DeleteTodo = ({ user, todo }: DeleteTodoProps) => {
   const { id, text, completed } = todo;
 
   const [deleteTodo, { error }] = useRemoveTodoMutation({
-    update: updator(data),
+    update: updator(user),
   });
 
   if (error) return <p>`Error! ${error.message}`</p>;

@@ -47,12 +47,12 @@ const OffsetTodos = () => {
   return (
     <>
       <TodosContainer>
-        <CreateTodo data={data?.user.totalTodoCount} />
+        <CreateTodo user={data?.user} />
         <TodosWrapper>
           {loading ? (
             <Spinner />
           ) : (
-            <TodoItems data={data?.user || []} onLoadMore={handleLoadMore} />
+            <TodoItems user={data?.user || []} onLoadMore={handleLoadMore} />
           )}
         </TodosWrapper>
       </TodosContainer>

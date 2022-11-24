@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { useCreateTodoMutation } from "../../gql/generated/graphql";
+import { useCreateTodoMutation, User } from "../../gql/generated/graphql";
 import Input from "../atoms/Input/Input";
 import { updator } from "../../mutations/createTodo/updator";
 import { useParams } from "react-router-dom";
 
 interface CrateTodoProps {
-  data?: number;
+  user: User;
 }
 
-const CreateTodo = ({ data }: CrateTodoProps) => {
+const CreateTodo = ({ user }: CrateTodoProps) => {
   const [text, setText] = useState<string>("");
   const params = useParams();
   const userId = params?.userId;
@@ -18,7 +18,7 @@ const CreateTodo = ({ data }: CrateTodoProps) => {
   };
 
   const [createTodo, { error }] = useCreateTodoMutation({
-    update: updator(),
+    update: updator(user),
   });
 
   if (error) return <p>`Error! ${error.message}`</p>;
@@ -30,7 +30,7 @@ const CreateTodo = ({ data }: CrateTodoProps) => {
         optimisticResponse: {
           createTodo: {
             __typename: "Todo",
-            id: data + "1",
+            id: user.totalTodoCount + "1",
             text: text,
             completed: false,
           },

@@ -1,13 +1,14 @@
 import { gql, MutationUpdaterFn } from "@apollo/client";
-import { CreateTodoMutation, Query } from "../../gql/generated/graphql";
+import { CreateTodoMutation, Query, User } from "../../gql/generated/graphql";
 
 export const updator =
-  (): MutationUpdaterFn<CreateTodoMutation> =>
+  (user: User): MutationUpdaterFn<CreateTodoMutation> =>
   (cache, { data }) => {
     if (!data) return;
     cache.modify({
+      id: cache.identify(user),
       fields: {
-        user(existingTodos: Query["user"]) {
+        offsetTodos(existingTodos: Query["user"]["offsetTodos"]) {
           console.log(existingTodos);
           const newTodoRef = cache.writeFragment({
             data: data?.createTodo,
@@ -19,7 +20,7 @@ export const updator =
               }
             `,
           });
-          // return [...existingTodos, newTodoRef];
+          return [...existingTodos, newTodoRef];
         },
       },
     });
