@@ -119,7 +119,9 @@ export type EditTodoText_TodoFragment = { __typename?: 'Todo', id: string, text:
 
 export type ToggleCompleteTodo_TodoFragment = { __typename?: 'Todo', id: string, completed: boolean };
 
-export type TodoItems_TodoFragment = { __typename?: 'User', id: string, offsetTodos: Array<{ __typename?: 'Todo', id: string, text: string, completed: boolean }> };
+export type CursorTodoItems_TodoFragment = { __typename?: 'User', id: string, cursorTodos: { __typename?: 'TodoConnection', edges: Array<{ __typename?: 'TodoEdge', cursor: string, node: { __typename?: 'Todo', id: string, text: string, completed: boolean } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean } } };
+
+export type OffsetTodoItems_TodoFragment = { __typename?: 'User', id: string, offsetTodos: Array<{ __typename?: 'Todo', id: string, text: string, completed: boolean }> };
 
 export type CreateTodoMutationVariables = Exact<{
   text: Scalars['String'];
@@ -196,8 +198,31 @@ export const ToggleCompleteTodo_TodoFragmentDoc = gql`
   completed
 }
     `;
-export const TodoItems_TodoFragmentDoc = gql`
-    fragment TodoItems_Todo on User {
+export const CursorTodoItems_TodoFragmentDoc = gql`
+    fragment CursorTodoItems_Todo on User {
+  id
+  cursorTodos {
+    edges {
+      node {
+        id
+        text
+        completed
+        ...EditTodoText_Todo
+        ...DeleteTodo_Todo
+        ...ToggleCompleteTodo_Todo
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+    }
+  }
+}
+    ${EditTodoText_TodoFragmentDoc}
+${DeleteTodo_TodoFragmentDoc}
+${ToggleCompleteTodo_TodoFragmentDoc}`;
+export const OffsetTodoItems_TodoFragmentDoc = gql`
+    fragment OffsetTodoItems_Todo on User {
   id
   offsetTodos {
     id

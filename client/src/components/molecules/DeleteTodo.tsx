@@ -24,11 +24,6 @@ const DeleteTodo = ({ user, todo }: DeleteTodoProps) => {
     if (id) {
       deleteTodo({
         variables: { removeTodoId: id },
-        optimisticResponse: {
-          removeTodo: {
-            deletedTodoId: id,
-          },
-        },
       });
     }
   };

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
 import CreateTodo from "../components/molecules/CreateTodo";
-import TodoItems from "../components/organisms/TodoItems";
+import CursorTodoItems from "../components/organisms/CursorTodoItems";
 import Spinner from "../components/atoms/Spinner";
 
 const GET_CURSOR_TODOS = gql`
@@ -28,24 +28,31 @@ const GET_CURSOR_TODOS = gql`
 
 const CursorTodos = () => {
   const params = useParams();
+  const [after, setAfter] = useState("");
   const { data, error, loading, fetchMore } = useQuery(GET_CURSOR_TODOS, {
     variables: {
       userId: params.userId,
-      // offset: page * 10 - 9,
-      limit: 10,
+      first: 0,
+      after,
     },
   });
-
-  // console.log("data", data);
 
   if (error) return <p>`Error! ${error.message}`</p>;
 
   const handleLoadMore = () => {
-    fetchMore({
-      variables: {
-        offset: data?.user?.offsetTodos.length,
-      },
-    });
+    const pageInfo = data?.user.cursorTodos.pageInfo.hasNextPage;
+    if (pageInfo) {
+      fetchMore({
+        variables: {
+          cursor: after,
+        },
+      }).then(() => {
+        setAfter(
+          data?.user.cursorTodos.edges.map((edge: any) => edge).slice(-1)[0]
+            .cursor
+        );
+      });
+    }
   };
 
   return (
@@ -56,10 +63,9 @@ const CursorTodos = () => {
           {loading ? (
             <Spinner />
           ) : (
-            <TodoItems
+            <CursorTodoItems
               user={data?.user || []}
               onLoadMore={handleLoadMore}
-              paginationType="cursor"
             />
           )}
         </TodosWrapper>

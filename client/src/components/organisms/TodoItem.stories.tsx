@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import TodoItem from "./TodoItems";
+import TodoItem from "./OffsetTodoItems";
 
 export default {
   title: "TodoItem",

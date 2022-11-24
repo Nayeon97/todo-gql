@@ -9,26 +9,19 @@ import EditTodo from "../molecules/EditTodo";
 
 interface TodoItemsProps {
   user: User;
-  paginationType: string;
   onLoadMore: () => void;
 }
 
-const TodoItems = ({ user, onLoadMore, paginationType }: TodoItemsProps) => {
+const OffsetTodoItems = ({ user, onLoadMore }: TodoItemsProps) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [editTodo, setEditTodo] = useState<Todo[]>([]);
-  const todos =
-    paginationType === "offset" ? user.offsetTodos : user.cursorTodos.edges;
-
-  const clickEditTodo = (todo: Todo) => {
-    setIsEdit(true);
-  };
 
   return (
     <>
       <TodoItemsContainer>
         {user.offsetTodos.map((todo) => {
           return (
-            <TodoItemContainer completed={todo?.completed} key={todo.id}>
+            <TodoItemContainer completed={todo.completed} key={todo.id}>
               <ToggleCompleteTodo todo={todo} isEdit={isEdit} />
               <TextWrapper id={todo.id} completed={todo.completed}>
                 {todo.text}
@@ -57,7 +50,7 @@ const TodoItems = ({ user, onLoadMore, paginationType }: TodoItemsProps) => {
   );
 };
 
-export default TodoItems;
+export default OffsetTodoItems;
 
 const TodoItemsContainer = styled.div`
   height: 500px;
@@ -84,7 +77,7 @@ const TextWrapper = styled.div<{ completed: boolean }>`
 `;
 
 gql`
-  fragment TodoItems_Todo on User {
+  fragment OffsetTodoItems_Todo on User {
     id
     offsetTodos {
       id

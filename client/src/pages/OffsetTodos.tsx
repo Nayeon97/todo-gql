@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
 import CreateTodo from "../components/molecules/CreateTodo";
-import TodoItems from "../components/organisms/TodoItems";
+import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
 import Spinner from "../components/atoms/Spinner";
 import EditTodo from "../components/molecules/EditTodo";
 
@@ -53,10 +53,9 @@ const OffsetTodos = () => {
           {loading ? (
             <Spinner />
           ) : (
-            <TodoItems
+            <OffsetTodoItems
               user={data?.user || []}
               onLoadMore={handleLoadMore}
-              paginationType="offset"
             />
           )}
         </TodosWrapper>
