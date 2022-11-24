@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { gql } from "@apollo/client";
 import styled from "styled-components";
-import { Todo } from "../../gql/generated/graphql";
+import { Todo, User } from "../../gql/generated/graphql";
 import Button from "../atoms/Button/Button";
 import DeleteTodo from "../molecules/DeleteTodo";
 import ToggleCompleteTodo from "../molecules/ToggleCompleteTodo";
 
 interface TodoItemsProps {
-  todos: Todo[];
+  data: User;
   onLoadMore: () => void;
 }
 
-const TodoItems = ({ todos }: TodoItemsProps) => {
+const TodoItems = ({ data }: TodoItemsProps) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const userId = data.id;
 
   const clickEditTodo = () => {
     setIsEdit(true);
@@ -20,7 +21,7 @@ const TodoItems = ({ todos }: TodoItemsProps) => {
 
   return (
     <div>
-      {todos?.map((todo) => {
+      {data?.offsetTodos.map((todo) => {
         return (
           <TodoItemContainer completed={todo.completed} key={todo.id}>
             <ToggleCompleteTodo todo={todo} isEdit={isEdit} />
@@ -33,7 +34,7 @@ const TodoItems = ({ todos }: TodoItemsProps) => {
               btnType="edit"
               disabled={isEdit ? true : false || todo.completed ? true : false}
             />
-            <DeleteTodo todo={todo} setIsEdit={setIsEdit} />
+            <DeleteTodo data={data} setIsEdit={setIsEdit} todo={todo} />
           </TodoItemContainer>
         );
       })}
@@ -63,12 +64,15 @@ const TextWrapper = styled.div<{ completed: boolean }>`
 `;
 
 gql`
-  fragment TodoItem_Todo on Todo {
+  fragment TodoItem_Todo on User {
     id
-    text
-    completed
-    ...EditTodoText_Todo
-    ...RemoveTodo_Todo
-    ...ToggleCompleteTodo_Todo
+    offsetTodos {
+      id
+      text
+      completed
+      ...EditTodoText_Todo
+      ...RemoveTodo_Todo
+      ...ToggleCompleteTodo_Todo
+    }
   }
 `;

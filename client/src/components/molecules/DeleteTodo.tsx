@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { useRemoveTodoMutation } from "../../gql/generated/graphql";
+import { User, useRemoveTodoMutation } from "../../gql/generated/graphql";
 import Button from "../atoms/Button/Button";
 import { gql } from "@apollo/client";
 import { RemoveTodo_TodoFragment } from "../../gql/generated/graphql";
@@ -7,17 +7,16 @@ import { updator } from "../../mutations/removeTodo/updator";
 import { useParams } from "react-router-dom";
 
 interface DeleteTodoProps {
+  data: User;
   todo: RemoveTodo_TodoFragment;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
 
-const DeleteTodo = ({ todo }: DeleteTodoProps) => {
+const DeleteTodo = ({ data, todo }: DeleteTodoProps) => {
   const { id, text, completed } = todo;
-  const params = useParams();
-  const userId = params.userId;
 
   const [deleteTodo, { error }] = useRemoveTodoMutation({
-    update: updator(userId || ""),
+    update: updator(data),
   });
 
   if (error) return <p>`Error! ${error.message}`</p>;
@@ -28,10 +27,7 @@ const DeleteTodo = ({ todo }: DeleteTodoProps) => {
         variables: { removeTodoId: id },
         optimisticResponse: {
           removeTodo: {
-            __typename: "Todo",
-            id: id,
-            text: text,
-            completed: completed,
+            deletedTodoId: id,
           },
         },
       });
@@ -44,9 +40,7 @@ const DeleteTodo = ({ todo }: DeleteTodoProps) => {
 export default DeleteTodo;
 
 gql`
-  fragment RemoveTodo_Todo on Todo {
+  fragment DeleteTodo_Todo on Todo {
     id
-    text
-    completed
   }
 `;

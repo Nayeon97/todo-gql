@@ -52,7 +52,7 @@ const CursorTodos = () => {
   return (
     <>
       <TodosContainer>
-        <CreateTodo data={data?.user.totalTodoCount} />
+        {/* <CreateTodo data={data?.user.totalTodoCount} />
         <TodosWrapper>
           {loading ? (
             <Spinner />
@@ -62,7 +62,7 @@ const CursorTodos = () => {
               onLoadMore={handleLoadMore}
             />
           )}
-        </TodosWrapper>
+        </TodosWrapper> */}
       </TodosContainer>
     </>
   );

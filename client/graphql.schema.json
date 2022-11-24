@@ -167,7 +167,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Todo",
+                "name": "RemoveTodoPayload",
                 "ofType": null
               }
             },
@@ -369,6 +369,33 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "User",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "RemoveTodoPayload",
+        "description": null,
+        "fields": [
+          {
+            "name": "deletedTodoId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
                 "ofType": null
               }
             },

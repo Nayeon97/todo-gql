@@ -19,7 +19,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createTodo: Todo;
   editTodo: Todo;
-  removeTodo: Todo;
+  removeTodo: RemoveTodoPayload;
   toggleTodo: Todo;
 };
 
@@ -67,6 +67,11 @@ export type QueryTodoArgs = {
 
 export type QueryUserArgs = {
   id: Scalars['ID'];
+};
+
+export type RemoveTodoPayload = {
+  __typename?: 'RemoveTodoPayload';
+  deletedTodoId: Scalars['ID'];
 };
 
 export type Todo = {
@@ -139,7 +144,7 @@ export type RemoveTodoMutationVariables = Exact<{
 }>;
 
 
-export type RemoveTodoMutation = { __typename?: 'Mutation', removeTodo: { __typename?: 'Todo', id: string, text: string, completed: boolean } };
+export type RemoveTodoMutation = { __typename?: 'Mutation', removeTodo: { __typename?: 'RemoveTodoPayload', deletedTodoId: string } };
 
 export type ToggleTodoMutationVariables = Exact<{
   toggleTodoId: Scalars['String'];
@@ -292,9 +297,7 @@ export type EditTodoMutationOptions = Apollo.BaseMutationOptions<EditTodoMutatio
 export const RemoveTodoDocument = gql`
     mutation RemoveTodo($removeTodoId: String!) {
   removeTodo(id: $removeTodoId) {
-    id
-    text
-    completed
+    deletedTodoId
   }
 }
     `;

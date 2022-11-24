@@ -1,7 +1,5 @@
 mutation RemoveTodo($removeTodoId: String!) {
   removeTodo(id: $removeTodoId) {
-    id
-    text
-    completed
+    deletedTodoId
   }
 }

@@ -70,10 +70,13 @@ const typeDefs = gql`
     allTodos: [Todo!]!
     todo(id: ID!): Todo!
   }
+  type RemoveTodoPayload {
+    deletedTodoId: ID!
+  }
   type Mutation {
     createTodo(text: String!, userId: ID!): Todo!
     toggleTodo(id: String!, completed: Boolean!): Todo!
-    removeTodo(id: String!): Todo!
+    removeTodo(id: String!): RemoveTodoPayload!
     editTodo(id: String!, text: String!): Todo!
   }
 `;
@@ -179,7 +182,12 @@ const resolvers = {
     removeTodo: async (_, { id }) => {
       await sleep(1000);
       let index = todos.findIndex((todo) => todo.id === id);
-      return todos[index];
+      const todoId = todos[index].id;
+      todos.splice(index, 1);
+
+      return {
+        deletedTodoId: todoId,
+      };
     },
     editTodo: async (_, { id, text }) => {
       await sleep(1000);

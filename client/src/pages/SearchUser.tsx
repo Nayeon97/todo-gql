@@ -29,7 +29,7 @@ const SearchUser = () => {
     setUserId(e.currentTarget.value);
   };
 
-  const onClick = () => {
+  const onSearch = () => {
     getUser({
       variables: {
         userId,
@@ -37,12 +37,22 @@ const SearchUser = () => {
     });
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key === "Enter") {
+      onSearch();
+    }
+  };
+
   return (
     <TodosContainer>
       <div>
         <div>user Todo 검색 기능</div>
-        <Input type="text" value={userId} onChange={onChange} />
-        <button onClick={onClick}>검색</button>
+        <Input
+          type="text"
+          value={userId}
+          onChange={onChange}
+          onKeyPress={handleKeyPress}
+        />
       </div>
     </TodosContainer>
   );
