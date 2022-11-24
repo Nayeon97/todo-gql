@@ -28,16 +28,15 @@ const GET_CURSOR_TODOS = gql`
 
 const CursorTodos = () => {
   const params = useParams();
-  const [page, setPage] = useState(1);
   const { data, error, loading, fetchMore } = useQuery(GET_CURSOR_TODOS, {
     variables: {
       userId: params.userId,
-      offset: page * 10 - 9,
+      // offset: page * 10 - 9,
       limit: 10,
     },
   });
 
-  console.log("data", data);
+  // console.log("data", data);
 
   if (error) return <p>`Error! ${error.message}`</p>;
 
@@ -52,31 +51,24 @@ const CursorTodos = () => {
   return (
     <>
       <TodosContainer>
-        {/* <CreateTodo data={data?.user.totalTodoCount} />
+        <CreateTodo user={data?.user} />
         <TodosWrapper>
           {loading ? (
             <Spinner />
           ) : (
             <TodoItems
-              todos={data?.user?.offsetTodos || []}
+              user={data?.user || []}
               onLoadMore={handleLoadMore}
+              paginationType="cursor"
             />
           )}
-        </TodosWrapper> */}
+        </TodosWrapper>
       </TodosContainer>
     </>
   );
 };
 
 export default CursorTodos;
-
-gql`
-  query getTodos {
-    allTodos {
-      ...TodoItem_Todo
-    }
-  }
-`;
 
 const TodosContainer = styled.div`
   display: grid;
@@ -88,19 +80,4 @@ const TodosWrapper = styled.div`
   height: 350px;
   margin-top: 30px;
   margin-bottom: 20px;
-`;
-
-const ButtonContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  justify-items: center;
-`;
-
-const ButtonWrapper = styled.button`
-  width: 50px;
-  height: 50px;
-  margin-bottom: 20px;
-  border-radius: 50px;
-  padding: 10px 10px;
-  background-color: #f1f3f5;
 `;

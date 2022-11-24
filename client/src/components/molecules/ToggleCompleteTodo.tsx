@@ -11,7 +11,6 @@ interface ToggleCompleteTodoProps {
 
 const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
   const { id, completed } = todo;
-  console.log(todo);
   const [toggleTodo, { error }] = useToggleTodoMutation({
     update: updator(),
   });

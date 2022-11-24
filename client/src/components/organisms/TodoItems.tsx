@@ -5,40 +5,55 @@ import { Todo, User } from "../../gql/generated/graphql";
 import Button from "../atoms/Button/Button";
 import DeleteTodo from "../molecules/DeleteTodo";
 import ToggleCompleteTodo from "../molecules/ToggleCompleteTodo";
+import EditTodo from "../molecules/EditTodo";
 
 interface TodoItemsProps {
   user: User;
+  paginationType: string;
   onLoadMore: () => void;
 }
 
-const TodoItems = ({ user, onLoadMore }: TodoItemsProps) => {
+const TodoItems = ({ user, onLoadMore, paginationType }: TodoItemsProps) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [editTodo, setEditTodo] = useState<Todo[]>([]);
+  const todos =
+    paginationType === "offset" ? user.offsetTodos : user.cursorTodos.edges;
 
-  const clickEditTodo = () => {
+  const clickEditTodo = (todo: Todo) => {
     setIsEdit(true);
   };
 
   return (
-    <TodoItemsContainer>
-      {user?.offsetTodos.map((todo) => {
-        return (
-          <TodoItemContainer completed={todo.completed} key={todo.id}>
-            <ToggleCompleteTodo todo={todo} isEdit={isEdit} />
-            <TextWrapper id={todo.id} completed={todo.completed}>
-              {todo.text}
-            </TextWrapper>
-            <Button
-              onClick={clickEditTodo}
-              name="edit"
-              btnType="edit"
-              disabled={isEdit ? true : false || todo.completed ? true : false}
-            />
-            <DeleteTodo user={user} setIsEdit={setIsEdit} todo={todo} />
-          </TodoItemContainer>
-        );
-      })}
-      <button onClick={onLoadMore}>더보기</button>
-    </TodoItemsContainer>
+    <>
+      <TodoItemsContainer>
+        {user.offsetTodos.map((todo) => {
+          return (
+            <TodoItemContainer completed={todo?.completed} key={todo.id}>
+              <ToggleCompleteTodo todo={todo} isEdit={isEdit} />
+              <TextWrapper id={todo.id} completed={todo.completed}>
+                {todo.text}
+              </TextWrapper>
+              <Button
+                onClick={() => {
+                  setIsEdit(true);
+                  setEditTodo([todo]);
+                }}
+                name="edit"
+                btnType="edit"
+                disabled={
+                  isEdit ? true : false || todo.completed ? true : false
+                }
+              />
+              <DeleteTodo user={user} setIsEdit={setIsEdit} todo={todo} />
+            </TodoItemContainer>
+          );
+        })}
+        <button onClick={onLoadMore}>더보기</button>
+      </TodoItemsContainer>
+      {isEdit && (
+        <EditTodo editTodo={editTodo} setIsEdit={setIsEdit} user={user} />
+      )}
+    </>
   );
 };
 
@@ -69,14 +84,14 @@ const TextWrapper = styled.div<{ completed: boolean }>`
 `;
 
 gql`
-  fragment TodoItem_Todo on User {
+  fragment TodoItems_Todo on User {
     id
     offsetTodos {
       id
       text
       completed
       ...EditTodoText_Todo
-      ...RemoveTodo_Todo
+      ...DeleteTodo_Todo
       ...ToggleCompleteTodo_Todo
     }
   }

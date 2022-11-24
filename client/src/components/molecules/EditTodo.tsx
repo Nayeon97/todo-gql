@@ -5,28 +5,30 @@ import styled from "styled-components";
 import {
   useEditTodoMutation,
   EditTodoText_TodoFragment,
+  User,
 } from "../../gql/generated/graphql";
 import { updator } from "../../mutations/editTodo/updator";
 import Input from "../atoms/Input/Input";
 
 interface EditTodoProps {
+  user: User;
   editTodo: EditTodoText_TodoFragment[];
   setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
 
-const EditTodo = ({ editTodo, setIsEdit }: EditTodoProps) => {
+const EditTodo = ({ editTodo, setIsEdit, user }: EditTodoProps) => {
   const [editTodoText, setEditTodoText] = useState(editTodo[0]?.text);
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     setEditTodoText(e.currentTarget.value);
   };
 
   const [editTodoItem] = useEditTodoMutation({
-    update: updator(),
+    update: updator(user),
   });
 
   const clickEdit = () => {
     editTodoItem({
-      // variables: { id: editTodo[0].id, text: editTodoText },
+      variables: { editTodoId: editTodo[0].id, editTodoText2: editTodoText },
       // optimisticResponse: {
       //   editTodo: {
       //     __typename: "Todo",

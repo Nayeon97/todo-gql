@@ -3,10 +3,11 @@ import {
   EditTodoMutation,
   EditTodoMutationVariables,
   EditTodoText_TodoFragmentDoc,
+  User,
 } from "../../gql/generated/graphql";
 
 export const updator =
-  (): MutationUpdaterFn<EditTodoMutation> =>
+  (user: User): MutationUpdaterFn<EditTodoMutation> =>
   (cache, { data }) => {
     if (!data?.editTodo) {
       return;
@@ -17,6 +18,7 @@ export const updator =
         fragment: EditTodoText_TodoFragmentDoc,
       },
       (todo) => {
+        console.log(todo);
         return todo;
       }
     );

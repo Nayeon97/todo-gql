@@ -113,13 +113,13 @@ export type UserOffsetTodosArgs = {
   offset?: InputMaybe<Scalars['Int']>;
 };
 
-export type RemoveTodo_TodoFragment = { __typename?: 'Todo', id: string, text: string, completed: boolean };
+export type DeleteTodo_TodoFragment = { __typename?: 'Todo', id: string };
 
 export type EditTodoText_TodoFragment = { __typename?: 'Todo', id: string, text: string };
 
 export type ToggleCompleteTodo_TodoFragment = { __typename?: 'Todo', id: string, completed: boolean };
 
-export type TodoItem_TodoFragment = { __typename?: 'Todo', id: string, text: string, completed: boolean };
+export type TodoItems_TodoFragment = { __typename?: 'User', id: string, offsetTodos: Array<{ __typename?: 'Todo', id: string, text: string, completed: boolean }> };
 
 export type CreateTodoMutationVariables = Exact<{
   text: Scalars['String'];
@@ -163,11 +163,6 @@ export type GetCursorTodosQueryVariables = Exact<{
 
 export type GetCursorTodosQuery = { __typename?: 'Query', user: { __typename?: 'User', cursorTodos: { __typename?: 'TodoConnection', edges: Array<{ __typename?: 'TodoEdge', cursor: string, node: { __typename?: 'Todo', id: string, text: string, completed: boolean } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean } } } };
 
-export type GetTodosQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetTodosQuery = { __typename?: 'Query', allTodos: Array<{ __typename?: 'Todo', id: string, text: string, completed: boolean }> };
-
 export type GetOffsetTodosQueryVariables = Exact<{
   userId: Scalars['ID'];
   offset?: InputMaybe<Scalars['Int']>;
@@ -190,11 +185,9 @@ export const EditTodoText_TodoFragmentDoc = gql`
   text
 }
     `;
-export const RemoveTodo_TodoFragmentDoc = gql`
-    fragment RemoveTodo_Todo on Todo {
+export const DeleteTodo_TodoFragmentDoc = gql`
+    fragment DeleteTodo_Todo on Todo {
   id
-  text
-  completed
 }
     `;
 export const ToggleCompleteTodo_TodoFragmentDoc = gql`
@@ -203,17 +196,20 @@ export const ToggleCompleteTodo_TodoFragmentDoc = gql`
   completed
 }
     `;
-export const TodoItem_TodoFragmentDoc = gql`
-    fragment TodoItem_Todo on Todo {
+export const TodoItems_TodoFragmentDoc = gql`
+    fragment TodoItems_Todo on User {
   id
-  text
-  completed
-  ...EditTodoText_Todo
-  ...RemoveTodo_Todo
-  ...ToggleCompleteTodo_Todo
+  offsetTodos {
+    id
+    text
+    completed
+    ...EditTodoText_Todo
+    ...DeleteTodo_Todo
+    ...ToggleCompleteTodo_Todo
+  }
 }
     ${EditTodoText_TodoFragmentDoc}
-${RemoveTodo_TodoFragmentDoc}
+${DeleteTodo_TodoFragmentDoc}
 ${ToggleCompleteTodo_TodoFragmentDoc}`;
 export const NewTodoFragmentDoc = gql`
     fragment NewTodo on Todo {
@@ -411,40 +407,6 @@ export function useGetCursorTodosLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetCursorTodosQueryHookResult = ReturnType<typeof useGetCursorTodosQuery>;
 export type GetCursorTodosLazyQueryHookResult = ReturnType<typeof useGetCursorTodosLazyQuery>;
 export type GetCursorTodosQueryResult = Apollo.QueryResult<GetCursorTodosQuery, GetCursorTodosQueryVariables>;
-export const GetTodosDocument = gql`
-    query getTodos {
-  allTodos {
-    ...TodoItem_Todo
-  }
-}
-    ${TodoItem_TodoFragmentDoc}`;
-
-/**
- * __useGetTodosQuery__
- *
- * To run a query within a React component, call `useGetTodosQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTodosQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTodosQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetTodosQuery(baseOptions?: Apollo.QueryHookOptions<GetTodosQuery, GetTodosQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTodosQuery, GetTodosQueryVariables>(GetTodosDocument, options);
-      }
-export function useGetTodosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTodosQuery, GetTodosQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTodosQuery, GetTodosQueryVariables>(GetTodosDocument, options);
-        }
-export type GetTodosQueryHookResult = ReturnType<typeof useGetTodosQuery>;
-export type GetTodosLazyQueryHookResult = ReturnType<typeof useGetTodosLazyQuery>;
-export type GetTodosQueryResult = Apollo.QueryResult<GetTodosQuery, GetTodosQueryVariables>;
 export const GetOffsetTodosDocument = gql`
     query getOffsetTodos($userId: ID!, $offset: Int, $limit: Int) {
   user(id: $userId) {

@@ -9,10 +9,12 @@ const client = new ApolloClient({
         fields: {
           offsetTodos: {
             ...offsetLimitPagination(),
-            // read(existing, { args }) {
-            //   console.log(existing);
-            //   console.log(args);
-            // },
+          },
+          cursorTodos: {
+            merge(existing, incoming, { readField }) {
+              console.log("exsiting", existing);
+              console.log("incoming", incoming);
+            },
           },
         },
       },

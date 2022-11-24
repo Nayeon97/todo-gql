@@ -46,7 +46,6 @@ const SearchUser = () => {
   return (
     <TodosContainer>
       <div>
-        <div>user Todo 검색 기능</div>
         <Input
           type="text"
           value={userId}

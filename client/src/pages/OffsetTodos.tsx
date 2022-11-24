@@ -5,6 +5,7 @@ import styled from "styled-components";
 import CreateTodo from "../components/molecules/CreateTodo";
 import TodoItems from "../components/organisms/TodoItems";
 import Spinner from "../components/atoms/Spinner";
+import EditTodo from "../components/molecules/EditTodo";
 
 const GET_OFFSET_TODOS = gql`
   query getOffsetTodos($userId: ID!, $offset: Int, $limit: Int) {
@@ -52,7 +53,11 @@ const OffsetTodos = () => {
           {loading ? (
             <Spinner />
           ) : (
-            <TodoItems user={data?.user || []} onLoadMore={handleLoadMore} />
+            <TodoItems
+              user={data?.user || []}
+              onLoadMore={handleLoadMore}
+              paginationType="offset"
+            />
           )}
         </TodosWrapper>
       </TodosContainer>
@@ -72,19 +77,4 @@ const TodosWrapper = styled.div`
   height: 350px;
   margin-top: 30px;
   margin-bottom: 20px;
-`;
-
-const ButtonContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  justify-items: center;
-`;
-
-const ButtonWrapper = styled.button`
-  width: 50px;
-  height: 50px;
-  margin-bottom: 20px;
-  border-radius: 50px;
-  padding: 10px 10px;
-  background-color: #f1f3f5;
 `;
