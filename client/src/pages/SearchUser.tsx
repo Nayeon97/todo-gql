@@ -20,7 +20,7 @@ const SearchUser = () => {
       navigate(`user/${userId}`);
     },
     onError: (error) => {
-      console.log(error.message); // 입력한 userId 없다고 tostify ? 하면될듯
+      // 입력한 userId 없다고 tostify ? 하면될듯
     },
     fetchPolicy: "network-only",
   });

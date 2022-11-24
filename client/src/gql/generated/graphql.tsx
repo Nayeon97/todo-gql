@@ -1,10 +1,14 @@
-import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { gql } from "@apollo/client";
+import * as Apollo from "@apollo/client";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
+  { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
+  { [SubKey in K]: Maybe<T[SubKey]> };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -15,244 +19,334 @@ export type Scalars = {
   Float: number;
 };
 
+export type CreateTodoPayload = {
+  __typename?: "CreateTodoPayload";
+  todoEdge: TodoEdge;
+};
+
 export type Mutation = {
-  __typename?: 'Mutation';
-  createTodo: Todo;
+  __typename?: "Mutation";
+  createTodo: CreateTodoPayload;
   editTodo: Todo;
   removeTodo: RemoveTodoPayload;
   toggleTodo: Todo;
 };
 
-
 export type MutationCreateTodoArgs = {
-  text: Scalars['String'];
-  userId: Scalars['ID'];
+  text: Scalars["String"];
+  userId: Scalars["ID"];
 };
-
 
 export type MutationEditTodoArgs = {
-  id: Scalars['String'];
-  text: Scalars['String'];
+  id: Scalars["String"];
+  text: Scalars["String"];
 };
-
 
 export type MutationRemoveTodoArgs = {
-  id: Scalars['String'];
+  id: Scalars["String"];
 };
 
-
 export type MutationToggleTodoArgs = {
-  completed: Scalars['Boolean'];
-  id: Scalars['String'];
+  completed: Scalars["Boolean"];
+  id: Scalars["String"];
 };
 
 export type PageInfo = {
-  __typename?: 'PageInfo';
-  hasNextPage: Scalars['Boolean'];
+  __typename?: "PageInfo";
+  hasNextPage: Scalars["Boolean"];
 };
 
 export type Query = {
-  __typename?: 'Query';
+  __typename?: "Query";
   allTodos: Array<Todo>;
   allUsers: Array<User>;
   todo: Todo;
   user: User;
 };
 
-
 export type QueryTodoArgs = {
-  id: Scalars['ID'];
+  id: Scalars["ID"];
 };
 
-
 export type QueryUserArgs = {
-  id: Scalars['ID'];
+  id: Scalars["ID"];
 };
 
 export type RemoveTodoPayload = {
-  __typename?: 'RemoveTodoPayload';
-  deletedTodoId: Scalars['ID'];
+  __typename?: "RemoveTodoPayload";
+  deletedTodoId: Scalars["ID"];
 };
 
 export type Todo = {
-  __typename?: 'Todo';
-  completed: Scalars['Boolean'];
-  id: Scalars['ID'];
-  text: Scalars['String'];
+  __typename?: "Todo";
+  completed: Scalars["Boolean"];
+  id: Scalars["ID"];
+  text: Scalars["String"];
 };
 
 export type TodoConnection = {
-  __typename?: 'TodoConnection';
+  __typename?: "TodoConnection";
   edges: Array<TodoEdge>;
   pageInfo: PageInfo;
 };
 
 export type TodoEdge = {
-  __typename?: 'TodoEdge';
-  cursor: Scalars['String'];
+  __typename?: "TodoEdge";
+  cursor: Scalars["String"];
   node: Todo;
 };
 
 export type User = {
-  __typename?: 'User';
+  __typename?: "User";
   cursorTodos: TodoConnection;
-  id: Scalars['ID'];
+  id: Scalars["ID"];
   offsetTodos: Array<Todo>;
-  totalTodoCount: Scalars['Int'];
+  totalTodoCount: Scalars["Int"];
 };
-
 
 export type UserCursorTodosArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars["String"]>;
+  first?: InputMaybe<Scalars["Int"]>;
 };
-
 
 export type UserOffsetTodosArgs = {
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
 };
 
-export type DeleteTodo_TodoFragment = { __typename?: 'Todo', id: string };
+export type DeleteTodo_TodoFragment = { __typename?: "Todo"; id: string };
 
-export type EditTodoText_TodoFragment = { __typename?: 'Todo', id: string, text: string };
+export type EditTodoText_TodoFragment = {
+  __typename?: "Todo";
+  id: string;
+  text: string;
+};
 
-export type ToggleCompleteTodo_TodoFragment = { __typename?: 'Todo', id: string, completed: boolean };
+export type ToggleCompleteTodo_TodoFragment = {
+  __typename?: "Todo";
+  id: string;
+  completed: boolean;
+};
 
-export type CursorTodoItems_TodoFragment = { __typename?: 'User', id: string, cursorTodos: { __typename?: 'TodoConnection', edges: Array<{ __typename?: 'TodoEdge', cursor: string, node: { __typename?: 'Todo', id: string, text: string, completed: boolean } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean } } };
+export type CursorTodoItems_TodoFragment = {
+  __typename?: "User";
+  id: string;
+  cursorTodos: {
+    __typename?: "TodoConnection";
+    edges: Array<{
+      __typename?: "TodoEdge";
+      cursor: string;
+      node: {
+        __typename?: "Todo";
+        id: string;
+        text: string;
+        completed: boolean;
+      };
+    }>;
+    pageInfo: { __typename?: "PageInfo"; hasNextPage: boolean };
+  };
+};
 
-export type OffsetTodoItems_TodoFragment = { __typename?: 'User', id: string, offsetTodos: Array<{ __typename?: 'Todo', id: string, text: string, completed: boolean }> };
+export type OffsetTodoItems_TodoFragment = {
+  __typename?: "User";
+  id: string;
+  offsetTodos: Array<{
+    __typename?: "Todo";
+    id: string;
+    text: string;
+    completed: boolean;
+  }>;
+};
 
 export type CreateTodoMutationVariables = Exact<{
-  text: Scalars['String'];
-  userId: Scalars['ID'];
+  text: Scalars["String"];
+  userId: Scalars["ID"];
 }>;
 
-
-export type CreateTodoMutation = { __typename?: 'Mutation', createTodo: { __typename?: 'Todo', id: string, text: string, completed: boolean } };
-
-export type NewTodoFragment = { __typename?: 'Todo', id: string, text: string, completed: boolean };
+export type CreateTodoMutation = {
+  __typename?: "Mutation";
+  createTodo: {
+    __typename?: "CreateTodoPayload";
+    todoEdge: {
+      __typename?: "TodoEdge";
+      cursor: string;
+      node: {
+        __typename?: "Todo";
+        id: string;
+        text: string;
+        completed: boolean;
+      };
+    };
+  };
+};
 
 export type EditTodoMutationVariables = Exact<{
-  editTodoId: Scalars['String'];
-  editTodoText2: Scalars['String'];
+  editTodoId: Scalars["String"];
+  editTodoText2: Scalars["String"];
 }>;
 
-
-export type EditTodoMutation = { __typename?: 'Mutation', editTodo: { __typename?: 'Todo', id: string, text: string, completed: boolean } };
+export type EditTodoMutation = {
+  __typename?: "Mutation";
+  editTodo: {
+    __typename?: "Todo";
+    id: string;
+    text: string;
+    completed: boolean;
+  };
+};
 
 export type RemoveTodoMutationVariables = Exact<{
-  removeTodoId: Scalars['String'];
+  removeTodoId: Scalars["String"];
 }>;
 
-
-export type RemoveTodoMutation = { __typename?: 'Mutation', removeTodo: { __typename?: 'RemoveTodoPayload', deletedTodoId: string } };
+export type RemoveTodoMutation = {
+  __typename?: "Mutation";
+  removeTodo: { __typename?: "RemoveTodoPayload"; deletedTodoId: string };
+};
 
 export type ToggleTodoMutationVariables = Exact<{
-  toggleTodoId: Scalars['String'];
-  completed: Scalars['Boolean'];
+  toggleTodoId: Scalars["String"];
+  completed: Scalars["Boolean"];
 }>;
 
-
-export type ToggleTodoMutation = { __typename?: 'Mutation', toggleTodo: { __typename?: 'Todo', id: string, completed: boolean } };
+export type ToggleTodoMutation = {
+  __typename?: "Mutation";
+  toggleTodo: { __typename?: "Todo"; id: string; completed: boolean };
+};
 
 export type GetCursorTodosQueryVariables = Exact<{
-  userId: Scalars['ID'];
-  first?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['String']>;
+  userId: Scalars["ID"];
+  first?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars["String"]>;
 }>;
 
-
-export type GetCursorTodosQuery = { __typename?: 'Query', user: { __typename?: 'User', cursorTodos: { __typename?: 'TodoConnection', edges: Array<{ __typename?: 'TodoEdge', cursor: string, node: { __typename?: 'Todo', id: string, text: string, completed: boolean } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean } } } };
+export type GetCursorTodosQuery = {
+  __typename?: "Query";
+  user: {
+    __typename?: "User";
+    id: string;
+    cursorTodos: {
+      __typename?: "TodoConnection";
+      edges: Array<{
+        __typename?: "TodoEdge";
+        cursor: string;
+        node: {
+          __typename?: "Todo";
+          id: string;
+          text: string;
+          completed: boolean;
+        };
+      }>;
+      pageInfo: { __typename?: "PageInfo"; hasNextPage: boolean };
+    };
+  };
+};
 
 export type GetOffsetTodosQueryVariables = Exact<{
-  userId: Scalars['ID'];
-  offset?: InputMaybe<Scalars['Int']>;
-  limit?: InputMaybe<Scalars['Int']>;
+  userId: Scalars["ID"];
+  offset?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
 }>;
 
-
-export type GetOffsetTodosQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, totalTodoCount: number, offsetTodos: Array<{ __typename?: 'Todo', id: string, text: string, completed: boolean }> } };
+export type GetOffsetTodosQuery = {
+  __typename?: "Query";
+  user: {
+    __typename?: "User";
+    id: string;
+    totalTodoCount: number;
+    offsetTodos: Array<{
+      __typename?: "Todo";
+      id: string;
+      text: string;
+      completed: boolean;
+    }>;
+  };
+};
 
 export type UserQueryVariables = Exact<{
-  userId: Scalars['ID'];
+  userId: Scalars["ID"];
 }>;
 
-
-export type UserQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string } };
+export type UserQuery = {
+  __typename?: "Query";
+  user: { __typename?: "User"; id: string };
+};
 
 export const EditTodoText_TodoFragmentDoc = gql`
-    fragment EditTodoText_Todo on Todo {
-  id
-  text
-}
-    `;
+  fragment EditTodoText_Todo on Todo {
+    id
+    text
+  }
+`;
 export const DeleteTodo_TodoFragmentDoc = gql`
-    fragment DeleteTodo_Todo on Todo {
-  id
-}
-    `;
+  fragment DeleteTodo_Todo on Todo {
+    id
+  }
+`;
 export const ToggleCompleteTodo_TodoFragmentDoc = gql`
-    fragment ToggleCompleteTodo_Todo on Todo {
-  id
-  completed
-}
-    `;
+  fragment ToggleCompleteTodo_Todo on Todo {
+    id
+    completed
+  }
+`;
 export const CursorTodoItems_TodoFragmentDoc = gql`
-    fragment CursorTodoItems_Todo on User {
-  id
-  cursorTodos {
-    edges {
-      node {
-        id
-        text
-        completed
-        ...EditTodoText_Todo
-        ...DeleteTodo_Todo
-        ...ToggleCompleteTodo_Todo
+  fragment CursorTodoItems_Todo on User {
+    id
+    cursorTodos {
+      edges {
+        node {
+          id
+          text
+          completed
+          ...EditTodoText_Todo
+          ...DeleteTodo_Todo
+          ...ToggleCompleteTodo_Todo
+        }
+        cursor
       }
-      cursor
-    }
-    pageInfo {
-      hasNextPage
+      pageInfo {
+        hasNextPage
+      }
     }
   }
-}
-    ${EditTodoText_TodoFragmentDoc}
-${DeleteTodo_TodoFragmentDoc}
-${ToggleCompleteTodo_TodoFragmentDoc}`;
+  ${EditTodoText_TodoFragmentDoc}
+  ${DeleteTodo_TodoFragmentDoc}
+  ${ToggleCompleteTodo_TodoFragmentDoc}
+`;
 export const OffsetTodoItems_TodoFragmentDoc = gql`
-    fragment OffsetTodoItems_Todo on User {
-  id
-  offsetTodos {
+  fragment OffsetTodoItems_Todo on User {
     id
-    text
-    completed
-    ...EditTodoText_Todo
-    ...DeleteTodo_Todo
-    ...ToggleCompleteTodo_Todo
+    offsetTodos {
+      id
+      text
+      completed
+      ...EditTodoText_Todo
+      ...DeleteTodo_Todo
+      ...ToggleCompleteTodo_Todo
+    }
   }
-}
-    ${EditTodoText_TodoFragmentDoc}
-${DeleteTodo_TodoFragmentDoc}
-${ToggleCompleteTodo_TodoFragmentDoc}`;
-export const NewTodoFragmentDoc = gql`
-    fragment NewTodo on Todo {
-  id
-  text
-  completed
-}
-    `;
+  ${EditTodoText_TodoFragmentDoc}
+  ${DeleteTodo_TodoFragmentDoc}
+  ${ToggleCompleteTodo_TodoFragmentDoc}
+`;
 export const CreateTodoDocument = gql`
-    mutation CreateTodo($text: String!, $userId: ID!) {
-  createTodo(text: $text, userId: $userId) {
-    id
-    text
-    completed
+  mutation CreateTodo($text: String!, $userId: ID!) {
+    createTodo(text: $text, userId: $userId) {
+      todoEdge {
+        node {
+          id
+          text
+          completed
+        }
+        cursor
+      }
+    }
   }
-}
-    `;
-export type CreateTodoMutationFn = Apollo.MutationFunction<CreateTodoMutation, CreateTodoMutationVariables>;
+`;
+export type CreateTodoMutationFn = Apollo.MutationFunction<
+  CreateTodoMutation,
+  CreateTodoMutationVariables
+>;
 
 /**
  * __useCreateTodoMutation__
@@ -272,23 +366,40 @@ export type CreateTodoMutationFn = Apollo.MutationFunction<CreateTodoMutation, C
  *   },
  * });
  */
-export function useCreateTodoMutation(baseOptions?: Apollo.MutationHookOptions<CreateTodoMutation, CreateTodoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateTodoMutation, CreateTodoMutationVariables>(CreateTodoDocument, options);
-      }
-export type CreateTodoMutationHookResult = ReturnType<typeof useCreateTodoMutation>;
-export type CreateTodoMutationResult = Apollo.MutationResult<CreateTodoMutation>;
-export type CreateTodoMutationOptions = Apollo.BaseMutationOptions<CreateTodoMutation, CreateTodoMutationVariables>;
-export const EditTodoDocument = gql`
-    mutation EditTodo($editTodoId: String!, $editTodoText2: String!) {
-  editTodo(id: $editTodoId, text: $editTodoText2) {
-    id
-    text
-    completed
-  }
+export function useCreateTodoMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateTodoMutation,
+    CreateTodoMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateTodoMutation, CreateTodoMutationVariables>(
+    CreateTodoDocument,
+    options
+  );
 }
-    `;
-export type EditTodoMutationFn = Apollo.MutationFunction<EditTodoMutation, EditTodoMutationVariables>;
+export type CreateTodoMutationHookResult = ReturnType<
+  typeof useCreateTodoMutation
+>;
+export type CreateTodoMutationResult =
+  Apollo.MutationResult<CreateTodoMutation>;
+export type CreateTodoMutationOptions = Apollo.BaseMutationOptions<
+  CreateTodoMutation,
+  CreateTodoMutationVariables
+>;
+export const EditTodoDocument = gql`
+  mutation EditTodo($editTodoId: String!, $editTodoText2: String!) {
+    editTodo(id: $editTodoId, text: $editTodoText2) {
+      id
+      text
+      completed
+    }
+  }
+`;
+export type EditTodoMutationFn = Apollo.MutationFunction<
+  EditTodoMutation,
+  EditTodoMutationVariables
+>;
 
 /**
  * __useEditTodoMutation__
@@ -308,21 +419,35 @@ export type EditTodoMutationFn = Apollo.MutationFunction<EditTodoMutation, EditT
  *   },
  * });
  */
-export function useEditTodoMutation(baseOptions?: Apollo.MutationHookOptions<EditTodoMutation, EditTodoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<EditTodoMutation, EditTodoMutationVariables>(EditTodoDocument, options);
-      }
+export function useEditTodoMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    EditTodoMutation,
+    EditTodoMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<EditTodoMutation, EditTodoMutationVariables>(
+    EditTodoDocument,
+    options
+  );
+}
 export type EditTodoMutationHookResult = ReturnType<typeof useEditTodoMutation>;
 export type EditTodoMutationResult = Apollo.MutationResult<EditTodoMutation>;
-export type EditTodoMutationOptions = Apollo.BaseMutationOptions<EditTodoMutation, EditTodoMutationVariables>;
+export type EditTodoMutationOptions = Apollo.BaseMutationOptions<
+  EditTodoMutation,
+  EditTodoMutationVariables
+>;
 export const RemoveTodoDocument = gql`
-    mutation RemoveTodo($removeTodoId: String!) {
-  removeTodo(id: $removeTodoId) {
-    deletedTodoId
+  mutation RemoveTodo($removeTodoId: String!) {
+    removeTodo(id: $removeTodoId) {
+      deletedTodoId
+    }
   }
-}
-    `;
-export type RemoveTodoMutationFn = Apollo.MutationFunction<RemoveTodoMutation, RemoveTodoMutationVariables>;
+`;
+export type RemoveTodoMutationFn = Apollo.MutationFunction<
+  RemoveTodoMutation,
+  RemoveTodoMutationVariables
+>;
 
 /**
  * __useRemoveTodoMutation__
@@ -341,22 +466,39 @@ export type RemoveTodoMutationFn = Apollo.MutationFunction<RemoveTodoMutation, R
  *   },
  * });
  */
-export function useRemoveTodoMutation(baseOptions?: Apollo.MutationHookOptions<RemoveTodoMutation, RemoveTodoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RemoveTodoMutation, RemoveTodoMutationVariables>(RemoveTodoDocument, options);
-      }
-export type RemoveTodoMutationHookResult = ReturnType<typeof useRemoveTodoMutation>;
-export type RemoveTodoMutationResult = Apollo.MutationResult<RemoveTodoMutation>;
-export type RemoveTodoMutationOptions = Apollo.BaseMutationOptions<RemoveTodoMutation, RemoveTodoMutationVariables>;
-export const ToggleTodoDocument = gql`
-    mutation toggleTodo($toggleTodoId: String!, $completed: Boolean!) {
-  toggleTodo(id: $toggleTodoId, completed: $completed) {
-    id
-    completed
-  }
+export function useRemoveTodoMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveTodoMutation,
+    RemoveTodoMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RemoveTodoMutation, RemoveTodoMutationVariables>(
+    RemoveTodoDocument,
+    options
+  );
 }
-    `;
-export type ToggleTodoMutationFn = Apollo.MutationFunction<ToggleTodoMutation, ToggleTodoMutationVariables>;
+export type RemoveTodoMutationHookResult = ReturnType<
+  typeof useRemoveTodoMutation
+>;
+export type RemoveTodoMutationResult =
+  Apollo.MutationResult<RemoveTodoMutation>;
+export type RemoveTodoMutationOptions = Apollo.BaseMutationOptions<
+  RemoveTodoMutation,
+  RemoveTodoMutationVariables
+>;
+export const ToggleTodoDocument = gql`
+  mutation toggleTodo($toggleTodoId: String!, $completed: Boolean!) {
+    toggleTodo(id: $toggleTodoId, completed: $completed) {
+      id
+      completed
+    }
+  }
+`;
+export type ToggleTodoMutationFn = Apollo.MutationFunction<
+  ToggleTodoMutation,
+  ToggleTodoMutationVariables
+>;
 
 /**
  * __useToggleTodoMutation__
@@ -376,32 +518,47 @@ export type ToggleTodoMutationFn = Apollo.MutationFunction<ToggleTodoMutation, T
  *   },
  * });
  */
-export function useToggleTodoMutation(baseOptions?: Apollo.MutationHookOptions<ToggleTodoMutation, ToggleTodoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<ToggleTodoMutation, ToggleTodoMutationVariables>(ToggleTodoDocument, options);
-      }
-export type ToggleTodoMutationHookResult = ReturnType<typeof useToggleTodoMutation>;
-export type ToggleTodoMutationResult = Apollo.MutationResult<ToggleTodoMutation>;
-export type ToggleTodoMutationOptions = Apollo.BaseMutationOptions<ToggleTodoMutation, ToggleTodoMutationVariables>;
+export function useToggleTodoMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ToggleTodoMutation,
+    ToggleTodoMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<ToggleTodoMutation, ToggleTodoMutationVariables>(
+    ToggleTodoDocument,
+    options
+  );
+}
+export type ToggleTodoMutationHookResult = ReturnType<
+  typeof useToggleTodoMutation
+>;
+export type ToggleTodoMutationResult =
+  Apollo.MutationResult<ToggleTodoMutation>;
+export type ToggleTodoMutationOptions = Apollo.BaseMutationOptions<
+  ToggleTodoMutation,
+  ToggleTodoMutationVariables
+>;
 export const GetCursorTodosDocument = gql`
-    query getCursorTodos($userId: ID!, $first: Int, $after: String) {
-  user(id: $userId) {
-    cursorTodos(first: $first, after: $after) {
-      edges {
-        node {
-          id
-          text
-          completed
+  query getCursorTodos($userId: ID!, $first: Int, $after: String) {
+    user(id: $userId) {
+      id
+      cursorTodos(first: $first, after: $after) {
+        edges {
+          node {
+            id
+            text
+            completed
+          }
+          cursor
         }
-        cursor
-      }
-      pageInfo {
-        hasNextPage
+        pageInfo {
+          hasNextPage
+        }
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetCursorTodosQuery__
@@ -421,30 +578,53 @@ export const GetCursorTodosDocument = gql`
  *   },
  * });
  */
-export function useGetCursorTodosQuery(baseOptions: Apollo.QueryHookOptions<GetCursorTodosQuery, GetCursorTodosQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCursorTodosQuery, GetCursorTodosQueryVariables>(GetCursorTodosDocument, options);
-      }
-export function useGetCursorTodosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCursorTodosQuery, GetCursorTodosQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCursorTodosQuery, GetCursorTodosQueryVariables>(GetCursorTodosDocument, options);
-        }
-export type GetCursorTodosQueryHookResult = ReturnType<typeof useGetCursorTodosQuery>;
-export type GetCursorTodosLazyQueryHookResult = ReturnType<typeof useGetCursorTodosLazyQuery>;
-export type GetCursorTodosQueryResult = Apollo.QueryResult<GetCursorTodosQuery, GetCursorTodosQueryVariables>;
+export function useGetCursorTodosQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetCursorTodosQuery,
+    GetCursorTodosQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetCursorTodosQuery, GetCursorTodosQueryVariables>(
+    GetCursorTodosDocument,
+    options
+  );
+}
+export function useGetCursorTodosLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetCursorTodosQuery,
+    GetCursorTodosQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetCursorTodosQuery, GetCursorTodosQueryVariables>(
+    GetCursorTodosDocument,
+    options
+  );
+}
+export type GetCursorTodosQueryHookResult = ReturnType<
+  typeof useGetCursorTodosQuery
+>;
+export type GetCursorTodosLazyQueryHookResult = ReturnType<
+  typeof useGetCursorTodosLazyQuery
+>;
+export type GetCursorTodosQueryResult = Apollo.QueryResult<
+  GetCursorTodosQuery,
+  GetCursorTodosQueryVariables
+>;
 export const GetOffsetTodosDocument = gql`
-    query getOffsetTodos($userId: ID!, $offset: Int, $limit: Int) {
-  user(id: $userId) {
-    id
-    totalTodoCount
-    offsetTodos(offset: $offset, limit: $limit) {
+  query getOffsetTodos($userId: ID!, $offset: Int, $limit: Int) {
+    user(id: $userId) {
       id
-      text
-      completed
+      totalTodoCount
+      offsetTodos(offset: $offset, limit: $limit) {
+        id
+        text
+        completed
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetOffsetTodosQuery__
@@ -464,24 +644,47 @@ export const GetOffsetTodosDocument = gql`
  *   },
  * });
  */
-export function useGetOffsetTodosQuery(baseOptions: Apollo.QueryHookOptions<GetOffsetTodosQuery, GetOffsetTodosQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetOffsetTodosQuery, GetOffsetTodosQueryVariables>(GetOffsetTodosDocument, options);
-      }
-export function useGetOffsetTodosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOffsetTodosQuery, GetOffsetTodosQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetOffsetTodosQuery, GetOffsetTodosQueryVariables>(GetOffsetTodosDocument, options);
-        }
-export type GetOffsetTodosQueryHookResult = ReturnType<typeof useGetOffsetTodosQuery>;
-export type GetOffsetTodosLazyQueryHookResult = ReturnType<typeof useGetOffsetTodosLazyQuery>;
-export type GetOffsetTodosQueryResult = Apollo.QueryResult<GetOffsetTodosQuery, GetOffsetTodosQueryVariables>;
-export const UserDocument = gql`
-    query User($userId: ID!) {
-  user(id: $userId) {
-    id
-  }
+export function useGetOffsetTodosQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetOffsetTodosQuery,
+    GetOffsetTodosQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetOffsetTodosQuery, GetOffsetTodosQueryVariables>(
+    GetOffsetTodosDocument,
+    options
+  );
 }
-    `;
+export function useGetOffsetTodosLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetOffsetTodosQuery,
+    GetOffsetTodosQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetOffsetTodosQuery, GetOffsetTodosQueryVariables>(
+    GetOffsetTodosDocument,
+    options
+  );
+}
+export type GetOffsetTodosQueryHookResult = ReturnType<
+  typeof useGetOffsetTodosQuery
+>;
+export type GetOffsetTodosLazyQueryHookResult = ReturnType<
+  typeof useGetOffsetTodosLazyQuery
+>;
+export type GetOffsetTodosQueryResult = Apollo.QueryResult<
+  GetOffsetTodosQuery,
+  GetOffsetTodosQueryVariables
+>;
+export const UserDocument = gql`
+  query User($userId: ID!) {
+    user(id: $userId) {
+      id
+    }
+  }
+`;
 
 /**
  * __useUserQuery__
@@ -499,14 +702,21 @@ export const UserDocument = gql`
  *   },
  * });
  */
-export function useUserQuery(baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
-      }
-export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
-        }
+export function useUserQuery(
+  baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+}
+export function useUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(
+    UserDocument,
+    options
+  );
+}
 export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;

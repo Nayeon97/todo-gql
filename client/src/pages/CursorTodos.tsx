@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
@@ -9,6 +9,7 @@ import Spinner from "../components/atoms/Spinner";
 const GET_CURSOR_TODOS = gql`
   query getCursorTodos($userId: ID!, $first: Int, $after: String) {
     user(id: $userId) {
+      id
       cursorTodos(first: $first, after: $after) {
         edges {
           node {
@@ -37,20 +38,22 @@ const CursorTodos = () => {
     },
   });
 
+  useEffect(() => {
+    setAfter(
+      data?.user.cursorTodos.edges.map((edge: any) => edge).slice(-1)[0].cursor
+    );
+  }, [data]);
+
   if (error) return <p>`Error! ${error.message}`</p>;
 
   const handleLoadMore = () => {
     const pageInfo = data?.user.cursorTodos.pageInfo.hasNextPage;
+
     if (pageInfo) {
       fetchMore({
         variables: {
           cursor: after,
         },
-      }).then(() => {
-        setAfter(
-          data?.user.cursorTodos.edges.map((edge: any) => edge).slice(-1)[0]
-            .cursor
-        );
       });
     }
   };

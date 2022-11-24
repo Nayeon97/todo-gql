@@ -8,18 +8,22 @@ const client = new ApolloClient({
   uri: "http://localhost:4000/",
   cache: new InMemoryCache({
     typePolicies: {
+      Query: {
+        fields: {
+          user: {
+            keyArgs: ["userId"],
+          },
+        },
+      },
       User: {
         fields: {
           offsetTodos: {
             ...offsetLimitPagination(),
           },
           cursorTodos: relayStylePagination(),
-        },
-      },
-      Query: {
-        fields: {
-          user: {
-            keyArgs: ["userId"],
+          read(existing, { args }) {
+            console.log(existing);
+            console.log(args);
           },
         },
       },

@@ -73,8 +73,12 @@ const typeDefs = gql`
   type RemoveTodoPayload {
     deletedTodoId: ID!
   }
+
+  type CreateTodoPayload {
+    todoEdge: TodoEdge!
+  }
   type Mutation {
-    createTodo(text: String!, userId: ID!): Todo!
+    createTodo(text: String!, userId: ID!): CreateTodoPayload!
     toggleTodo(id: String!, completed: Boolean!): Todo!
     removeTodo(id: String!): RemoveTodoPayload!
     editTodo(id: String!, text: String!): Todo!
@@ -171,7 +175,12 @@ const resolvers = {
         userId,
       };
       todos.push(newTodo);
-      return newTodo;
+      return {
+        todoEdge: {
+          node: newTodo,
+          cursor: idToCursor(newTodo.id),
+        },
+      };
     },
     toggleTodo: async (_, { id, completed }) => {
       await sleep(1000);

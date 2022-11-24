@@ -1,7 +1,12 @@
 mutation CreateTodo($text: String!, $userId: ID!) {
   createTodo(text: $text, userId: $userId) {
-    id
-    text
-    completed
+    todoEdge {
+      node {
+        id
+        text
+        completed
+      }
+      cursor
+    }
   }
 }

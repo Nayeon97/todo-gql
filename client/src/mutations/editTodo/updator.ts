@@ -18,7 +18,6 @@ export const updator =
         fragment: EditTodoText_TodoFragmentDoc,
       },
       (todo) => {
-        console.log(todo);
         return todo;
       }
     );

@@ -27,14 +27,13 @@ const CreateTodo = ({ user }: CrateTodoProps) => {
     if (text && userId) {
       createTodo({
         variables: { text: text, userId: userId },
-        optimisticResponse: {
-          createTodo: {
-            __typename: "Todo",
-            id: user.totalTodoCount + "1",
-            text: text,
-            completed: false,
-          },
-        },
+        // optimisticResponse: {
+        //   createTodo: {
+        //     id: user.totalTodoCount + "1",
+        //     text: text,
+        //     completed: false,
+        //   },
+        // },
       });
       setText("");
     }
