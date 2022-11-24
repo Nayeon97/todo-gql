@@ -22,22 +22,25 @@ const GET_OFFSET_TODOS = gql`
 
 const OffsetTodos = () => {
   const params = useParams();
-  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
   const { data, error, loading, fetchMore } = useQuery(GET_OFFSET_TODOS, {
     variables: {
       userId: params.userId,
-      offset: page * 10 - 10,
-      limit: 10,
+      offset: 0,
+      limit,
     },
   });
 
   if (error) return <p>`Error! ${error.message}`</p>;
 
   const handleLoadMore = () => {
+    const currentLength = data?.user?.offsetTodos.length;
     fetchMore({
       variables: {
-        offset: data?.user?.offsetTodos.length,
+        offset: currentLength,
       },
+    }).then((fetchMoreResult) => {
+      setLimit(currentLength + fetchMoreResult.data?.user?.offsetTodos.length);
     });
   };
 
@@ -53,14 +56,6 @@ const OffsetTodos = () => {
           )}
         </TodosWrapper>
       </TodosContainer>
-      <ButtonContainer>
-        <ButtonWrapper>
-          <button onClick={() => setPage((prev) => prev - 1)}>pre</button>
-        </ButtonWrapper>
-        <ButtonWrapper>
-          <button onClick={() => setPage((prev) => prev + 1)}>next</button>
-        </ButtonWrapper>
-      </ButtonContainer>
     </>
   );
 };

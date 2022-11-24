@@ -7,7 +7,13 @@ const client = new ApolloClient({
     typePolicies: {
       User: {
         fields: {
-          offsetTodos: offsetLimitPagination(),
+          offsetTodos: {
+            ...offsetLimitPagination(),
+            // read(existing, { args }) {
+            //   console.log(existing);
+            //   console.log(args);
+            // },
+          },
         },
       },
       Query: {

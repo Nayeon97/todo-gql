@@ -11,7 +11,7 @@ interface TodoItemsProps {
   onLoadMore: () => void;
 }
 
-const TodoItems = ({ data }: TodoItemsProps) => {
+const TodoItems = ({ data, onLoadMore }: TodoItemsProps) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const userId = data.id;
 
@@ -20,7 +20,7 @@ const TodoItems = ({ data }: TodoItemsProps) => {
   };
 
   return (
-    <div>
+    <TodoItemsContainer>
       {data?.offsetTodos.map((todo) => {
         return (
           <TodoItemContainer completed={todo.completed} key={todo.id}>
@@ -38,11 +38,17 @@ const TodoItems = ({ data }: TodoItemsProps) => {
           </TodoItemContainer>
         );
       })}
-    </div>
+      <button onClick={onLoadMore}>더보기</button>
+    </TodoItemsContainer>
   );
 };
 
 export default TodoItems;
+
+const TodoItemsContainer = styled.div`
+  height: 500px;
+  overflow: auto;
+`;
 
 const TodoItemContainer = styled.div<{ completed: boolean }>`
   display: grid;
