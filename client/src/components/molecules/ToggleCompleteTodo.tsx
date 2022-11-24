@@ -11,6 +11,7 @@ interface ToggleCompleteTodoProps {
 
 const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
   const { id, completed } = todo;
+  console.log(todo);
   const [toggleTodo, { error }] = useToggleTodoMutation({
     update: updator(),
   });
@@ -18,16 +19,16 @@ const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
   if (error) return <p>`Error! ${error.message}`</p>;
 
   const toggleShowComplete = () => {
-    // toggleTodo({
-    //   variables: { id: id, completed: !completed },
-    //   optimisticResponse: {
-    //     toggleTodo: {
-    //       __typename: "Todo",
-    //       id: id,
-    //       completed: completed,
-    //     },
-    //   },
-    // });
+    toggleTodo({
+      variables: { toggleTodoId: id, completed: !completed },
+      optimisticResponse: {
+        toggleTodo: {
+          __typename: "Todo",
+          id: id,
+          completed: completed,
+        },
+      },
+    });
   };
 
   return (
@@ -42,7 +43,7 @@ const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
 
 export default ToggleCompleteTodo;
 
-export const test = gql`
+gql`
   fragment ToggleCompleteTodo_Todo on Todo {
     id
     completed

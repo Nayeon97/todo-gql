@@ -1,11 +1,10 @@
 import { MutationUpdaterFn } from "@apollo/client";
 import produce from "immer";
 import {
-  GetTodosQuery,
-  GetTodosQueryVariables,
-  GetTodosDocument,
+  GetOffsetTodosQuery,
+  GetOffsetTodosQueryVariables,
+  GetOffsetTodosDocument,
   ToggleTodoMutation,
-  Todo,
 } from "../../gql/generated/graphql";
 
 export const updator =
@@ -14,19 +13,20 @@ export const updator =
     if (!data?.toggleTodo) {
       return;
     }
-    cache.updateQuery<GetTodosQuery, GetTodosQueryVariables>(
-      { query: GetTodosDocument },
+    cache.updateQuery<GetOffsetTodosQuery, GetOffsetTodosQueryVariables>(
+      { query: GetOffsetTodosDocument },
       (todos) => {
         const targetId = data.toggleTodo.id;
         return produce(todos, (draft) => {
           if (!draft) {
             return;
           }
-          const index = draft.allTodos.findIndex(
-            (todo: Todo) => todo.id === targetId
+          const index = draft.user.offsetTodos.findIndex(
+            (todo) => todo.id === targetId
           );
           if (index !== -1)
-            draft.allTodos[index].completed = !data.toggleTodo.completed;
+            draft.user.offsetTodos[index].completed =
+              !data.toggleTodo.completed;
         });
       }
     );
