@@ -6,7 +6,6 @@ import {
 import Input from "../atoms/Input/Input";
 import { updator } from "../../mutations/createTodo/updator";
 import { useParams } from "react-router-dom";
-import ToggleCompleteTodo from "./ToggleCompleteTodo";
 
 interface CrateTodoProps {
   user: CursorTodoItems_TodoFragment;

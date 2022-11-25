@@ -30,8 +30,8 @@ gql`
 
 const CursorTodos = () => {
   const params = useParams();
-  const [after, setAfter] = useState("");
-  const [end, setEnd] = useState<boolean>(false);
+  const [after, setAfter] = useState<string>("");
+  const [nextPage, setNextPage] = useState<boolean>(false);
   const { data, error, loading, fetchMore } = useGetCursorTodosQuery({
     variables: {
       userId: params.userId || "",
@@ -46,15 +46,14 @@ const CursorTodos = () => {
         data?.user.cursorTodos.edges.map((edge: any) => edge).slice(-1)[0]
           .cursor
       );
-      setEnd(data?.user.cursorTodos.pageInfo.hasNextPage || false);
+      setNextPage(data?.user.cursorTodos.pageInfo.hasNextPage || false);
     }
   }, [data]);
 
   if (error) return <p>`Error! ${error.message}`</p>;
 
   const handleLoadMore = () => {
-    const pageInfo = data?.user.cursorTodos.pageInfo.hasNextPage;
-    if (pageInfo) {
+    if (nextPage) {
       fetchMore({
         variables: {
           cursor: after,
@@ -77,7 +76,7 @@ const CursorTodos = () => {
               <CursorTodoItems
                 user={data.user}
                 onLoadMore={handleLoadMore}
-                end={end}
+                end={nextPage}
               />
             </TodosWrapper>
           </TodosContainer>
