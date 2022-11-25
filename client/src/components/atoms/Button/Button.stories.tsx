@@ -7,6 +7,9 @@ import Button from "./Button";
 export default {
   title: "Button",
   component: Button,
+  parameters: {
+    componentSubtitle: "Add componentSubtitle",
+  },
 } as ComponentMeta<typeof Button>;
 
 const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;

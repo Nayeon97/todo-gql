@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Todo } from "../../../gql/generated/graphql";
 
 interface ButtonProps {
   name: string;

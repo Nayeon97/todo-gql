@@ -1,8 +1,8 @@
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
-import { useState } from 'react';
-import styled from 'styled-components';
-import Input from '../components/atoms/Input/Input';
-import { useNavigate } from 'react-router-dom';
+import { gql, useLazyQuery, useQuery } from "@apollo/client";
+import { useState } from "react";
+import styled from "styled-components";
+import Input from "../components/atoms/Input/Input";
+import { useNavigate } from "react-router-dom";
 
 const GET_USERS = gql`
   query User($userId: ID!) {
@@ -14,12 +14,12 @@ const GET_USERS = gql`
 
 const SearchUser = () => {
   const navigate = useNavigate();
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState("");
   const [getUser, { error }] = useLazyQuery(GET_USERS, {
     onCompleted: () => {
       navigate(`user/cursor-todos/${userId}`);
     },
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
   });
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -35,43 +35,45 @@ const SearchUser = () => {
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       onSearch();
     }
   };
 
   return (
     <TodosContainer>
-      <TextWrapper>👷🏻‍♂️ UserID</TextWrapper>
       <div>
+        <TextWrapper>👷🏻‍♂️ Search UserID 🔎</TextWrapper>
         <Input
           type="text"
           value={userId}
           onChange={onChange}
           onKeyPress={handleKeyPress}
         />
+        <ErrorContainer>{error && <p>{error.message}</p>}</ErrorContainer>
       </div>
-      <ErrorContainer>{error && <p>{error.message}</p>}</ErrorContainer>
     </TodosContainer>
   );
 };
 
 export default SearchUser;
 
-const TextWrapper = styled.div`
-  margin-bottom: 20px;
+const TextWrapper = styled.h1`
   font-size: large;
   font-weight: bold;
   color: skyblue;
+  margin-bottom: 10px;
 `;
 
 const TodosContainer = styled.div`
+  position: absolute;
   display: grid;
   place-items: center;
-  padding-top: 60px;
+  height: 100%;
+  width: 100%;
 `;
 
-const ErrorContainer = styled.div`
+const ErrorContainer = styled.p`
   margin-top: 20px;
   p {
     color: rebeccapurple;
