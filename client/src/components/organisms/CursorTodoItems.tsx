@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { gql } from '@apollo/client';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import { gql } from "@apollo/client";
+import styled from "styled-components";
 import {
   CursorTodoItems_TodoFragment,
   Todo,
-} from '../../gql/generated/graphql';
-import Button from '../atoms/Button/Button';
-import DeleteTodo from '../molecules/DeleteTodo';
-import ToggleCompleteTodo from '../molecules/ToggleCompleteTodo';
-import EditTodo from '../molecules/EditTodo';
+} from "../../gql/generated/graphql";
+import Button from "../atoms/Button/Button";
+import DeleteTodo from "../molecules/DeleteTodo";
+import ToggleCompleteTodo from "../molecules/ToggleCompleteTodo";
+import EditTodo from "../molecules/EditTodo";
 
 interface TodoItemsProps {
   user: CursorTodoItems_TodoFragment;
@@ -73,7 +73,7 @@ const TodoItemContainer = styled.div<{ completed: boolean }>`
   width: 450px;
   grid-template-columns: repeat(4, 1fr);
   place-items: center;
-  background-color: ${(props) => (props.completed ? '#d3d3d3' : 'transparent')};
+  background-color: ${(props) => (props.completed ? "#d3d3d3" : "transparent")};
   border-radius: 5px;
   margin: 10px 10px;
   padding: 10px 0px;
@@ -83,8 +83,8 @@ const TodoItemContainer = styled.div<{ completed: boolean }>`
 const TextWrapper = styled.div<{ completed: boolean }>`
   width: 200px;
   margin: 0px 20px;
-  color: ${(props) => (props.completed ? 'white' : 'black')};
-  text-decoration: ${(props) => (props.completed ? 'line-through' : '')};
+  color: ${(props) => (props.completed ? "white" : "black")};
+  text-decoration: ${(props) => (props.completed ? "line-through" : "")};
 `;
 
 const ViewMoreButton = styled.div`

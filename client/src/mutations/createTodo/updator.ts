@@ -1,11 +1,12 @@
-import { gql, MutationUpdaterFn } from '@apollo/client';
+import { MutationUpdaterFn } from "@apollo/client";
+import { produce } from "immer";
 import {
   CreateTodoMutation,
   GetCursorTodosDocument,
   GetCursorTodosQuery,
   GetCursorTodosQueryVariables,
   CursorTodoItems_TodoFragment,
-} from '../../gql/generated/graphql';
+} from "../../gql/generated/graphql";
 
 export const updator =
   (user: CursorTodoItems_TodoFragment): MutationUpdaterFn<CreateTodoMutation> =>
@@ -17,25 +18,24 @@ export const updator =
       GetCursorTodosQueryVariables
     >({
       query: GetCursorTodosDocument,
+      variables: {
+        userId: user.id,
+      },
     });
 
     if (cacheData) {
+      console.log(cacheData);
       cache.writeQuery<GetCursorTodosQuery, GetCursorTodosQueryVariables>({
         query: GetCursorTodosDocument,
-        data: {
-          user: {
-            id: user.id,
-            cursorTodos: {
-              edges: [
-                ...cacheData?.user.cursorTodos.edges,
-                data.createTodo.todoEdge,
-              ],
-              pageInfo: {
-                hasNextPage: cacheData.user.cursorTodos.pageInfo.hasNextPage,
-              },
-            },
-          },
+        variables: {
+          userId: user.id,
         },
+        data: produce(cacheData, (draft) => {
+          draft.user.cursorTodos.edges = [
+            data.createTodo.todoEdge,
+            ...draft.user.cursorTodos.edges,
+          ];
+        }),
       });
     }
 

@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   useCreateTodoMutation,
   CursorTodoItems_TodoFragment,
-} from '../../gql/generated/graphql';
-import Input from '../atoms/Input/Input';
-import { updator } from '../../mutations/createTodo/updator';
-import { useParams } from 'react-router-dom';
+} from "../../gql/generated/graphql";
+import Input from "../atoms/Input/Input";
+import { updator } from "../../mutations/createTodo/updator";
+import { useParams } from "react-router-dom";
+import ToggleCompleteTodo from "./ToggleCompleteTodo";
 
 interface CrateTodoProps {
   user: CursorTodoItems_TodoFragment;
 }
 
 const CreateTodo = ({ user }: CrateTodoProps) => {
-  const [text, setText] = useState<string>('');
+  const [text, setText] = useState<string>("");
   const params = useParams();
   const userId = params?.userId;
 
@@ -30,20 +31,25 @@ const CreateTodo = ({ user }: CrateTodoProps) => {
     if (text && userId) {
       createTodo({
         variables: { text: text, userId: userId },
-        // optimisticResponse: {
-        //   createTodo: {
-        //     id: user.totalTodoCount + "1",
-        //     text: text,
-        //     completed: false,
-        //   },
-        // },
+        optimisticResponse: {
+          createTodo: {
+            todoEdge: {
+              cursor: "12345",
+              node: {
+                id: user.id,
+                text: text,
+                completed: false,
+              },
+            },
+          },
+        },
       });
-      setText('');
+      setText("");
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       onCreate();
     }
   };

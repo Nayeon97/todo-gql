@@ -1,18 +1,40 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
-import CreateTodo from '../components/molecules/CreateTodo';
-import CursorTodoItems from '../components/organisms/CursorTodoItems';
-import Spinner from '../components/atoms/Spinner';
-import { useGetCursorTodosQuery } from '../gql/generated/graphql';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
+import CreateTodo from "../components/molecules/CreateTodo";
+import CursorTodoItems from "../components/organisms/CursorTodoItems";
+import Spinner from "../components/atoms/Spinner";
+import { useGetCursorTodosQuery } from "../gql/generated/graphql";
+import { gql } from "@apollo/client";
+
+gql`
+  query getCursorTodos($userId: ID!, $first: Int, $after: String) {
+    user(id: $userId) {
+      id
+      cursorTodos(first: $first, after: $after) {
+        edges {
+          node {
+            id
+            text
+            completed
+          }
+          cursor
+        }
+        pageInfo {
+          hasNextPage
+        }
+      }
+    }
+  }
+`;
 
 const CursorTodos = () => {
   const params = useParams();
-  const [after, setAfter] = useState('');
+  const [after, setAfter] = useState("");
   const [end, setEnd] = useState<boolean>(false);
   const { data, error, loading, fetchMore } = useGetCursorTodosQuery({
     variables: {
-      userId: params.userId || '',
+      userId: params.userId || "",
       first: 0,
       after,
     },
@@ -91,4 +113,26 @@ const TodosWrapper = styled.div`
   height: 350px;
   margin-top: 30px;
   margin-bottom: 20px;
+`;
+
+gql`
+  fragment CursorTodoItems_Todo on User {
+    id
+    cursorTodos {
+      edges {
+        node {
+          id
+          text
+          completed
+          ...EditTodoText_Todo
+          ...DeleteTodo_Todo
+          ...ToggleCompleteTodo_Todo
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+      }
+    }
+  }
 `;
