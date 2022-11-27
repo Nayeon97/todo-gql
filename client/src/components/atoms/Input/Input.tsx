@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 interface InputProps {
   value: string;
@@ -30,7 +30,6 @@ const InputWrapper = styled.input`
   padding: 20px;
   border: none;
   border-radius: 10px;
-  outline: none;
   font-size: 15px;
   cursor: text;
 `;

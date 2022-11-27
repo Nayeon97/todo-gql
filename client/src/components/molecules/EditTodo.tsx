@@ -4,56 +4,72 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import {
   useEditTodoMutation,
-  EditTodoText_TodoFragment,
   CursorTodoItems_TodoFragment,
+  TodoEdge,
 } from '../../gql/generated/graphql';
 import { updator } from '../../mutations/editTodo/updator';
-import Input from '../atoms/Input/Input';
 
 interface EditTodoProps {
+  isEdit: boolean;
   user: CursorTodoItems_TodoFragment;
-  editTodo: EditTodoText_TodoFragment[];
+  todo: TodoEdge;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
 
-const EditTodo = ({ editTodo, setIsEdit, user }: EditTodoProps) => {
-  const [editTodoText, setEditTodoText] = useState(editTodo[0]?.text);
+const EditTodo = ({ isEdit, user, todo, setIsEdit }: EditTodoProps) => {
+  const [editTodoText, setEditTodoText] = useState(todo.node.text);
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     setEditTodoText(e.currentTarget.value);
   };
 
   const [editTodoItem] = useEditTodoMutation({
     update: updator(user),
+    onCompleted: () => {
+      setIsEdit(false);
+    },
   });
 
   const clickEdit = () => {
     editTodoItem({
-      variables: { editTodoId: editTodo[0].id, editTodoText2: editTodoText },
-      // optimisticResponse: {
-      //   editTodo: {
-      //     __typename: "Todo",
-      //     id: editTodo[0].id,
-      //     text: editTodoText,
-      //   },
-      // },
+      variables: { editTodoId: todo.node.id, editTodoText2: editTodoText },
+      optimisticResponse: {
+        editTodo: {
+          __typename: 'Todo',
+          id: todo.node.id,
+          text: editTodoText,
+          completed: todo.node.completed,
+        },
+      },
     });
-    setIsEdit(false);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key === 'Enter') {
+      clickEdit();
+    }
   };
 
   return (
-    <EditTodoContainer>
-      <Input type="text" value={editTodoText} onChange={onChange} />
-      <button onClick={clickEdit}>Edit!</button>
-    </EditTodoContainer>
+    <TextWrapper
+      value={editTodoText}
+      completed={todo.node.completed}
+      disabled={isEdit ? false : true}
+      onChange={onChange}
+      onKeyPress={handleKeyPress}
+    />
   );
 };
 
 export default EditTodo;
 
-const EditTodoContainer = styled.div`
-  display: grid;
-  padding: 30px;
-  grid-template-columns: repeat(2, 1fr);
+const TextWrapper = styled.input<{ completed: boolean }>`
+  width: 200px;
+  margin: 0px 20px;
+  color: ${(props) => (props.completed ? 'white' : 'black')};
+  text-decoration: ${(props) => (props.completed ? 'line-through' : '')};
+  background-color: transparent;
+  border: none;
+  font-size: 15px;
 `;
 
 gql`

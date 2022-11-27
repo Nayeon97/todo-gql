@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
-import CreateTodo from "../components/molecules/CreateTodo";
-import CursorTodoItems from "../components/organisms/CursorTodoItems";
-import Spinner from "../components/atoms/Spinner";
-import { useGetCursorTodosQuery } from "../gql/generated/graphql";
-import { gql } from "@apollo/client";
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import CreateTodo from '../components/molecules/CreateTodo';
+import CursorTodoItems from '../components/organisms/CursorTodoItems';
+import Spinner from '../components/atoms/Spinner';
+import { useGetCursorTodosQuery } from '../gql/generated/graphql';
+import { gql } from '@apollo/client';
 
 gql`
   query getCursorTodos($userId: ID!, $first: Int, $after: String) {
@@ -30,11 +30,11 @@ gql`
 
 const CursorTodos = () => {
   const params = useParams();
-  const [after, setAfter] = useState<string>("");
+  const [after, setAfter] = useState<string>('');
   const [nextPage, setNextPage] = useState<boolean>(false);
   const { data, error, loading, fetchMore } = useGetCursorTodosQuery({
     variables: {
-      userId: params.userId || "",
+      userId: params.userId || '',
       first: 0,
       after,
     },
@@ -89,7 +89,6 @@ const CursorTodos = () => {
 export default CursorTodos;
 
 const Container = styled.div`
-  position: relative;
   display: grid;
   place-content: center;
 `;
@@ -98,8 +97,7 @@ const SpinnerWrapper = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: 25px;
-  margin-left: -50px;
+  transform: translate(-50%, -50%);
 `;
 
 const TodosContainer = styled.div`
