@@ -13,7 +13,7 @@ interface CrateTodoProps {
   getData: (search: string) => void;
 }
 
-const CreateTodo = ({ user, getData }: CrateTodoProps) => {
+const CreateSearchTodo = ({ user, getData }: CrateTodoProps) => {
   const [text, setText] = useState<string>("");
   const [select, setSelect] = useState<string>("create");
   const params = useParams();
@@ -87,11 +87,12 @@ const CreateTodo = ({ user, getData }: CrateTodoProps) => {
   );
 };
 
-export default CreateTodo;
+export default CreateSearchTodo;
 
 const SelectContainer = styled.select`
+  margin-right: 10px;
   margin-bottom: 10px;
-  padding: 5px 10px;
+  padding: 10px;
   border: none;
   background-color: skyblue;
   border-radius: 10px;

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
-import CreateTodo from "../components/molecules/CreateTodo";
+import CreateTodo from "../components/molecules/CreateSearchTodo";
 import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
 import Spinner from "../components/atoms/Spinner";
 import EditTodo from "../components/molecules/EditTodo";

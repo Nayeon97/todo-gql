@@ -178,6 +178,7 @@ export type GetCursorTodosQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['String']>;
   search?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<TodoOrderByInput>;
 }>;
 
 
@@ -400,10 +401,10 @@ export type ToggleTodoMutationHookResult = ReturnType<typeof useToggleTodoMutati
 export type ToggleTodoMutationResult = Apollo.MutationResult<ToggleTodoMutation>;
 export type ToggleTodoMutationOptions = Apollo.BaseMutationOptions<ToggleTodoMutation, ToggleTodoMutationVariables>;
 export const GetCursorTodosDocument = gql`
-    query getCursorTodos($userId: ID!, $first: Int, $after: String, $search: String) {
+    query getCursorTodos($userId: ID!, $first: Int, $after: String, $search: String, $orderBy: TodoOrderByInput) {
   user(id: $userId) {
     id
-    cursorTodos(first: $first, after: $after, search: $search) {
+    cursorTodos(first: $first, after: $after, search: $search, orderBy: $orderBy) {
       edges {
         node {
           id
@@ -436,6 +437,7 @@ export const GetCursorTodosDocument = gql`
  *      first: // value for 'first'
  *      after: // value for 'after'
  *      search: // value for 'search'
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */

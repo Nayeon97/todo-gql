@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import CreateTodo from "../components/molecules/CreateTodo";
+import CreateSearchTodo from "../components/molecules/CreateSearchTodo";
 import CursorTodoItems from "../components/organisms/CursorTodoItems";
 import Spinner from "../components/atoms/Spinner";
-import { useGetCursorTodosLazyQuery, User } from "../gql/generated/graphql";
+import {
+  InputMaybe,
+  Sort,
+  useGetCursorTodosLazyQuery,
+} from "../gql/generated/graphql";
 import { gql } from "@apollo/client";
+import OrderByTodo from "../components/molecules/OrderbyTodos";
 
 gql`
   query getCursorTodos(
@@ -13,10 +18,16 @@ gql`
     $first: Int
     $after: String
     $search: String
+    $orderBy: TodoOrderByInput
   ) {
     user(id: $userId) {
       id
-      cursorTodos(first: $first, after: $after, search: $search) {
+      cursorTodos(
+        first: $first
+        after: $after
+        search: $search
+        orderBy: $orderBy
+      ) {
         edges {
           node {
             id
@@ -37,6 +48,7 @@ const CursorTodos = () => {
   const params = useParams();
   const [after, setAfter] = useState<string>("");
   const [nextPage, setNextPage] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>("");
   const [getTodos, { data, error, loading, fetchMore }] =
     useGetCursorTodosLazyQuery({});
 
@@ -56,13 +68,22 @@ const CursorTodos = () => {
 
   if (error) return <p>`Error! ${error.message}`</p>;
 
-  const getData = (search?: string) => {
+  const getData = (
+    search?: string,
+    orderByText?: InputMaybe<Sort>,
+    orderByCompleted?: InputMaybe<Sort>
+  ) => {
+    setSearch(search || "");
     getTodos({
       variables: {
         userId: params.userId || "",
         search: search,
         first: 0,
-        after,
+        after: null,
+        orderBy: {
+          text: orderByText,
+          completed: orderByCompleted,
+        },
       },
     });
   };
@@ -86,11 +107,19 @@ const CursorTodos = () => {
       ) : (
         data && (
           <TodosContainer>
-            <CreateTodo user={data.user} getData={getData} />
+            <div>
+              <CreateSearchTodo user={data.user} getData={getData} />
+            </div>
+            <OrderByTodo getData={getData} search={search} />
+            {search && (
+              <SearchWrapper>
+                검색 결과
+                <p>{search}</p>
+              </SearchWrapper>
+            )}
             <TodosWrapper>
               <CursorTodoItems
                 user={data.user}
-                // todos={data.user.cursorTodos.edges}
                 onLoadMore={handleLoadMore}
                 end={nextPage}
               />
@@ -119,13 +148,27 @@ const SpinnerWrapper = styled.div`
 const TodosContainer = styled.div`
   display: grid;
   justify-items: center;
-  padding-top: 70px;
+  margin-top: 20px;
 `;
 
 const TodosWrapper = styled.div`
   height: 350px;
   margin-top: 30px;
   margin-bottom: 20px;
+`;
+
+const SearchWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  margin-top: 10px;
+  margin-left: 30px;
+  font-size: 13px;
+  color: gray;
+  p {
+    color: pink;
+    padding: 0px 10px;
+    font-weight: bold;
+  }
 `;
 
 gql`

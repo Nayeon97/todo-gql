@@ -27,7 +27,7 @@ const InputWrapper = styled.input`
   height: 20px;
   color: black;
   background-color: #f1f3f5;
-  padding: 20px;
+  padding: 15px;
   border-radius: 10px;
   font-size: 15px;
   cursor: text;
