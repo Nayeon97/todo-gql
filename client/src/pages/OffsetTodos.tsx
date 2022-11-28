@@ -24,6 +24,7 @@ const GET_OFFSET_TODOS = gql`
 const OffsetTodos = () => {
   const params = useParams();
   const [limit, setLimit] = useState(10);
+  const [search, setSearch] = useState<string>("");
   const { data, error, loading, fetchMore } = useQuery(GET_OFFSET_TODOS, {
     variables: {
       userId: params.userId,
@@ -48,7 +49,7 @@ const OffsetTodos = () => {
   return (
     <>
       <TodosContainer>
-        <CreateTodo user={data?.user} />
+        {/* <CreateTodo user={data?.user} setSearch={setSearch} /> */}
         <TodosWrapper>
           {loading ? (
             <Spinner />

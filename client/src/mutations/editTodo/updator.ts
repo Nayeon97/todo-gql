@@ -1,10 +1,10 @@
-import { MutationUpdaterFn } from '@apollo/client';
+import { MutationUpdaterFn } from "@apollo/client";
 import {
   EditTodoMutation,
   EditTodoMutationVariables,
   EditTodoText_TodoFragmentDoc,
   CursorTodoItems_TodoFragment,
-} from '../../gql/generated/graphql';
+} from "../../gql/generated/graphql";
 
 export const updator =
   (user: CursorTodoItems_TodoFragment): MutationUpdaterFn<EditTodoMutation> =>

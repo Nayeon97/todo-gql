@@ -20,9 +20,21 @@ let todos = [
     completed: false,
     userId: "user1",
   },
-  ..._.times(200, (index) => ({
+  ..._.times(100, (index) => ({
     id: `todo:${index}`,
     text: `${index}번째 할일`,
+    completed: true,
+    userId: "user2",
+  })),
+  ..._.times(100, (index) => ({
+    id: `todo:${index + 100}`,
+    text: `${index}번째 TODO`,
+    completed: false,
+    userId: "user2",
+  })),
+  ..._.times(100, (index) => ({
+    id: `todo:${index + 200}`,
+    text: `${index}번째 Search`,
     completed: false,
     userId: "user2",
   })),
@@ -58,11 +70,30 @@ const typeDefs = gql`
     edges: [TodoEdge!]!
     pageInfo: PageInfo!
   }
+  input TodoOrderByInput {
+    text: Sort
+    completed: Sort
+  }
+  enum Sort {
+    asc
+    desc
+  }
+
   type User {
     id: ID!
     totalTodoCount: Int!
-    offsetTodos(offset: Int, limit: Int): [Todo!]!
-    cursorTodos(first: Int, after: String): TodoConnection!
+    offsetTodos(
+      offset: Int
+      limit: Int
+      search: String
+      orderBy: TodoOrderByInput
+    ): [Todo!]!
+    cursorTodos(
+      first: Int
+      after: String
+      search: String
+      orderBy: TodoOrderByInput
+    ): TodoConnection!
   }
   type Query {
     allUsers: [User!]!
@@ -108,13 +139,37 @@ const resolvers = {
       const offset = args.offset || 0;
       const limit = args.limit || 50;
 
-      const userTodos = todos.filter((todo) => todo.userId === user.id);
+      let userTodos = todos.filter((todo) => todo.userId === user.id);
+      if (args.search) {
+        // userTodos;
+        userTodos = userTodos.filter((todo) => todo.text.includes(args.search));
+      }
+
+      if (args.orderBy) {
+        userTodos = _.orderBy(
+          userTodos,
+          Object.keys(args.orderBy),
+          Object.values(args.orderBy)
+        );
+      }
 
       return userTodos.slice(offset, offset + limit);
     },
     cursorTodos: async (user, args) => {
       await sleep(1000);
-      const userTodos = todos.filter((todo) => todo.userId === user.id);
+      let userTodos = todos.filter((todo) => todo.userId === user.id);
+      if (args.search) {
+        // userTodos;
+        userTodos = userTodos.filter((todo) => todo.text.includes(args.search));
+      }
+
+      if (args.orderBy) {
+        userTodos = _.orderBy(
+          userTodos,
+          Object.keys(args.orderBy),
+          Object.values(args.orderBy)
+        );
+      }
 
       const first = args.first || 10;
       const after = args.after;

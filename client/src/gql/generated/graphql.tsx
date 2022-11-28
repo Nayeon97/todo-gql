@@ -79,6 +79,11 @@ export type RemoveTodoPayload = {
   deletedTodoId: Scalars['ID'];
 };
 
+export enum Sort {
+  Asc = 'asc',
+  Desc = 'desc'
+}
+
 export type Todo = {
   __typename?: 'Todo';
   completed: Scalars['Boolean'];
@@ -98,6 +103,11 @@ export type TodoEdge = {
   node: Todo;
 };
 
+export type TodoOrderByInput = {
+  completed?: InputMaybe<Sort>;
+  text?: InputMaybe<Sort>;
+};
+
 export type User = {
   __typename?: 'User';
   cursorTodos: TodoConnection;
@@ -110,12 +120,16 @@ export type User = {
 export type UserCursorTodosArgs = {
   after?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<TodoOrderByInput>;
+  search?: InputMaybe<Scalars['String']>;
 };
 
 
 export type UserOffsetTodosArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<TodoOrderByInput>;
+  search?: InputMaybe<Scalars['String']>;
 };
 
 export type DeleteTodo_TodoFragment = { __typename?: 'Todo', id: string };
@@ -163,6 +177,7 @@ export type GetCursorTodosQueryVariables = Exact<{
   userId: Scalars['ID'];
   first?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['String']>;
+  search?: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -385,10 +400,10 @@ export type ToggleTodoMutationHookResult = ReturnType<typeof useToggleTodoMutati
 export type ToggleTodoMutationResult = Apollo.MutationResult<ToggleTodoMutation>;
 export type ToggleTodoMutationOptions = Apollo.BaseMutationOptions<ToggleTodoMutation, ToggleTodoMutationVariables>;
 export const GetCursorTodosDocument = gql`
-    query getCursorTodos($userId: ID!, $first: Int, $after: String) {
+    query getCursorTodos($userId: ID!, $first: Int, $after: String, $search: String) {
   user(id: $userId) {
     id
-    cursorTodos(first: $first, after: $after) {
+    cursorTodos(first: $first, after: $after, search: $search) {
       edges {
         node {
           id
@@ -420,6 +435,7 @@ export const GetCursorTodosDocument = gql`
  *      userId: // value for 'userId'
  *      first: // value for 'first'
  *      after: // value for 'after'
+ *      search: // value for 'search'
  *   },
  * });
  */

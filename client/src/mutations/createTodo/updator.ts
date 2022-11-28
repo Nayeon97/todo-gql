@@ -24,7 +24,6 @@ export const updator =
     });
 
     if (cacheData) {
-      console.log(cacheData);
       cache.writeQuery<GetCursorTodosQuery, GetCursorTodosQueryVariables>({
         query: GetCursorTodosDocument,
         variables: {

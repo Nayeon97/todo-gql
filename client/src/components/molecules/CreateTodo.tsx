@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import {
   useCreateTodoMutation,
   CursorTodoItems_TodoFragment,
@@ -6,13 +6,16 @@ import {
 import Input from "../atoms/Input/Input";
 import { updator } from "../../mutations/createTodo/updator";
 import { useParams } from "react-router-dom";
+import styled from "styled-components";
 
 interface CrateTodoProps {
   user: CursorTodoItems_TodoFragment;
+  getData: (search: string) => void;
 }
 
-const CreateTodo = ({ user }: CrateTodoProps) => {
+const CreateTodo = ({ user, getData }: CrateTodoProps) => {
   const [text, setText] = useState<string>("");
+  const [select, setSelect] = useState<string>("create");
   const params = useParams();
   const userId = params?.userId;
 
@@ -26,7 +29,18 @@ const CreateTodo = ({ user }: CrateTodoProps) => {
 
   if (error) return <p>`Error! ${error.message}`</p>;
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key === "Enter") {
+      if (select === "create") {
+        onCreate();
+      } else {
+        onSearch();
+      }
+    }
+  };
+
   const onCreate = () => {
+    console.log("create");
     if (text && userId) {
       createTodo({
         variables: { text: text, userId: userId },
@@ -44,25 +58,43 @@ const CreateTodo = ({ user }: CrateTodoProps) => {
         },
       });
       setText("");
+    } else {
+      alert("todo text XX");
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === "Enter") {
-      onCreate();
-    }
+  const onSearch = () => {
+    getData(text);
+  };
+
+  const changeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelect(e.target.value);
   };
 
   return (
-    <div>
+    <>
+      <SelectContainer onChange={changeSelect}>
+        <option value="create">create</option>
+        <option value="search">search</option>
+      </SelectContainer>
       <Input
         type="text"
         value={text}
         onChange={onChange}
         onKeyPress={handleKeyPress}
       />
-    </div>
+    </>
   );
 };
 
 export default CreateTodo;
+
+const SelectContainer = styled.select`
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  border: none;
+  background-color: skyblue;
+  border-radius: 10px;
+  font-size: 15px;
+  color: white;
+`;

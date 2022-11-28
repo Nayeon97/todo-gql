@@ -1,17 +1,22 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
-import CreateTodo from '../components/molecules/CreateTodo';
-import CursorTodoItems from '../components/organisms/CursorTodoItems';
-import Spinner from '../components/atoms/Spinner';
-import { useGetCursorTodosQuery } from '../gql/generated/graphql';
-import { gql } from '@apollo/client';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
+import CreateTodo from "../components/molecules/CreateTodo";
+import CursorTodoItems from "../components/organisms/CursorTodoItems";
+import Spinner from "../components/atoms/Spinner";
+import { useGetCursorTodosLazyQuery, User } from "../gql/generated/graphql";
+import { gql } from "@apollo/client";
 
 gql`
-  query getCursorTodos($userId: ID!, $first: Int, $after: String) {
+  query getCursorTodos(
+    $userId: ID!
+    $first: Int
+    $after: String
+    $search: String
+  ) {
     user(id: $userId) {
       id
-      cursorTodos(first: $first, after: $after) {
+      cursorTodos(first: $first, after: $after, search: $search) {
         edges {
           node {
             id
@@ -30,15 +35,14 @@ gql`
 
 const CursorTodos = () => {
   const params = useParams();
-  const [after, setAfter] = useState<string>('');
+  const [after, setAfter] = useState<string>("");
   const [nextPage, setNextPage] = useState<boolean>(false);
-  const { data, error, loading, fetchMore } = useGetCursorTodosQuery({
-    variables: {
-      userId: params.userId || '',
-      first: 0,
-      after,
-    },
-  });
+  const [getTodos, { data, error, loading, fetchMore }] =
+    useGetCursorTodosLazyQuery({});
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   useEffect(() => {
     if (data?.user.cursorTodos.edges.length !== 0) {
@@ -51,6 +55,17 @@ const CursorTodos = () => {
   }, [data]);
 
   if (error) return <p>`Error! ${error.message}`</p>;
+
+  const getData = (search?: string) => {
+    getTodos({
+      variables: {
+        userId: params.userId || "",
+        search: search,
+        first: 0,
+        after,
+      },
+    });
+  };
 
   const handleLoadMore = () => {
     if (nextPage) {
@@ -71,10 +86,11 @@ const CursorTodos = () => {
       ) : (
         data && (
           <TodosContainer>
-            <CreateTodo user={data.user} />
+            <CreateTodo user={data.user} getData={getData} />
             <TodosWrapper>
               <CursorTodoItems
                 user={data.user}
+                // todos={data.user.cursorTodos.edges}
                 onLoadMore={handleLoadMore}
                 end={nextPage}
               />

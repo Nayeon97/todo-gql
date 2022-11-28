@@ -23,6 +23,16 @@ const GlobalStyle = createGlobalStyle`
     cursor: pointer;
     background-color: transparent;
   }
+
+  input {
+    outline: none;
+    border: none;
+  }
+
+  textarea:focus, input:focus, select:focus{
+    outline: none;
+    border: none;
+}
 `;
 
 export default GlobalStyle;

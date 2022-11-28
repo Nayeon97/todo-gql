@@ -1,11 +1,11 @@
-import { MutationUpdaterFn } from '@apollo/client';
-import produce from 'immer';
+import { MutationUpdaterFn } from "@apollo/client";
+import produce from "immer";
 import {
   ToggleTodoMutation,
   GetCursorTodosQuery,
   GetCursorTodosQueryVariables,
   GetCursorTodosDocument,
-} from '../../gql/generated/graphql';
+} from "../../gql/generated/graphql";
 
 export const updator =
   (): MutationUpdaterFn<ToggleTodoMutation> =>

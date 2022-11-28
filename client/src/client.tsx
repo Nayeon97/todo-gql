@@ -20,7 +20,7 @@ const client = new ApolloClient({
           offsetTodos: {
             ...offsetLimitPagination(),
           },
-          cursorTodos: relayStylePagination(),
+          cursorTodos: relayStylePagination(["search"]),
         },
       },
     },
