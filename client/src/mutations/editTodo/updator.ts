@@ -4,10 +4,11 @@ import {
   EditTodoMutationVariables,
   EditTodoText_TodoFragmentDoc,
   CursorTodoItems_TodoFragment,
+  OffsetTodoItems_TodoFragment,
 } from "../../gql/generated/graphql";
 
 export const updator =
-  (user: CursorTodoItems_TodoFragment): MutationUpdaterFn<EditTodoMutation> =>
+  (user: OffsetTodoItems_TodoFragment): MutationUpdaterFn<EditTodoMutation> =>
   (cache, { data }) => {
     if (!data?.editTodo) {
       return;

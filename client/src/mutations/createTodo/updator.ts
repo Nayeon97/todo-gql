@@ -6,10 +6,11 @@ import {
   GetCursorTodosQuery,
   GetCursorTodosQueryVariables,
   CursorTodoItems_TodoFragment,
+  OffsetTodoItems_TodoFragment,
 } from "../../gql/generated/graphql";
 
 export const updator =
-  (user: CursorTodoItems_TodoFragment): MutationUpdaterFn<CreateTodoMutation> =>
+  (user: OffsetTodoItems_TodoFragment): MutationUpdaterFn<CreateTodoMutation> =>
   (cache, { data }) => {
     if (!data) return;
 

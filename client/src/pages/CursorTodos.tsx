@@ -108,7 +108,7 @@ const CursorTodos = () => {
         data && (
           <TodosContainer>
             <div>
-              <CreateSearchTodo user={data.user} getData={getData} />
+              {/* <CreateSearchTodo user={data.user} getData={getData} /> */}
             </div>
             <OrderByTodo getData={getData} search={search} />
             {search && (

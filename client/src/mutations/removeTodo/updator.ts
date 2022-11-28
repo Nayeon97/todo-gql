@@ -4,10 +4,11 @@ import {
   Query,
   RemoveTodoMutation,
   CursorTodoItems_TodoFragment,
+  OffsetTodoItems_TodoFragment,
 } from "../../gql/generated/graphql";
 
 export const updator =
-  (user: CursorTodoItems_TodoFragment): MutationUpdaterFn<RemoveTodoMutation> =>
+  (user: OffsetTodoItems_TodoFragment): MutationUpdaterFn<RemoveTodoMutation> =>
   (cache, { data }) => {
     if (!data?.removeTodo) {
       return;

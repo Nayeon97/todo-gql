@@ -17,7 +17,7 @@ const SearchUser = () => {
   const [userId, setUserId] = useState("");
   const [getUser, { error }] = useLazyQuery(GET_USERS, {
     onCompleted: () => {
-      navigate(`user/cursor-todos/${userId}`);
+      navigate(`user/offset-todos/${userId}`);
     },
     fetchPolicy: "network-only",
   });

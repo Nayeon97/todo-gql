@@ -1,17 +1,19 @@
-import styled from 'styled-components';
-import ToggleCompleteTodo from './ToggleCompleteTodo';
-import DeleteTodo from './DeleteTodo';
-import EditTodo from './EditTodo';
-import Button from '../atoms/Button/Button';
+import styled from "styled-components";
+import ToggleCompleteTodo from "./ToggleCompleteTodo";
+import DeleteTodo from "./DeleteTodo";
+import EditTodo from "./EditTodo";
+import Button from "../atoms/Button/Button";
 import {
   TodoEdge,
   CursorTodoItems_TodoFragment,
-} from '../../gql/generated/graphql';
-import { useState } from 'react';
+  OffsetTodoItems_TodoFragment,
+  Todo,
+} from "../../gql/generated/graphql";
+import { useState } from "react";
 
 interface TodoItemProps {
-  todo: TodoEdge;
-  user: CursorTodoItems_TodoFragment;
+  todo: Todo;
+  user: OffsetTodoItems_TodoFragment;
 }
 
 const TodoItem = ({ todo, user }: TodoItemProps) => {
@@ -19,8 +21,8 @@ const TodoItem = ({ todo, user }: TodoItemProps) => {
 
   return (
     <>
-      <TodoItemContainer completed={todo.node.completed} key={todo.node.id}>
-        <ToggleCompleteTodo todo={todo.node} isEdit={isEdit} />
+      <TodoItemContainer completed={todo.completed} key={todo.id}>
+        <ToggleCompleteTodo todo={todo} isEdit={isEdit} />
         <EditTodo
           isEdit={isEdit}
           user={user}
@@ -33,9 +35,9 @@ const TodoItem = ({ todo, user }: TodoItemProps) => {
           }}
           name="edit"
           btnType="edit"
-          disabled={isEdit ? true : false || todo.node.completed ? true : false}
+          disabled={isEdit ? true : false || todo.completed ? true : false}
         />
-        <DeleteTodo user={user} setIsEdit={setIsEdit} todo={todo.node} />
+        <DeleteTodo user={user} setIsEdit={setIsEdit} todo={todo} />
       </TodoItemContainer>
     </>
   );
@@ -48,7 +50,7 @@ const TodoItemContainer = styled.div<{ completed: boolean }>`
   width: 450px;
   grid-template-columns: repeat(4, 1fr);
   place-items: center;
-  background-color: ${(props) => (props.completed ? '#d3d3d3' : 'transparent')};
+  background-color: ${(props) => (props.completed ? "#d3d3d3" : "transparent")};
   border-radius: 5px;
   margin: 10px 10px;
   padding: 10px 0px;

@@ -188,6 +188,8 @@ export type GetOffsetTodosQueryVariables = Exact<{
   userId: Scalars['ID'];
   offset?: InputMaybe<Scalars['Int']>;
   limit?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<TodoOrderByInput>;
 }>;
 
 
@@ -453,11 +455,11 @@ export type GetCursorTodosQueryHookResult = ReturnType<typeof useGetCursorTodosQ
 export type GetCursorTodosLazyQueryHookResult = ReturnType<typeof useGetCursorTodosLazyQuery>;
 export type GetCursorTodosQueryResult = Apollo.QueryResult<GetCursorTodosQuery, GetCursorTodosQueryVariables>;
 export const GetOffsetTodosDocument = gql`
-    query getOffsetTodos($userId: ID!, $offset: Int, $limit: Int) {
+    query getOffsetTodos($userId: ID!, $offset: Int, $limit: Int, $search: String, $orderBy: TodoOrderByInput) {
   user(id: $userId) {
     id
     totalTodoCount
-    offsetTodos(offset: $offset, limit: $limit) {
+    offsetTodos(offset: $offset, limit: $limit, search: $search, orderBy: $orderBy) {
       id
       text
       completed
@@ -481,6 +483,8 @@ export const GetOffsetTodosDocument = gql`
  *      userId: // value for 'userId'
  *      offset: // value for 'offset'
  *      limit: // value for 'limit'
+ *      search: // value for 'search'
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */
