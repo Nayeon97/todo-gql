@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client";
-import { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useAllUsersQuery } from "../gql/generated/graphql";
@@ -13,7 +12,7 @@ gql`
   }
 `;
 
-const SearchUser = () => {
+const UserList = () => {
   const navigate = useNavigate();
   const { data, loading, error } = useAllUsersQuery({});
 
@@ -26,7 +25,7 @@ const SearchUser = () => {
         ) : (
           data?.allUsers.map((user) => {
             return (
-              <UserCard>
+              <UserCard key={user.id}>
                 <div>{user.id}</div>
                 <div>
                   <button
@@ -36,6 +35,8 @@ const SearchUser = () => {
                   >
                     cursor
                   </button>
+                </div>
+                <div>
                   <button
                     onClick={() => {
                       navigate(`offset/${user.id}`);
@@ -54,7 +55,7 @@ const SearchUser = () => {
   );
 };
 
-export default SearchUser;
+export default UserList;
 
 const TextWrapper = styled.h1`
   font-size: large;

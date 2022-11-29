@@ -72,11 +72,7 @@ export const Standard: StoryObj = () => {
 
   const handleLoadMore = () => {
     if (User.cursorTodos.pageInfo.hasNextPage) {
-      //   fetchMore({
-      //     variables: {
-      //       cursor: after,
-      //     },
-      //   });
+      setEnd(false);
     }
   };
 
