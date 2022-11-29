@@ -43,7 +43,13 @@ const OffsetTodos = () => {
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState<string>("");
   const [getTodos, { data, error, loading, fetchMore }] =
-    useGetOffsetTodosLazyQuery({});
+    useGetOffsetTodosLazyQuery({
+      variables: {
+        userId: params.userId || "",
+        offset: 0,
+        limit,
+      },
+    });
 
   useEffect(() => {
     getData();

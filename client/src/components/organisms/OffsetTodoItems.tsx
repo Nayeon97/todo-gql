@@ -23,6 +23,14 @@ const OffsetTodoItems = ({ user, onLoadMore }: TodoItemsProps) => {
         {user.offsetTodos.map((todo) => {
           return <TodoItem key={todo.id} todo={todo} user={user} />;
         })}
+        <ViewMoreButton>
+          <button onClick={onLoadMore}>더보기</button>
+        </ViewMoreButton>
+        {/* {end && (
+          <ViewMoreButton>
+            <button onClick={onLoadMore}>더보기</button>
+          </ViewMoreButton>
+        )} */}
       </TodoItemsContainer>
     </>
   );
@@ -52,6 +60,19 @@ const TextWrapper = styled.input<{ completed: boolean }>`
   margin: 0px 20px;
   color: ${(props) => (props.completed ? "white" : "black")};
   text-decoration: ${(props) => (props.completed ? "line-through" : "")};
+`;
+
+const ViewMoreButton = styled.div`
+  display: grid;
+  width: 450px;
+  place-items: center;
+  button {
+    background-color: skyblue;
+    padding: 10px;
+    border-radius: 25px;
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.09);
+  }
 `;
 
 gql`

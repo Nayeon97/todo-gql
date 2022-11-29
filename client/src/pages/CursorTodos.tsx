@@ -50,21 +50,29 @@ const CursorTodos = () => {
   const [nextPage, setNextPage] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [getTodos, { data, error, loading, fetchMore }] =
-    useGetCursorTodosLazyQuery({});
+    useGetCursorTodosLazyQuery({
+      variables: {
+        userId: params.userId || "",
+        search,
+        first: 0,
+        after,
+      },
+    });
 
   useEffect(() => {
-    getData();
+    getTodos();
   }, []);
 
   useEffect(() => {
-    if (data?.user.cursorTodos.edges.length !== 0) {
+    if (data) {
+      console.log("useEffect get Cursor");
       setAfter(
         data?.user.cursorTodos.edges.map((edge: any) => edge).slice(-1)[0]
           .cursor
       );
       setNextPage(data?.user.cursorTodos.pageInfo.hasNextPage || false);
     }
-  }, [data]);
+  }, [data, search]);
 
   if (error) return <p>`Error! ${error.message}`</p>;
 
@@ -77,9 +85,9 @@ const CursorTodos = () => {
     getTodos({
       variables: {
         userId: params.userId || "",
-        search: search,
+        search,
         first: 0,
-        after: null,
+        after,
         orderBy: {
           text: orderByText,
           completed: orderByCompleted,
