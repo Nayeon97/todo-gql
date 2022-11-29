@@ -7,7 +7,7 @@ import {
   CursorTodoItems_TodoFragment,
   TodoEdge,
 } from "../../../gql/generated/graphql";
-import { updator } from "../../../mutations/cursor/editTodo/updator";
+import { editTodoUpdator } from "../../../mutations/cursor/editTodoUpdator";
 
 interface EditTodoProps {
   isEdit: boolean;
@@ -23,7 +23,7 @@ const EditTodo = ({ isEdit, user, todo, setIsEdit }: EditTodoProps) => {
   };
 
   const [editTodoItem] = useEditTodoMutation({
-    update: updator(user),
+    update: editTodoUpdator(user),
     onCompleted: () => {
       setIsEdit(false);
     },

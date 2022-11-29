@@ -4,7 +4,7 @@ import {
   OffsetTodoItems_TodoFragment,
 } from "../../../gql/generated/graphql";
 import Input from "../../atoms/Input/Input";
-import { updator } from "../../../mutations/offset/createTodo/updator";
+import { createTodoUpdator } from "../../../mutations/offset/createTodoUpdator";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -24,7 +24,7 @@ const CreateSearchTodo = ({ user, getData }: CrateTodoProps) => {
   };
 
   const [createTodo, { error }] = useCreateTodoMutation({
-    update: updator(user),
+    update: createTodoUpdator(user),
   });
 
   if (error) return <p>`Error! ${error.message}`</p>;

@@ -5,9 +5,9 @@ import {
   GetCursorTodosQuery,
   GetCursorTodosQueryVariables,
   GetCursorTodosDocument,
-} from "../../../gql/generated/graphql";
+} from "../../gql/generated/graphql";
 
-export const updator =
+export const toggleTodoUpdator =
   (): MutationUpdaterFn<ToggleTodoMutation> =>
   (cache, { data }) => {
     if (!data?.toggleTodo) {

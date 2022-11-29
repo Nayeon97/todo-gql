@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAllUsersQuery } from "../gql/generated/graphql";
 import Spinner from "../components/atoms/Spinner";
 
-const GET_USERS = gql`
+gql`
   query allUsers {
     allUsers {
       id
@@ -15,7 +15,6 @@ const GET_USERS = gql`
 
 const SearchUser = () => {
   const navigate = useNavigate();
-  const [userId, setUserId] = useState("");
   const { data, loading, error } = useAllUsersQuery({});
 
   return (

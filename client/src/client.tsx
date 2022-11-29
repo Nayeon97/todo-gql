@@ -11,17 +11,14 @@ const client = new ApolloClient({
       Query: {
         fields: {
           allUsers: { keyArgs: ["userId"] },
-          user: {
-            keyArgs: ["userId"],
-          },
         },
       },
       User: {
         fields: {
           offsetTodos: {
-            ...offsetLimitPagination(["search"]),
+            ...offsetLimitPagination(["userId", "search"]),
           },
-          cursorTodos: relayStylePagination(["search", "orderBy"]),
+          cursorTodos: relayStylePagination(["userId", "search", "orderBy"]),
         },
       },
     },

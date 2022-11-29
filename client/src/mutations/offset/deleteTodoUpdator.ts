@@ -3,11 +3,11 @@ import produce from "immer";
 import {
   Query,
   RemoveTodoMutation,
-  CursorTodoItems_TodoFragment,
-} from "../../../gql/generated/graphql";
+  OffsetTodoItems_TodoFragment,
+} from "../../gql/generated/graphql";
 
-export const updator =
-  (user: CursorTodoItems_TodoFragment): MutationUpdaterFn<RemoveTodoMutation> =>
+export const deleteTodoUpdator =
+  (user: OffsetTodoItems_TodoFragment): MutationUpdaterFn<RemoveTodoMutation> =>
   (cache, { data }) => {
     if (!data?.removeTodo) {
       return;

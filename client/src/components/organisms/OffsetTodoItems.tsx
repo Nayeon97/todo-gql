@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { gql } from "@apollo/client";
 import styled from "styled-components";
 import { OffsetTodoItems_TodoFragment } from "../../gql/generated/graphql";

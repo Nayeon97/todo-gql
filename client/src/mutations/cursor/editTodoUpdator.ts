@@ -4,9 +4,9 @@ import {
   EditTodoMutationVariables,
   EditTodoText_TodoFragmentDoc,
   CursorTodoItems_TodoFragment,
-} from "../../../gql/generated/graphql";
+} from "../../gql/generated/graphql";
 
-export const updator =
+export const editTodoUpdator =
   (user: CursorTodoItems_TodoFragment): MutationUpdaterFn<EditTodoMutation> =>
   (cache, { data }) => {
     if (!data?.editTodo) {

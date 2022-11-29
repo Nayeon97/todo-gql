@@ -6,7 +6,7 @@ import {
   DeleteTodo_TodoFragment,
   useRemoveTodoMutation,
 } from "../../../gql/generated/graphql";
-import { updator } from "../../../mutations/cursor/removeTodo/updator";
+import { deleteTodoUpdator } from "../../../mutations/cursor/deleteTodoUpdator";
 
 interface DeleteTodoProps {
   user: CursorTodoItems_TodoFragment;
@@ -18,7 +18,7 @@ const DeleteTodo = ({ user, todo }: DeleteTodoProps) => {
   const { id } = todo;
 
   const [deleteTodo, { error }] = useRemoveTodoMutation({
-    update: updator(user),
+    update: deleteTodoUpdator(user),
   });
 
   if (error) return <p>`Error! ${error.message}`</p>;
