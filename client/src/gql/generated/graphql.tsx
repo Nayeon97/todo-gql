@@ -195,12 +195,10 @@ export type GetOffsetTodosQueryVariables = Exact<{
 
 export type GetOffsetTodosQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, totalTodoCount: number, offsetTodos: Array<{ __typename?: 'Todo', id: string, text: string, completed: boolean }> } };
 
-export type UserQueryVariables = Exact<{
-  userId: Scalars['ID'];
-}>;
+export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UserQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string } };
+export type AllUsersQuery = { __typename?: 'Query', allUsers: Array<{ __typename?: 'User', id: string }> };
 
 export const EditTodoText_TodoFragmentDoc = gql`
     fragment EditTodoText_Todo on Todo {
@@ -499,38 +497,37 @@ export function useGetOffsetTodosLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetOffsetTodosQueryHookResult = ReturnType<typeof useGetOffsetTodosQuery>;
 export type GetOffsetTodosLazyQueryHookResult = ReturnType<typeof useGetOffsetTodosLazyQuery>;
 export type GetOffsetTodosQueryResult = Apollo.QueryResult<GetOffsetTodosQuery, GetOffsetTodosQueryVariables>;
-export const UserDocument = gql`
-    query User($userId: ID!) {
-  user(id: $userId) {
+export const AllUsersDocument = gql`
+    query allUsers {
+  allUsers {
     id
   }
 }
     `;
 
 /**
- * __useUserQuery__
+ * __useAllUsersQuery__
  *
- * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
- * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAllUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useUserQuery({
+ * const { data, loading, error } = useAllUsersQuery({
  *   variables: {
- *      userId: // value for 'userId'
  *   },
  * });
  */
-export function useUserQuery(baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
+export function useAllUsersQuery(baseOptions?: Apollo.QueryHookOptions<AllUsersQuery, AllUsersQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+        return Apollo.useQuery<AllUsersQuery, AllUsersQueryVariables>(AllUsersDocument, options);
       }
-export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
+export function useAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllUsersQuery, AllUsersQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+          return Apollo.useLazyQuery<AllUsersQuery, AllUsersQueryVariables>(AllUsersDocument, options);
         }
-export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
-export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
-export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
+export type AllUsersQueryHookResult = ReturnType<typeof useAllUsersQuery>;
+export type AllUsersLazyQueryHookResult = ReturnType<typeof useAllUsersLazyQuery>;
+export type AllUsersQueryResult = Apollo.QueryResult<AllUsersQuery, AllUsersQueryVariables>;

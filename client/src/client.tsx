@@ -10,6 +10,7 @@ const client = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
+          allUsers: { keyArgs: ["userId"] },
           user: {
             keyArgs: ["userId"],
           },

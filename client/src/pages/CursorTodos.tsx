@@ -64,8 +64,7 @@ const CursorTodos = () => {
   }, []);
 
   useEffect(() => {
-    if (data) {
-      console.log("useEffect get Cursor");
+    if (data?.user.cursorTodos.edges[0]) {
       setAfter(
         data?.user.cursorTodos.edges.map((edge: any) => edge).slice(-1)[0]
           .cursor

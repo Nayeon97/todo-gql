@@ -11,16 +11,14 @@ interface TodoItemsProps {
 
 const OffsetTodoItems = ({ user, onLoadMore }: TodoItemsProps) => {
   return (
-    <>
-      <TodoItemsContainer>
-        {user.offsetTodos.map((todo) => {
-          return <TodoItem key={todo.id} todo={todo} user={user} />;
-        })}
-        <ViewMoreButton>
-          <button onClick={onLoadMore}>더보기</button>
-        </ViewMoreButton>
-      </TodoItemsContainer>
-    </>
+    <TodoItemsContainer>
+      {user.offsetTodos.map((todo) => {
+        return <TodoItem key={todo.id} todo={todo} user={user} />;
+      })}
+      <ViewMoreButton>
+        <button onClick={onLoadMore}>더보기</button>
+      </ViewMoreButton>
+    </TodoItemsContainer>
   );
 };
 
@@ -29,25 +27,6 @@ export default OffsetTodoItems;
 const TodoItemsContainer = styled.div`
   height: 500px;
   overflow: auto;
-`;
-
-const TodoItemContainer = styled.div<{ completed: boolean }>`
-  display: grid;
-  width: 450px;
-  grid-template-columns: repeat(4, 1fr);
-  place-items: center;
-  background-color: ${(props) => (props.completed ? "#d3d3d3" : "transparent")};
-  border-radius: 5px;
-  margin: 10px 10px;
-  padding: 10px 0px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.09);
-`;
-
-const TextWrapper = styled.input<{ completed: boolean }>`
-  width: 200px;
-  margin: 0px 20px;
-  color: ${(props) => (props.completed ? "white" : "black")};
-  text-decoration: ${(props) => (props.completed ? "line-through" : "")};
 `;
 
 const ViewMoreButton = styled.div`
