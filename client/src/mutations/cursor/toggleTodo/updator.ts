@@ -5,7 +5,7 @@ import {
   GetCursorTodosQuery,
   GetCursorTodosQueryVariables,
   GetCursorTodosDocument,
-} from "../../gql/generated/graphql";
+} from "../../../gql/generated/graphql";
 
 export const updator =
   (): MutationUpdaterFn<ToggleTodoMutation> =>

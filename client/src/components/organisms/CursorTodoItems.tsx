@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import styled from "styled-components";
 import { CursorTodoItems_TodoFragment } from "../../gql/generated/graphql";
-import TodoItem from "../molecules/TodoItem";
+import TodoItem from "../molecules/cursor/TodoItem";
 
 interface TodoItemsProps {
   user: CursorTodoItems_TodoFragment;
@@ -12,7 +12,7 @@ interface TodoItemsProps {
 const CursorTodoItems = ({ user, end, onLoadMore }: TodoItemsProps) => {
   return (
     <>
-      {/* <TodoItemsContainer>
+      <TodoItemsContainer>
         {user.cursorTodos.edges.map((todo) => {
           return <TodoItem key={todo.node.id} todo={todo} user={user} />;
         })}
@@ -21,7 +21,7 @@ const CursorTodoItems = ({ user, end, onLoadMore }: TodoItemsProps) => {
             <button onClick={onLoadMore}>더보기</button>
           </ViewMoreButton>
         )}
-      </TodoItemsContainer> */}
+      </TodoItemsContainer>
     </>
   );
 };

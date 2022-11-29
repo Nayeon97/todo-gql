@@ -2,18 +2,16 @@ import styled from "styled-components";
 import ToggleCompleteTodo from "./ToggleCompleteTodo";
 import DeleteTodo from "./DeleteTodo";
 import EditTodo from "./EditTodo";
-import Button from "../atoms/Button/Button";
+import Button from "../../atoms/Button/Button";
 import {
   TodoEdge,
   CursorTodoItems_TodoFragment,
-  OffsetTodoItems_TodoFragment,
-  Todo,
-} from "../../gql/generated/graphql";
+} from "../../../gql/generated/graphql";
 import { useState } from "react";
 
 interface TodoItemProps {
-  todo: Todo;
-  user: OffsetTodoItems_TodoFragment;
+  todo: TodoEdge;
+  user: CursorTodoItems_TodoFragment;
 }
 
 const TodoItem = ({ todo, user }: TodoItemProps) => {
@@ -21,8 +19,8 @@ const TodoItem = ({ todo, user }: TodoItemProps) => {
 
   return (
     <>
-      <TodoItemContainer completed={todo.completed} key={todo.id}>
-        <ToggleCompleteTodo todo={todo} isEdit={isEdit} />
+      <TodoItemContainer completed={todo.node.completed} key={todo.node.id}>
+        <ToggleCompleteTodo todo={todo.node} isEdit={isEdit} />
         <EditTodo
           isEdit={isEdit}
           user={user}
@@ -35,9 +33,9 @@ const TodoItem = ({ todo, user }: TodoItemProps) => {
           }}
           name="edit"
           btnType="edit"
-          disabled={isEdit ? true : false || todo.completed ? true : false}
+          disabled={isEdit ? true : false || todo.node.completed ? true : false}
         />
-        <DeleteTodo user={user} setIsEdit={setIsEdit} todo={todo} />
+        <DeleteTodo user={user} setIsEdit={setIsEdit} todo={todo.node} />
       </TodoItemContainer>
     </>
   );

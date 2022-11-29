@@ -1,18 +1,15 @@
 import { Dispatch, SetStateAction } from "react";
-import {
-  CursorTodoItems_TodoFragment,
-  useRemoveTodoMutation,
-} from "../../gql/generated/graphql";
-import Button from "../atoms/Button/Button";
+import { CursorTodoItems_TodoFragment } from "../../../gql/generated/graphql";
+import Button from "../../atoms/Button/Button";
 import { gql } from "@apollo/client";
 import {
   DeleteTodo_TodoFragment,
-  OffsetTodoItems_TodoFragment,
-} from "../../gql/generated/graphql";
-import { updator } from "../../mutations/removeTodo/updator";
+  useRemoveTodoMutation,
+} from "../../../gql/generated/graphql";
+import { updator } from "../../../mutations/cursor/removeTodo/updator";
 
 interface DeleteTodoProps {
-  user: OffsetTodoItems_TodoFragment;
+  user: CursorTodoItems_TodoFragment;
   todo: DeleteTodo_TodoFragment;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
 }

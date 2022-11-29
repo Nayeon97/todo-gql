@@ -1,16 +1,14 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import {
   useCreateTodoMutation,
-  CursorTodoItems_TodoFragment,
   OffsetTodoItems_TodoFragment,
-} from "../../gql/generated/graphql";
-import Input from "../atoms/Input/Input";
-import { updator } from "../../mutations/createTodo/updator";
+} from "../../../gql/generated/graphql";
+import Input from "../../atoms/Input/Input";
+import { updator } from "../../../mutations/offset/createTodo/updator";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 interface CrateTodoProps {
-  // user: CursorTodoItems_TodoFragment;
   user: OffsetTodoItems_TodoFragment;
   getData: (search: string) => void;
 }

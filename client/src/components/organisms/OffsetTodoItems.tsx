@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { gql } from "@apollo/client";
 import styled from "styled-components";
-import {
-  Todo,
-  OffsetTodoItems_TodoFragment,
-} from "../../gql/generated/graphql";
-import TodoItem from "../molecules/TodoItem";
+import { OffsetTodoItems_TodoFragment } from "../../gql/generated/graphql";
+import TodoItem from "../molecules/offset/TodoItem";
 
 interface TodoItemsProps {
   user: OffsetTodoItems_TodoFragment;
@@ -13,10 +10,6 @@ interface TodoItemsProps {
 }
 
 const OffsetTodoItems = ({ user, onLoadMore }: TodoItemsProps) => {
-  const [text, setText] = useState("");
-  const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [editTodo, setEditTodo] = useState<Todo[]>([]);
-
   return (
     <>
       <TodoItemsContainer>
@@ -26,11 +19,6 @@ const OffsetTodoItems = ({ user, onLoadMore }: TodoItemsProps) => {
         <ViewMoreButton>
           <button onClick={onLoadMore}>더보기</button>
         </ViewMoreButton>
-        {/* {end && (
-          <ViewMoreButton>
-            <button onClick={onLoadMore}>더보기</button>
-          </ViewMoreButton>
-        )} */}
       </TodoItemsContainer>
     </>
   );

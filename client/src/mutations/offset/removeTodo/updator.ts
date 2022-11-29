@@ -3,9 +3,8 @@ import produce from "immer";
 import {
   Query,
   RemoveTodoMutation,
-  CursorTodoItems_TodoFragment,
   OffsetTodoItems_TodoFragment,
-} from "../../gql/generated/graphql";
+} from "../../../gql/generated/graphql";
 
 export const updator =
   (user: OffsetTodoItems_TodoFragment): MutationUpdaterFn<RemoveTodoMutation> =>

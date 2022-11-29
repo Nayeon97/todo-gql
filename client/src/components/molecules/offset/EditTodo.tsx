@@ -4,12 +4,10 @@ import { useState } from "react";
 import styled from "styled-components";
 import {
   useEditTodoMutation,
-  CursorTodoItems_TodoFragment,
   OffsetTodoItems_TodoFragment,
-  TodoEdge,
   Todo,
-} from "../../gql/generated/graphql";
-import { updator } from "../../mutations/editTodo/updator";
+} from "../../../gql/generated/graphql";
+import { updator } from "../../../mutations/offset/editTodo/updator";
 
 interface EditTodoProps {
   isEdit: boolean;

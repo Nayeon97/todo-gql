@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
-import { ToggleCompleteTodo_TodoFragment } from "../../gql/generated/graphql";
-import Button from "../atoms/Button/Button";
-import { useToggleTodoMutation } from "../../gql/generated/graphql";
-import { updator } from "../../mutations/toggleTodo/updator";
+import { ToggleCompleteTodo_TodoFragment } from "../../../gql/generated/graphql";
+import Button from "../../atoms/Button/Button";
+import { useToggleTodoMutation } from "../../../gql/generated/graphql";
+import { updator } from "../../../mutations/offset/toggleTodo/updator";
 
 interface ToggleCompleteTodoProps {
   todo: ToggleCompleteTodo_TodoFragment;

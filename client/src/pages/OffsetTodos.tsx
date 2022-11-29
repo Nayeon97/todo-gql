@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 import styled from "styled-components";
-import CreateSearchTodo from "../components/molecules/CreateSearchTodo";
+import CreateSearchTodo from "../components/molecules/offset/CreateSearchTodo";
 import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
 import Spinner from "../components/atoms/Spinner";
-import EditTodo from "../components/molecules/EditTodo";
 import {
   InputMaybe,
   Sort,
   useGetOffsetTodosLazyQuery,
 } from "../gql/generated/graphql";
-import OrderByTodo from "../components/molecules/OrderbyTodos";
+import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
 
 gql`
   query getOffsetTodos(

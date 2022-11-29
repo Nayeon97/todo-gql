@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { InputMaybe, Sort } from "../../gql/generated/graphql";
+import { InputMaybe, Sort } from "../../../gql/generated/graphql";
 
 interface OrderByTodoProps {
   search: string;

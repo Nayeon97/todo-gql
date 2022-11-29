@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import CreateSearchTodo from "../components/molecules/CreateSearchTodo";
+import CreateSearchTodo from "../components/molecules/cursor/CreateSearchTodo";
 import CursorTodoItems from "../components/organisms/CursorTodoItems";
 import Spinner from "../components/atoms/Spinner";
 import {
@@ -10,7 +10,7 @@ import {
   useGetCursorTodosLazyQuery,
 } from "../gql/generated/graphql";
 import { gql } from "@apollo/client";
-import OrderByTodo from "../components/molecules/OrderbyTodos";
+import OrderByTodo from "../components/molecules/cursor/OrderbyTodos";
 
 gql`
   query getCursorTodos(
@@ -116,7 +116,7 @@ const CursorTodos = () => {
         data && (
           <TodosContainer>
             <div>
-              {/* <CreateSearchTodo user={data.user} getData={getData} /> */}
+              <CreateSearchTodo user={data.user} getData={getData} />
             </div>
             <OrderByTodo getData={getData} search={search} />
             {search && (
