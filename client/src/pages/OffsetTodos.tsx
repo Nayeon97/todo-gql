@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { gql } from "@apollo/client";
-import styled from "styled-components";
-import CreateSearchTodo from "../components/molecules/offset/CreateSearchTodo";
-import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
-import Spinner from "../components/atoms/Spinner";
+import { useEffect, useState } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { gql } from '@apollo/client';
+import styled from 'styled-components';
+import CreateSearchTodo from '../components/molecules/offset/CreateSearchTodo';
+import OffsetTodoItems from '../components/organisms/OffsetTodoItems';
+import Spinner from '../components/atoms/Spinner';
 import {
   InputMaybe,
   Sort,
   useGetOffsetTodosLazyQuery,
-} from "../gql/generated/graphql";
-import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
+} from '../gql/generated/graphql';
+import OrderByTodo from '../components/molecules/offset/OrderbyTodos';
 
 gql`
   query getOffsetTodos(
@@ -39,12 +39,13 @@ gql`
 
 const OffsetTodos = () => {
   const params = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>('');
   const [getTodos, { data, error, loading, fetchMore }] =
     useGetOffsetTodosLazyQuery({
       variables: {
-        userId: params.userId || "",
+        userId: params.userId || '',
         offset: 0,
         limit,
       },
@@ -64,6 +65,11 @@ const OffsetTodos = () => {
       },
     }).then((fetchMoreResult) => {
       setLimit(currentLength + fetchMoreResult.data?.user?.offsetTodos.length);
+    });
+    setSearchParams({
+      search: `${search}`,
+      offset: `${data?.user?.offsetTodos.length}`,
+      limit: `${limit}`,
     });
   };
 
@@ -86,6 +92,11 @@ const OffsetTodos = () => {
         },
       });
     }
+    setSearchParams({
+      search: `${search}`,
+      offset: `${data?.user?.offsetTodos.length}`,
+      limit: `${limit}`,
+    });
   };
 
   return (

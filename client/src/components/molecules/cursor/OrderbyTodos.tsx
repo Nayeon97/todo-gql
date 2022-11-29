@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { InputMaybe, Sort } from "../../../gql/generated/graphql";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { InputMaybe, Sort } from '../../../gql/generated/graphql';
 
 interface OrderByTodoProps {
   search: string;
@@ -17,13 +17,13 @@ const OrderByTodo = ({ getData, search }: OrderByTodoProps) => {
     useState<InputMaybe<Sort>>(null);
 
   const onClickOrderByText = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const text = e.currentTarget.value === "asc" ? Sort.Asc : Sort.Desc;
+    const text = e.currentTarget.value === 'asc' ? Sort.Asc : Sort.Desc;
     setOrderByText(text);
     getData(search, text, orderByCompleted);
   };
 
   const onClickOrderByCompleted = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const completed = e.currentTarget.value === "asc" ? Sort.Asc : Sort.Desc;
+    const completed = e.currentTarget.value === 'asc' ? Sort.Asc : Sort.Desc;
     setOrderByCompleted(completed);
     getData(search, orderByText, completed);
   };
@@ -31,7 +31,7 @@ const OrderByTodo = ({ getData, search }: OrderByTodoProps) => {
   return (
     <ButtonContainer>
       <ButtonWrapper>
-        <Button value={"asc"} onClick={onClickOrderByText}>
+        <Button value={'asc'} onClick={onClickOrderByText}>
           text asc
         </Button>
       </ButtonWrapper>
@@ -67,10 +67,10 @@ const ButtonWrapper = styled.div`
 `;
 
 const Button = styled.button`
-  background-color: pink;
-  color: gray;
-  font-weight: bold;
-  padding: 2px;
+  background-color: #a5d8ff;
+  color: #ffffff;
+  padding: 10px 2px;
   width: 100px;
   border-radius: 10px;
+  font-size: 15px;
 `;

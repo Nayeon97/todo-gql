@@ -1,8 +1,8 @@
-import { gql } from "@apollo/client";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { useAllUsersQuery } from "../gql/generated/graphql";
-import Spinner from "../components/atoms/Spinner";
+import { gql } from '@apollo/client';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { useAllUsersQuery } from '../gql/generated/graphql';
+import Spinner from '../components/atoms/Spinner';
 
 gql`
   query allUsers {
@@ -17,7 +17,7 @@ const UserList = () => {
   const { data, loading, error } = useAllUsersQuery({});
 
   return (
-    <div>
+    <UserListContainer>
       <TextWrapper>👷🏻‍♂️ UserList 🔎</TextWrapper>
       <TodosContainer>
         {loading ? (
@@ -26,11 +26,11 @@ const UserList = () => {
           data?.allUsers.map((user) => {
             return (
               <UserCard key={user.id}>
-                <div>{user.id}</div>
+                <UserIdWrapper>{user.id}</UserIdWrapper>
                 <div>
                   <button
                     onClick={() => {
-                      navigate(`cursor/${user.id}`);
+                      navigate(`cursor/@${user.id}`);
                     }}
                   >
                     cursor
@@ -39,7 +39,7 @@ const UserList = () => {
                 <div>
                   <button
                     onClick={() => {
-                      navigate(`offset/${user.id}`);
+                      navigate(`/offset/@${user.id}`);
                     }}
                   >
                     offset
@@ -51,27 +51,32 @@ const UserList = () => {
         )}
       </TodosContainer>
       <ErrorContainer>{error && <p>{error.message}</p>}</ErrorContainer>
-    </div>
+    </UserListContainer>
   );
 };
 
 export default UserList;
+
+const UserListContainer = styled.div`
+  display: grid;
+  place-items: center;
+`;
 
 const TextWrapper = styled.h1`
   font-size: large;
   font-weight: bold;
   color: skyblue;
   margin-bottom: 10px;
+  margin-top: 20px;
 `;
 
 const TodosContainer = styled.div`
-  position: absolute;
   display: grid;
+  grid-template-columns: repeat(3, 1fr);
   place-items: center;
-  height: 500px;
+  height: 100%;
   width: 100%;
   overflow: auto;
-  padding: 40px 0px;
 `;
 
 const ErrorContainer = styled.p`
@@ -83,12 +88,16 @@ const ErrorContainer = styled.p`
 
 const UserCard = styled.div`
   display: grid;
-  width: 300px;
-  grid-template-columns: repeat(4, 1fr);
+  width: 100px;
   place-items: center;
   background-color: transparent;
   border-radius: 5px;
   margin: 10px 10px;
   padding: 10px 0px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.09);
+`;
+
+const UserIdWrapper = styled.h2`
+  font-size: large;
+  color: #74c0fc;
 `;
