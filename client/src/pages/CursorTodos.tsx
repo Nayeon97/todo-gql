@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import CreateSearchTodo from "../components/molecules/cursor/CreateSearchTodo";
 import CursorTodoItems from "../components/organisms/CursorTodoItems";
@@ -46,6 +46,7 @@ gql`
 
 const CursorTodos = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const [after, setAfter] = useState<string>("");
   const [nextPage, setNextPage] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
@@ -108,30 +109,39 @@ const CursorTodos = () => {
   return (
     <Container>
       {loading ? (
-        <SpinnerWrapper>
-          <Spinner />
-        </SpinnerWrapper>
+        <Spinner />
       ) : (
         data && (
-          <TodosContainer>
-            <div>
-              <CreateSearchTodo user={data.user} getData={getData} />
-            </div>
-            <OrderByTodo getData={getData} search={search} />
-            {search && (
-              <SearchWrapper>
-                검색 결과
-                <p>{search}</p>
-              </SearchWrapper>
-            )}
-            <TodosWrapper>
-              <CursorTodoItems
-                user={data.user}
-                onLoadMore={handleLoadMore}
-                end={nextPage}
-              />
-            </TodosWrapper>
-          </TodosContainer>
+          <>
+            <ButtonWrapper>
+              <button
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                🏠
+              </button>
+            </ButtonWrapper>
+            <TodosContainer>
+              <div>
+                <CreateSearchTodo user={data.user} getData={getData} />
+              </div>
+              <OrderByTodo getData={getData} search={search} />
+              {search && (
+                <SearchWrapper>
+                  검색 결과
+                  <p>{search}</p>
+                </SearchWrapper>
+              )}
+              <TodosWrapper>
+                <CursorTodoItems
+                  user={data.user}
+                  onLoadMore={handleLoadMore}
+                  end={nextPage}
+                />
+              </TodosWrapper>
+            </TodosContainer>
+          </>
         )
       )}
     </Container>
@@ -143,13 +153,6 @@ export default CursorTodos;
 const Container = styled.div`
   display: grid;
   place-content: center;
-`;
-
-const SpinnerWrapper = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 `;
 
 const TodosContainer = styled.div`
@@ -175,6 +178,13 @@ const SearchWrapper = styled.div`
     color: pink;
     padding: 0px 10px;
     font-weight: bold;
+  }
+`;
+
+const ButtonWrapper = styled.button`
+  margin-top: 20px;
+  button {
+    font-size: 15px;
   }
 `;
 

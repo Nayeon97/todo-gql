@@ -11,24 +11,23 @@ interface TodoItemsProps {
 
 const CursorTodoItems = ({ user, end, onLoadMore }: TodoItemsProps) => {
   return (
-    <>
-      <TodoItemsContainer>
-        {user.cursorTodos.edges.map((todo) => {
-          return <TodoItem key={todo.node.id} todo={todo} user={user} />;
-        })}
-        {end && (
-          <ViewMoreButton>
-            <button onClick={onLoadMore}>더보기</button>
-          </ViewMoreButton>
-        )}
-      </TodoItemsContainer>
-    </>
+    <TodoItemsContainer>
+      {user.cursorTodos.edges.map((todo) => {
+        return <TodoItem key={todo.node.id} todo={todo} user={user} />;
+      })}
+      {end && (
+        <ViewMoreButton>
+          <button onClick={onLoadMore}>더보기</button>
+        </ViewMoreButton>
+      )}
+    </TodoItemsContainer>
   );
 };
 
 export default CursorTodoItems;
 
 const TodoItemsContainer = styled.div`
+  padding-bottom: 10px;
   height: 500px;
   overflow: auto;
 `;

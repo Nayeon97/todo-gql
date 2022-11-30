@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { gql } from '@apollo/client';
-import styled from 'styled-components';
-import CreateSearchTodo from '../components/molecules/offset/CreateSearchTodo';
-import OffsetTodoItems from '../components/organisms/OffsetTodoItems';
-import Spinner from '../components/atoms/Spinner';
+import { useEffect, useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { gql } from "@apollo/client";
+import styled from "styled-components";
+import CreateSearchTodo from "../components/molecules/offset/CreateSearchTodo";
+import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
+import Spinner from "../components/atoms/Spinner";
 import {
   InputMaybe,
   Sort,
   useGetOffsetTodosLazyQuery,
-} from '../gql/generated/graphql';
-import OrderByTodo from '../components/molecules/offset/OrderbyTodos';
+} from "../gql/generated/graphql";
+import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
 
 gql`
   query getOffsetTodos(
@@ -40,12 +40,13 @@ gql`
 const OffsetTodos = () => {
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState<string>("");
   const [getTodos, { data, error, loading, fetchMore }] =
     useGetOffsetTodosLazyQuery({
       variables: {
-        userId: params.userId || '',
+        userId: params.userId || "",
         offset: 0,
         limit,
       },
@@ -65,11 +66,13 @@ const OffsetTodos = () => {
       },
     }).then((fetchMoreResult) => {
       setLimit(currentLength + fetchMoreResult.data?.user?.offsetTodos.length);
-    });
-    setSearchParams({
-      search: `${search}`,
-      offset: `${data?.user?.offsetTodos.length}`,
-      limit: `${limit}`,
+      setSearchParams({
+        search: `${search}`,
+        offset: `${data?.user?.offsetTodos.length}`,
+        limit: `${
+          currentLength + fetchMoreResult.data?.user?.offsetTodos.length
+        }`,
+      });
     });
   };
 
@@ -102,12 +105,17 @@ const OffsetTodos = () => {
   return (
     <Container>
       {loading ? (
-        <SpinnerWrapper>
-          <Spinner />
-        </SpinnerWrapper>
+        <Spinner />
       ) : (
         data && (
           <TodosContainer>
+            <ButtonWrapper
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              🏠
+            </ButtonWrapper>
             <div>
               <CreateSearchTodo user={data.user} getData={getData} />
             </div>
@@ -138,20 +146,13 @@ const Container = styled.div`
 const TodosContainer = styled.div`
   display: grid;
   justify-items: center;
-  padding-top: 60px;
+  margin-top: 20px;
 `;
 
 const TodosWrapper = styled.div`
   height: 350px;
   margin-top: 30px;
   margin-bottom: 20px;
-`;
-
-const SpinnerWrapper = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 `;
 
 const SearchWrapper = styled.div`
@@ -165,5 +166,12 @@ const SearchWrapper = styled.div`
     color: pink;
     padding: 0px 10px;
     font-weight: bold;
+  }
+`;
+
+const ButtonWrapper = styled.button`
+  margin-top: 20px;
+  button {
+    font-size: 15px;
   }
 `;

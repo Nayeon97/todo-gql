@@ -5,7 +5,6 @@ import {
 } from '../../../gql/generated/graphql';
 import Input from '../../atoms/Input/Input';
 import { createTodoUpdator } from '../../../mutations/offset/createTodoUpdator';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface CrateTodoProps {

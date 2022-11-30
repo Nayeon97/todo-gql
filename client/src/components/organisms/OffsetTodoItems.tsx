@@ -24,6 +24,7 @@ const OffsetTodoItems = ({ user, onLoadMore }: TodoItemsProps) => {
 export default OffsetTodoItems;
 
 const TodoItemsContainer = styled.div`
+  padding-bottom: 10px;
   height: 500px;
   overflow: auto;
 `;

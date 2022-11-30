@@ -1,8 +1,8 @@
-import { gql } from '@apollo/client';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { useAllUsersQuery } from '../gql/generated/graphql';
-import Spinner from '../components/atoms/Spinner';
+import { gql } from "@apollo/client";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { useAllUsersQuery } from "../gql/generated/graphql";
+import Spinner from "../components/atoms/Spinner";
 
 gql`
   query allUsers {
@@ -60,6 +60,7 @@ export default UserList;
 const UserListContainer = styled.div`
   display: grid;
   place-items: center;
+  height: 100%;
 `;
 
 const TextWrapper = styled.h1`
@@ -72,11 +73,12 @@ const TextWrapper = styled.h1`
 
 const TodosContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 0.5fr);
   place-items: center;
-  height: 100%;
+  height: 600px;
   width: 100%;
   overflow: auto;
+  background-color: aliceblue;
 `;
 
 const ErrorContainer = styled.p`
