@@ -20,7 +20,7 @@ gql`
     $search: String
     $orderBy: TodoOrderByInput
   ) {
-    user(id: $userId) {
+    user {
       id
       cursorTodos(
         first: $first

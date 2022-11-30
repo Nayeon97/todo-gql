@@ -13,15 +13,20 @@ export const createTodoUpdator =
   (cache, { data }) => {
     if (!data) return;
 
+    console.log(user);
+
     const cacheData = cache.readQuery<
       GetCursorTodosQuery,
       GetCursorTodosQueryVariables
     >({
+      id: cache.identify(user),
       query: GetCursorTodosDocument,
       variables: {
         userId: user.id,
       },
     });
+
+    console.log(cacheData);
 
     if (cacheData) {
       cache.writeQuery<GetCursorTodosQuery, GetCursorTodosQueryVariables>({

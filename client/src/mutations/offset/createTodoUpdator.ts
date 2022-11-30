@@ -1,12 +1,12 @@
-import { MutationUpdaterFn } from '@apollo/client';
-import { produce } from 'immer';
+import { MutationUpdaterFn } from "@apollo/client";
+import { produce } from "immer";
 import {
   CreateTodoMutation,
-  GetCursorTodosDocument,
-  GetCursorTodosQuery,
-  GetCursorTodosQueryVariables,
+  GetOffsetTodosDocument,
+  GetOffsetTodosQuery,
+  GetOffsetTodosQueryVariables,
   OffsetTodoItems_TodoFragment,
-} from '../../gql/generated/graphql';
+} from "../../gql/generated/graphql";
 
 export const createTodoUpdator =
   (user: OffsetTodoItems_TodoFragment): MutationUpdaterFn<CreateTodoMutation> =>
@@ -14,26 +14,25 @@ export const createTodoUpdator =
     if (!data) return;
 
     const cacheData = cache.readQuery<
-      GetCursorTodosQuery,
-      GetCursorTodosQueryVariables
+      GetOffsetTodosQuery,
+      GetOffsetTodosQueryVariables
     >({
-      query: GetCursorTodosDocument,
+      query: GetOffsetTodosDocument,
       variables: {
         userId: user.id,
       },
     });
 
+    console.log(user.id);
+
     if (cacheData) {
-      cache.writeQuery<GetCursorTodosQuery, GetCursorTodosQueryVariables>({
-        query: GetCursorTodosDocument,
+      cache.writeQuery<GetOffsetTodosQuery, GetOffsetTodosQueryVariables>({
+        query: GetOffsetTodosDocument,
         variables: {
           userId: user.id,
         },
         data: produce(cacheData, (draft) => {
-          draft.user.cursorTodos.edges = [
-            data.createTodo.todoEdge,
-            ...draft.user.cursorTodos.edges,
-          ];
+          draft.user.offsetTodos = [...draft.user.offsetTodos];
         }),
       });
     }

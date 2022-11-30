@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   useCreateTodoMutation,
   OffsetTodoItems_TodoFragment,
-} from '../../../gql/generated/graphql';
-import Input from '../../atoms/Input/Input';
-import { createTodoUpdator } from '../../../mutations/offset/createTodoUpdator';
-import styled from 'styled-components';
+} from "../../../gql/generated/graphql";
+import Input from "../../atoms/Input/Input";
+import { createTodoUpdator } from "../../../mutations/offset/createTodoUpdator";
+import styled from "styled-components";
 
 interface CrateTodoProps {
   user: OffsetTodoItems_TodoFragment;
@@ -13,8 +13,8 @@ interface CrateTodoProps {
 }
 
 const CreateSearchTodo = ({ user, getData }: CrateTodoProps) => {
-  const [text, setText] = useState<string>('');
-  const [select, setSelect] = useState<string>('create');
+  const [text, setText] = useState<string>("");
+  const [select, setSelect] = useState<string>("create");
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     setText(e.currentTarget.value);
@@ -27,8 +27,8 @@ const CreateSearchTodo = ({ user, getData }: CrateTodoProps) => {
   if (error) return <p>`Error! ${error.message}`</p>;
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === 'Enter') {
-      if (select === 'create') {
+    if (e.key === "Enter") {
+      if (select === "create") {
         onCreate();
       } else {
         onSearch();
@@ -40,22 +40,22 @@ const CreateSearchTodo = ({ user, getData }: CrateTodoProps) => {
     if (text && user.id) {
       createTodo({
         variables: { text: text, userId: user.id },
-        optimisticResponse: {
-          createTodo: {
-            todoEdge: {
-              cursor: '12345',
-              node: {
-                id: user.id,
-                text: text,
-                completed: false,
-              },
-            },
-          },
-        },
+        // optimisticResponse: {
+        //   createTodo: {
+        //     todoEdge: {
+        //       cursor: "12345",
+        //       node: {
+        //         id: user.id,
+        //         text: text,
+        //         completed: false,
+        //       },
+        //     },
+        //   },
+        // },
       });
-      setText('');
+      setText("");
     } else {
-      alert('todo text XX');
+      alert("todo text XX");
     }
   };
 
