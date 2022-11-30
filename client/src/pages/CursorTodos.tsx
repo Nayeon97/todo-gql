@@ -152,13 +152,10 @@ const Container = styled.div`
 const TodosContainer = styled.div`
   display: grid;
   justify-items: center;
-  margin-top: 20px;
 `;
 
 const TodosWrapper = styled.div`
-  height: 350px;
-  margin-top: 30px;
-  margin-bottom: 20px;
+  margin-top: 10px;
 `;
 
 const SearchWrapper = styled.div`
@@ -175,7 +172,7 @@ const SearchWrapper = styled.div`
   }
 `;
 
-const ButtonWrapper = styled.button`
+const ButtonWrapper = styled.div`
   margin-top: 20px;
   button {
     font-size: 15px;

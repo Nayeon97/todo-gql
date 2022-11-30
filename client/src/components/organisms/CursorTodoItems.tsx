@@ -1,7 +1,7 @@
-import { gql } from "@apollo/client";
-import styled from "styled-components";
-import { CursorTodoItems_TodoFragment } from "../../gql/generated/graphql";
-import TodoItem from "../molecules/cursor/TodoItem";
+import { gql } from '@apollo/client';
+import styled from 'styled-components';
+import { CursorTodoItems_TodoFragment } from '../../gql/generated/graphql';
+import TodoItem from '../molecules/cursor/TodoItem';
 
 interface TodoItemsProps {
   user: CursorTodoItems_TodoFragment;
@@ -27,7 +27,6 @@ const CursorTodoItems = ({ user, end, onLoadMore }: TodoItemsProps) => {
 export default CursorTodoItems;
 
 const TodoItemsContainer = styled.div`
-  padding-bottom: 10px;
   height: 500px;
   overflow: auto;
 `;

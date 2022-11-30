@@ -60,6 +60,7 @@ const OffsetTodos = () => {
         offset: currentLength,
       },
     }).then((fetchMoreResult) => {
+      console.log(fetchMoreResult.data.user.offsetTodos.length);
       setLimit(currentLength + fetchMoreResult.data?.user?.offsetTodos.length);
       setSearchParams({
         search: `${search}`,
@@ -139,13 +140,10 @@ const Container = styled.div`
 const TodosContainer = styled.div`
   display: grid;
   justify-items: center;
-  margin-top: 20px;
 `;
 
 const TodosWrapper = styled.div`
-  height: 350px;
-  margin-top: 30px;
-  margin-bottom: 20px;
+  margin-top: 10px;
 `;
 
 const SearchWrapper = styled.div`

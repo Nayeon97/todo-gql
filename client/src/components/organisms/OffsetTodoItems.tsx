@@ -1,7 +1,7 @@
-import { gql } from "@apollo/client";
-import styled from "styled-components";
-import { OffsetTodoItems_TodoFragment } from "../../gql/generated/graphql";
-import TodoItem from "../molecules/offset/TodoItem";
+import { gql } from '@apollo/client';
+import styled from 'styled-components';
+import { OffsetTodoItems_TodoFragment } from '../../gql/generated/graphql';
+import TodoItem from '../molecules/offset/TodoItem';
 
 interface TodoItemsProps {
   user: OffsetTodoItems_TodoFragment;
@@ -24,7 +24,6 @@ const OffsetTodoItems = ({ user, onLoadMore }: TodoItemsProps) => {
 export default OffsetTodoItems;
 
 const TodoItemsContainer = styled.div`
-  padding-bottom: 10px;
   height: 500px;
   overflow: auto;
 `;
