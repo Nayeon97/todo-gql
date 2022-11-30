@@ -1,16 +1,16 @@
-import { useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { gql } from "@apollo/client";
-import styled from "styled-components";
-import CreateSearchTodo from "../components/molecules/offset/CreateSearchTodo";
-import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
-import Spinner from "../components/atoms/Spinner";
+import { useState } from 'react';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { gql } from '@apollo/client';
+import styled from 'styled-components';
+import CreateSearchTodo from '../components/molecules/offset/CreateSearchTodo';
+import OffsetTodoItems from '../components/organisms/OffsetTodoItems';
+import Spinner from '../components/atoms/Spinner';
 import {
   InputMaybe,
   Sort,
   useGetOffsetTodosQuery,
-} from "../gql/generated/graphql";
-import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
+} from '../gql/generated/graphql';
+import OrderByTodo from '../components/molecules/offset/OrderbyTodos';
 
 gql`
   query getOffsetTodos(
@@ -42,10 +42,10 @@ const OffsetTodos = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>('');
   const { data, error, loading, fetchMore, refetch } = useGetOffsetTodosQuery({
     variables: {
-      userId: params.userId || "",
+      userId: params.userId || '',
       offset: 0,
       limit,
     },
@@ -104,10 +104,10 @@ const OffsetTodos = () => {
           <TodosContainer>
             <ButtonWrapper
               onClick={() => {
-                navigate("/");
+                navigate('/');
               }}
             >
-              🏠
+              navigate userList
             </ButtonWrapper>
             <div>
               <CreateSearchTodo user={data.user} getData={getData} />

@@ -1,8 +1,8 @@
-import { gql } from "@apollo/client";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { useAllUsersQuery } from "../gql/generated/graphql";
-import Spinner from "../components/atoms/Spinner";
+import { gql } from '@apollo/client';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { useAllUsersQuery } from '../gql/generated/graphql';
+import Spinner from '../components/atoms/Spinner';
 
 gql`
   query allUsers {
@@ -27,24 +27,20 @@ const UserList = () => {
             return (
               <UserCard key={user.id}>
                 <UserIdWrapper>{user.id}</UserIdWrapper>
-                <div>
-                  <button
-                    onClick={() => {
-                      navigate(`cursor/@${user.id}`);
-                    }}
-                  >
-                    cursor
-                  </button>
-                </div>
-                <div>
-                  <button
-                    onClick={() => {
-                      navigate(`/offset/@${user.id}`);
-                    }}
-                  >
-                    offset
-                  </button>
-                </div>
+                <button
+                  onClick={() => {
+                    navigate(`cursor/@${user.id}`);
+                  }}
+                >
+                  cursor
+                </button>
+                <button
+                  onClick={() => {
+                    navigate(`/offset/@${user.id}`);
+                  }}
+                >
+                  offset
+                </button>
               </UserCard>
             );
           })
@@ -78,7 +74,6 @@ const TodosContainer = styled.div`
   height: 600px;
   width: 100%;
   overflow: auto;
-  background-color: aliceblue;
 `;
 
 const ErrorContainer = styled.p`
@@ -90,12 +85,11 @@ const ErrorContainer = styled.p`
 
 const UserCard = styled.div`
   display: grid;
-  width: 100px;
+  width: 150px;
+  height: 100px;
   place-items: center;
   background-color: transparent;
   border-radius: 5px;
-  margin: 10px 10px;
-  padding: 10px 0px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.09);
 `;
 

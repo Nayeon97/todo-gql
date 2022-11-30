@@ -1,9 +1,9 @@
-import { MutationUpdaterFn } from "@apollo/client";
+import { MutationUpdaterFn } from '@apollo/client';
 import {
   CreateTodoMutation,
   CursorTodoItems_TodoFragment,
   Query,
-} from "../../gql/generated/graphql";
+} from '../../gql/generated/graphql';
 
 export const createTodoUpdator =
   (user: CursorTodoItems_TodoFragment): MutationUpdaterFn<CreateTodoMutation> =>
@@ -23,11 +23,10 @@ export const createTodoUpdator =
     cache.modify({
       id: cache.identify(user),
       fields: {
-        cursorTodos(existingTodos: Query["user"]["cursorTodos"]) {
-          console.log(existingTodos);
+        cursorTodos(existingTodos: Query['user']['cursorTodos']) {
           return {
             ...existingTodos,
-            edges: [...existingTodos.edges, data?.createTodo.todoEdge],
+            edges: [data?.createTodo.todoEdge, ...existingTodos.edges],
           };
         },
       },
