@@ -15,6 +15,7 @@ interface CrateTodoProps {
 const CreateSearchTodo = ({ user, getData }: CrateTodoProps) => {
   const [text, setText] = useState<string>("");
   const [select, setSelect] = useState<string>("create");
+  console.log("offset CreateSearchTodo");
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     setText(e.currentTarget.value);

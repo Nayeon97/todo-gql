@@ -1,11 +1,8 @@
 import { MutationUpdaterFn } from "@apollo/client";
-import { produce } from "immer";
 import {
   CreateTodoMutation,
-  GetOffsetTodosDocument,
-  GetOffsetTodosQuery,
-  GetOffsetTodosQueryVariables,
   OffsetTodoItems_TodoFragment,
+  Query,
 } from "../../gql/generated/graphql";
 
 export const createTodoUpdator =
@@ -13,29 +10,17 @@ export const createTodoUpdator =
   (cache, { data }) => {
     if (!data) return;
 
-    const cacheData = cache.readQuery<
-      GetOffsetTodosQuery,
-      GetOffsetTodosQueryVariables
-    >({
-      query: GetOffsetTodosDocument,
-      variables: {
-        userId: user.id,
+    cache.modify({
+      id: cache.identify(user),
+      fields: {
+        offsetTodos(existingTodos: Query["user"]["offsetTodos"]) {
+          console.log("data : ", data);
+          return {
+            ...existingTodos,
+          };
+        },
       },
     });
-
-    console.log(user.id);
-
-    if (cacheData) {
-      cache.writeQuery<GetOffsetTodosQuery, GetOffsetTodosQueryVariables>({
-        query: GetOffsetTodosDocument,
-        variables: {
-          userId: user.id,
-        },
-        data: produce(cacheData, (draft) => {
-          draft.user.offsetTodos = [...draft.user.offsetTodos];
-        }),
-      });
-    }
 
     // 2. readQuery, writeQuery 사용.
     // const query = gql`

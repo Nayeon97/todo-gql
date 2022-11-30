@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { gql } from "@apollo/client";
 import styled from "styled-components";
@@ -8,7 +8,7 @@ import Spinner from "../components/atoms/Spinner";
 import {
   InputMaybe,
   Sort,
-  useGetOffsetTodosLazyQuery,
+  useGetOffsetTodosQuery,
 } from "../gql/generated/graphql";
 import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
 
@@ -43,18 +43,13 @@ const OffsetTodos = () => {
   const navigate = useNavigate();
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState<string>("");
-  const [getTodos, { data, error, loading, fetchMore }] =
-    useGetOffsetTodosLazyQuery({
-      variables: {
-        userId: params.userId || "",
-        offset: 0,
-        limit,
-      },
-    });
-
-  useEffect(() => {
-    getData();
-  }, []);
+  const { data, error, loading, fetchMore, refetch } = useGetOffsetTodosQuery({
+    variables: {
+      userId: params.userId || "",
+      offset: 0,
+      limit,
+    },
+  });
 
   if (error) return <p>`Error! ${error.message}`</p>;
 
@@ -82,16 +77,14 @@ const OffsetTodos = () => {
     orderByCompleted?: InputMaybe<Sort>
   ) => {
     if (params.userId) {
-      getTodos({
-        variables: {
-          userId: params.userId,
-          offset: 0,
-          limit,
-          search: search,
-          orderBy: {
-            text: orderByText,
-            completed: orderByCompleted,
-          },
+      refetch({
+        userId: params.userId,
+        offset: 0,
+        limit,
+        search: search,
+        orderBy: {
+          text: orderByText,
+          completed: orderByCompleted,
         },
       });
     }

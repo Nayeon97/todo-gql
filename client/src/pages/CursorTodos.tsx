@@ -7,7 +7,7 @@ import Spinner from "../components/atoms/Spinner";
 import {
   InputMaybe,
   Sort,
-  useGetCursorTodosLazyQuery,
+  useGetCursorTodosQuery,
 } from "../gql/generated/graphql";
 import { gql } from "@apollo/client";
 import OrderByTodo from "../components/molecules/cursor/OrderbyTodos";
@@ -20,7 +20,7 @@ gql`
     $search: String
     $orderBy: TodoOrderByInput
   ) {
-    user {
+    user(id: $userId) {
       id
       cursorTodos(
         first: $first
@@ -50,19 +50,15 @@ const CursorTodos = () => {
   const [after, setAfter] = useState<string>("");
   const [nextPage, setNextPage] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
-  const [getTodos, { data, error, loading, fetchMore }] =
-    useGetCursorTodosLazyQuery({
-      variables: {
-        userId: params.userId || "",
-        search,
-        first: 0,
-        after,
-      },
-    });
 
-  useEffect(() => {
-    getTodos();
-  }, []);
+  const { data, error, loading, fetchMore, refetch } = useGetCursorTodosQuery({
+    variables: {
+      userId: params.userId || "",
+      search,
+      first: 0,
+      after,
+    },
+  });
 
   useEffect(() => {
     if (data?.user.cursorTodos.edges[0]) {
@@ -82,16 +78,14 @@ const CursorTodos = () => {
     orderByCompleted?: InputMaybe<Sort>
   ) => {
     setSearch(search || "");
-    getTodos({
-      variables: {
-        userId: params.userId || "",
-        search,
-        first: 0,
-        after,
-        orderBy: {
-          text: orderByText,
-          completed: orderByCompleted,
-        },
+    refetch({
+      userId: params.userId || "",
+      search,
+      first: 0,
+      after,
+      orderBy: {
+        text: orderByText,
+        completed: orderByCompleted,
       },
     });
   };

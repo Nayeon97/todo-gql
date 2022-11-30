@@ -10,15 +10,20 @@ const client = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
-          user: { keyArgs: ["userId"] },
+          user: { keyArgs: ["id"] },
         },
       },
       User: {
         fields: {
           offsetTodos: {
-            ...offsetLimitPagination(["userId", "search", "orderBy"]),
+            ...offsetLimitPagination(["id", "search", "orderBy"]),
           },
-          cursorTodos: relayStylePagination(["userId", "search", "orderBy"]),
+          cursorTodos: relayStylePagination([
+            "id",
+            "search",
+            "orderBy",
+            ["text", "completed"],
+          ]),
         },
       },
     },

@@ -1,11 +1,8 @@
 import { MutationUpdaterFn } from "@apollo/client";
-import { produce } from "immer";
 import {
   CreateTodoMutation,
-  GetCursorTodosDocument,
-  GetCursorTodosQuery,
-  GetCursorTodosQueryVariables,
   CursorTodoItems_TodoFragment,
+  Query,
 } from "../../gql/generated/graphql";
 
 export const createTodoUpdator =
@@ -13,35 +10,57 @@ export const createTodoUpdator =
   (cache, { data }) => {
     if (!data) return;
 
-    console.log(user);
+    // const cacheData = cache.readQuery<
+    //   GetCursorTodosQuery,
+    //   GetCursorTodosQueryVariables
+    // >({
+    //   query: AllUsersDocument,
+    //   variables: {
+    //     userId: user.id,
+    //   },
+    // });
 
-    const cacheData = cache.readQuery<
-      GetCursorTodosQuery,
-      GetCursorTodosQueryVariables
-    >({
+    cache.modify({
       id: cache.identify(user),
-      query: GetCursorTodosDocument,
-      variables: {
-        userId: user.id,
+      fields: {
+        cursorTodos(existingTodos: Query["user"]["cursorTodos"]) {
+          console.log(existingTodos);
+          return {
+            ...existingTodos,
+            edges: [...existingTodos.edges, data?.createTodo.todoEdge],
+          };
+        },
       },
     });
 
-    console.log(cacheData);
+    // console.log(`User:${user.id}`);
 
-    if (cacheData) {
-      cache.writeQuery<GetCursorTodosQuery, GetCursorTodosQueryVariables>({
-        query: GetCursorTodosDocument,
-        variables: {
-          userId: user.id,
-        },
-        data: produce(cacheData, (draft) => {
-          draft.user.cursorTodos.edges = [
-            data.createTodo.todoEdge,
-            ...draft.user.cursorTodos.edges,
-          ];
-        }),
-      });
-    }
+    // const cacheData = cache.readFragment<
+    //   CursorTodoItems_TodoFragment,
+    //   GetCursorTodosQueryVariables
+    // >({
+    //   id: `User:${user.id}`,
+    //   fragmentName: "CursorTodoItems_Todo",
+    //   fragment: CursorTodoItems_TodoFragmentDoc,
+    // });
+
+    // console.log(cacheData);
+
+    // if (cacheData) {
+    //   cache.writeQuery<GetCursorTodosQuery, GetCursorTodosQueryVariables>({
+    //     query: GetCursorTodosDocument,
+    //     variables: {
+    //       userId: user.id,
+    //     },
+    //     data: produce(cacheData, (draft) => {
+    //       draft.user.cursorTodos.edges = [
+    //         data.createTodo.todoEdge,
+    //         ...draft.user.cursorTodos.edges,
+    //       ];
+    //       console.log(draft);
+    //     }),
+    //   });
+    // }
 
     // 2. readQuery, writeQuery 사용.
     // const query = gql`
