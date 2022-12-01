@@ -1,37 +1,35 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { InputMaybe, Sort } from '../../../gql/generated/graphql';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { InputMaybe, Sort } from "../../../gql/generated/graphql";
 
 interface OrderByTodoProps {
-  search: string;
-  getData: (
-    search: string,
+  handleOrderByTodos: (
     orderByText: InputMaybe<Sort>,
     orderByCompleted: InputMaybe<Sort>
   ) => void;
 }
 
-const OrderByTodo = ({ getData, search }: OrderByTodoProps) => {
+const OrderByTodo = ({ handleOrderByTodos }: OrderByTodoProps) => {
   const [orderByText, setOrderByText] = useState<InputMaybe<Sort>>(null);
   const [orderByCompleted, setOrderByCompleted] =
     useState<InputMaybe<Sort>>(null);
 
   const onClickOrderByText = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const text = e.currentTarget.value === 'asc' ? Sort.Asc : Sort.Desc;
+    const text = e.currentTarget.value === "asc" ? Sort.Asc : Sort.Desc;
     setOrderByText(text);
-    getData(search, text, orderByCompleted);
+    handleOrderByTodos(text, orderByCompleted);
   };
 
   const onClickOrderByCompleted = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const completed = e.currentTarget.value === 'asc' ? Sort.Asc : Sort.Desc;
+    const completed = e.currentTarget.value === "asc" ? Sort.Asc : Sort.Desc;
     setOrderByCompleted(completed);
-    getData(search, orderByText, completed);
+    handleOrderByTodos(orderByText, completed);
   };
 
   return (
     <ButtonContainer>
       <ButtonWrapper>
-        <Button value={'asc'} onClick={onClickOrderByText}>
+        <Button value={"asc"} onClick={onClickOrderByText}>
           text asc
         </Button>
       </ButtonWrapper>

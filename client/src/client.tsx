@@ -16,7 +16,12 @@ const client = new ApolloClient({
       User: {
         fields: {
           offsetTodos: {
-            ...offsetLimitPagination(["id", "search", "orderBy"]),
+            ...offsetLimitPagination([
+              "id",
+              "search",
+              "orderBy",
+              ["text", "completed"],
+            ]),
           },
           cursorTodos: relayStylePagination([
             "id",

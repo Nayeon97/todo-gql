@@ -1,16 +1,19 @@
 import { useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { gql } from "@apollo/client";
 import styled from "styled-components";
+import { InputLabel, MenuItem, FormControl } from "@mui/material";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import CreateSearchTodo from "../components/molecules/offset/CreateSearchTodo";
 import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
+import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
+import ToggleSearch from "../components/atoms/ToggleSearch";
 import Spinner from "../components/atoms/Spinner";
 import {
   InputMaybe,
   Sort,
   useGetOffsetTodosQuery,
 } from "../gql/generated/graphql";
-import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
 
 gql`
   query getOffsetTodos(
@@ -37,55 +40,83 @@ gql`
   }
 `;
 
+// 따로 Limit 설정하는 select element 추가
+// limit은 고정되어 있고, offset만 변경되는 것이므로
+// search, orderByText 분리
+// 1. 데이터 비어 있는 UI
+// 2. 에러 처리하기 Query, Mutation
+
 const OffsetTodos = () => {
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const [limit, setLimit] = useState(10);
-  // 따로 Limit 설정하는 select element 추가
-  const [search, setSearch] = useState<string>("");
-  const { data, error, loading, fetchMore, refetch } = useGetOffsetTodosQuery({
+  const [alignment, setAlignment] = useState("create");
+  const [limit, setLimit] = useState("10");
+
+  const { data, loading, fetchMore, refetch } = useGetOffsetTodosQuery({
     variables: {
       userId: params.userId || "",
       offset: 0,
-      limit,
+      limit: 10,
+      search: null,
     },
   });
 
-  if (error) return <p>`Error! ${error.message}`</p>;
+  const getParams = () => {
+    const paramsSearch = searchParams.get("search");
+    const paramsOffset = Number(searchParams.get("offset"));
+    const paramsLimit = Number(searchParams.get("limit"));
+
+    return { paramsSearch, paramsOffset, paramsLimit };
+  };
 
   const handleLoadMore = () => {
+    const { paramsSearch } = getParams();
     const currentLength = data?.user?.offsetTodos.length || 0;
     fetchMore({
       variables: {
         offset: currentLength,
+        limit: Number(limit),
       },
-    }).then((fetchMoreResult) => {
-      console.log(fetchMoreResult.data.user.offsetTodos.length);
-      setLimit(currentLength + fetchMoreResult.data?.user?.offsetTodos.length);
-      // limit은 고정되어 있고, offset만 변경되는 것이므로
+    }).then(() => {
+      setLimit(limit);
       setSearchParams({
-        search: `${search}`,
+        search: `${paramsSearch}`,
         offset: `${data?.user?.offsetTodos.length}`,
-        limit: `${
-          currentLength + fetchMoreResult.data?.user?.offsetTodos.length
-        }`,
+        limit: `${limit}`,
       });
     });
   };
 
-  // search, orderByText 분리
-  const getData = (
-    search?: string,
-    orderByText?: InputMaybe<Sort>,
-    orderByCompleted?: InputMaybe<Sort>
-  ) => {
+  const handleSearchTodos = (text: string) => {
+    const { paramsOffset, paramsLimit } = getParams();
+
     if (params.userId) {
       refetch({
         userId: params.userId,
-        offset: 0,
-        limit,
-        search: search,
+        offset: paramsOffset,
+        limit: paramsLimit,
+        search: text,
+      });
+    }
+
+    setSearchParams({
+      search: `${text}`,
+      offset: `${paramsOffset}`,
+      limit: `${paramsLimit}`,
+    });
+  };
+
+  const handleOrderByTodos = (
+    orderByText?: InputMaybe<Sort>,
+    orderByCompleted?: InputMaybe<Sort>
+  ) => {
+    const { paramsSearch, paramsOffset, paramsLimit } = getParams();
+    if (params.userId) {
+      refetch({
+        userId: params.userId,
+        offset: paramsOffset,
+        limit: paramsLimit,
+        search: paramsSearch,
         orderBy: {
           text: orderByText,
           completed: orderByCompleted,
@@ -93,14 +124,17 @@ const OffsetTodos = () => {
       });
     }
     setSearchParams({
-      search: `${search}`,
-      offset: `${data?.user?.offsetTodos.length}`,
-      limit: `${limit}`,
+      search: `${paramsSearch}`,
+      offset: `${paramsOffset}`,
+      limit: `${paramsLimit}`,
     });
   };
 
-  // 1. 데이터 비어 있는 UI
-  // 2. 에러 처리하기 Query, Mutation
+  const handleChangeLimit = (event: SelectChangeEvent) => {
+    setLimit(event.target.value as string);
+  };
+
+  const { paramsSearch } = getParams();
 
   return (
     <Container>
@@ -109,21 +143,24 @@ const OffsetTodos = () => {
       ) : (
         data && (
           <TodosContainer>
-            <ButtonWrapper
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              navigate userList
-            </ButtonWrapper>
-            <div>
-              <CreateSearchTodo user={data.user} getData={getData} />
-            </div>
-            <OrderByTodo getData={getData} search={search} />
-            {search && (
+            <ToggleSearch alignment={alignment} setAlignment={setAlignment} />
+            <CreateSearchTodo
+              user={data.user}
+              alignment={alignment}
+              handleSearchTodos={handleSearchTodos}
+            />
+            <OrderByTodo handleOrderByTodos={handleOrderByTodos} />
+            <FormControl>
+              <InputLabel>limit</InputLabel>
+              <Select value={limit} label="limit" onChange={handleChangeLimit}>
+                <MenuItem value={10}>10개씩 보기</MenuItem>
+                <MenuItem value={20}>20개씩 보기</MenuItem>
+              </Select>
+            </FormControl>
+            {paramsSearch && (
               <SearchWrapper>
                 검색 결과
-                <p>{search}</p>
+                <p>{paramsSearch}</p>
               </SearchWrapper>
             )}
             <TodosWrapper>
@@ -140,7 +177,6 @@ export default OffsetTodos;
 
 const Container = styled.div`
   display: grid;
-  place-content: center;
 `;
 
 const TodosContainer = styled.div`

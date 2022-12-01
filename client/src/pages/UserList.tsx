@@ -1,8 +1,12 @@
-import { gql } from '@apollo/client';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { useAllUsersQuery } from '../gql/generated/graphql';
-import Spinner from '../components/atoms/Spinner';
+/** @jsxImportSource @emotion/react */
+import { gql } from "@apollo/client";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { useAllUsersQuery } from "../gql/generated/graphql";
+import { Card, Button } from "@mui/material";
+import { css } from "@emotion/react";
+import Spinner from "../components/atoms/Spinner";
+import Nav from "../components/atoms/Nav";
 
 gql`
   query allUsers {
@@ -17,37 +21,40 @@ const UserList = () => {
   const { data, loading, error } = useAllUsersQuery({});
 
   return (
-    <UserListContainer>
-      <TextWrapper>👷🏻‍♂️ UserList 🔎</TextWrapper>
-      <TodosContainer>
-        {loading ? (
-          <Spinner />
-        ) : (
-          data?.allUsers.map((user) => {
-            return (
-              <UserCard key={user.id}>
-                <UserIdWrapper>{user.id}</UserIdWrapper>
-                <button
-                  onClick={() => {
-                    navigate(`cursor/@${user.id}`);
-                  }}
-                >
-                  cursor
-                </button>
-                <button
-                  onClick={() => {
-                    navigate(`/offset/@${user.id}`);
-                  }}
-                >
-                  offset
-                </button>
-              </UserCard>
-            );
-          })
-        )}
-      </TodosContainer>
-      <ErrorContainer>{error && <p>{error.message}</p>}</ErrorContainer>
-    </UserListContainer>
+    <>
+      <UserListContainer>
+        <Nav />
+        <TextWrapper>👷🏻‍♂️ UserList 🔎</TextWrapper>
+        <TodosContainer>
+          {loading ? (
+            <Spinner />
+          ) : (
+            data?.allUsers.map((user) => {
+              return (
+                <Card key={user.id} variant="outlined" css={cardStyle}>
+                  <h2>{user.id}</h2>
+                  <Button
+                    onClick={() => {
+                      navigate(`cursor/@${user.id}`);
+                    }}
+                  >
+                    cursor
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      navigate(`/offset/@${user.id}`);
+                    }}
+                  >
+                    offset
+                  </Button>
+                </Card>
+              );
+            })
+          )}
+        </TodosContainer>
+        <ErrorContainer>{error && <p>{error.message}</p>}</ErrorContainer>
+      </UserListContainer>
+    </>
   );
 };
 
@@ -68,12 +75,27 @@ const TextWrapper = styled.h1`
 `;
 
 const TodosContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 0.5fr);
-  place-items: center;
   height: 600px;
   width: 100%;
-  overflow: auto;
+  /* overflow: auto;
+  padding: 32px;
+  margin: auto; */
+`;
+
+const cardStyle = css`
+  display: grid;
+  width: 200px;
+  height: 150px;
+  place-items: start;
+  background-color: #ffffff;
+  border-radius: 5px;
+
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.09); */
+
+  h2 {
+    font-size: large;
+    color: #74c0fc;
+  }
 `;
 
 const ErrorContainer = styled.p`
@@ -81,19 +103,4 @@ const ErrorContainer = styled.p`
   p {
     color: rebeccapurple;
   }
-`;
-
-const UserCard = styled.div`
-  display: grid;
-  width: 150px;
-  height: 100px;
-  place-items: center;
-  background-color: transparent;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.09);
-`;
-
-const UserIdWrapper = styled.h2`
-  font-size: large;
-  color: #74c0fc;
 `;
