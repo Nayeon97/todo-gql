@@ -1,5 +1,0 @@
-mutation RemoveTodo($id: String!) {
-  removeTodo(id: $id) {
-    id
-  }
-}

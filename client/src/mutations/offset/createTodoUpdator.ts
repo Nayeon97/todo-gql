@@ -1,27 +1,26 @@
-import { gql, MutationUpdaterFn } from "@apollo/client";
-import { CreateTodoMutation, Query } from "../../gql/generated/graphql";
+import { MutationUpdaterFn } from '@apollo/client';
+import {
+  CreateTodoMutation,
+  OffsetTodoItems_TodoFragment,
+  Query,
+} from '../../gql/generated/graphql';
 
-export const updator =
-  (): MutationUpdaterFn<CreateTodoMutation> =>
+export const createTodoUpdator =
+  (user: OffsetTodoItems_TodoFragment): MutationUpdaterFn<CreateTodoMutation> =>
   (cache, { data }) => {
     if (!data) return;
+
     cache.modify({
+      id: cache.identify(user),
       fields: {
-        allTodos(existingTodos: Query["allTodos"]) {
-          const newTodoRef = cache.writeFragment({
-            data: data?.createTodo,
-            fragment: gql`
-              fragment NewTodo on Todo {
-                id
-                text
-                completed
-              }
-            `,
-          });
-          return [...existingTodos, newTodoRef];
+        offsetTodos(existingTodos: Query['user']['offsetTodos']) {
+          return {
+            ...existingTodos,
+          };
         },
       },
     });
+
     // 2. readQuery, writeQuery 사용.
     // const query = gql`
     //   query GetTodos {

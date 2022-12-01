@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 
 interface ButtonProps {
@@ -19,8 +20,10 @@ export default Button;
 
 // btnType : delete(삭제), edit(편집), incomplete(미완료)
 const ButtonWrapper = styled.button<{ btnType: string }>`
-  width: 70px;
+  min-width: 70px;
   font-size: 15px;
+  padding: 10px 10px;
+  border-radius: 5px;
   outline: none;
   color: ${(props) => {
     switch (props.btnType) {
@@ -31,7 +34,7 @@ const ButtonWrapper = styled.button<{ btnType: string }>`
       case "incomplete":
         return "#FFAB76";
       case "complete":
-        return "#548CFF";
+        return "white";
       case "default":
         return "black";
     }

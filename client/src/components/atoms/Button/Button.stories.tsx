@@ -1,10 +1,15 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentStory, ComponentMeta, StoryObj } from "@storybook/react";
+import { within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import Button from "./Button";
 
 export default {
   title: "Button",
   component: Button,
+  parameters: {
+    componentSubtitle: "Add componentSubtitle",
+  },
 } as ComponentMeta<typeof Button>;
 
 const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
@@ -31,22 +36,8 @@ Edit.args = {
   disabled: false,
 };
 
-// export const Incomplete = Template.bind({});
-// Incomplete.args = {
-//   name: "incomplete",
-//   btnType: "incomplete",
-//   disabled: false,
-// };
-
-// export const Complete = Template.bind({});
-// Complete.args = {
-//   name: "complete",
-//   btnType: "complete",
-//   disabled: false,
-// };
-
-// Example React Hooks.
-export const Toggle = () => {
+// A
+export const Toggle: StoryObj = () => {
   const [complete, setComplete] = useState(false);
 
   const onClick = () => {
@@ -61,3 +52,10 @@ export const Toggle = () => {
     />
   );
 };
+
+Toggle.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  await userEvent.click(canvas.getByRole("button"));
+};
+
+Toggle.storyName = "ToggleBtn";

@@ -1,0 +1,12 @@
+mutation CreateTodo($text: String!, $userId: ID!) {
+  createTodo(text: $text, userId: $userId) {
+    todoEdge {
+      node {
+        id
+        text
+        completed
+      }
+      cursor
+    }
+  }
+}

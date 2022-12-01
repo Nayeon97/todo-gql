@@ -1,0 +1,6 @@
+mutation toggleTodo($toggleTodoId: String!, $completed: Boolean!) {
+  toggleTodo(id: $toggleTodoId, completed: $completed) {
+    id
+    completed
+  }
+}
