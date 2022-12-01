@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { gql } from '@apollo/client';
-import styled from 'styled-components';
-import CreateSearchTodo from '../components/molecules/offset/CreateSearchTodo';
-import OffsetTodoItems from '../components/organisms/OffsetTodoItems';
-import Spinner from '../components/atoms/Spinner';
+import { useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { gql } from "@apollo/client";
+import styled from "styled-components";
+import CreateSearchTodo from "../components/molecules/offset/CreateSearchTodo";
+import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
+import Spinner from "../components/atoms/Spinner";
 import {
   InputMaybe,
   Sort,
   useGetOffsetTodosQuery,
-} from '../gql/generated/graphql';
-import OrderByTodo from '../components/molecules/offset/OrderbyTodos';
+} from "../gql/generated/graphql";
+import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
 
 gql`
   query getOffsetTodos(
@@ -42,10 +42,11 @@ const OffsetTodos = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState<string>('');
+  // 따로 Limit 설정하는 select element 추가
+  const [search, setSearch] = useState<string>("");
   const { data, error, loading, fetchMore, refetch } = useGetOffsetTodosQuery({
     variables: {
-      userId: params.userId || '',
+      userId: params.userId || "",
       offset: 0,
       limit,
     },
@@ -62,6 +63,7 @@ const OffsetTodos = () => {
     }).then((fetchMoreResult) => {
       console.log(fetchMoreResult.data.user.offsetTodos.length);
       setLimit(currentLength + fetchMoreResult.data?.user?.offsetTodos.length);
+      // limit은 고정되어 있고, offset만 변경되는 것이므로
       setSearchParams({
         search: `${search}`,
         offset: `${data?.user?.offsetTodos.length}`,
@@ -72,6 +74,7 @@ const OffsetTodos = () => {
     });
   };
 
+  // search, orderByText 분리
   const getData = (
     search?: string,
     orderByText?: InputMaybe<Sort>,
@@ -96,6 +99,9 @@ const OffsetTodos = () => {
     });
   };
 
+  // 1. 데이터 비어 있는 UI
+  // 2. 에러 처리하기 Query, Mutation
+
   return (
     <Container>
       {loading ? (
@@ -105,7 +111,7 @@ const OffsetTodos = () => {
           <TodosContainer>
             <ButtonWrapper
               onClick={() => {
-                navigate('/');
+                navigate("/");
               }}
             >
               navigate userList

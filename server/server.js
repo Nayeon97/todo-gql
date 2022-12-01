@@ -1,56 +1,57 @@
-import { ApolloServer, gql } from 'apollo-server';
-import _ from 'lodash';
+import { ApolloServer, gql } from "apollo-server";
+import { GraphQLError } from "graphql";
+import _ from "lodash";
 
 let todos = [
   {
-    id: 'user1todo:12',
-    text: '청소하기',
+    id: "user1todo:12",
+    text: "청소하기",
     completed: false,
-    userId: 'user1',
+    userId: "user1",
   },
   {
-    id: 'user1todo:23',
-    text: '밥먹기',
+    id: "user1todo:23",
+    text: "밥먹기",
     completed: true,
-    userId: 'user1',
+    userId: "user1",
   },
   {
-    id: 'user1todo:34',
-    text: '......?',
+    id: "user1todo:34",
+    text: "......?",
     completed: false,
-    userId: 'user1',
+    userId: "user1",
   },
   ..._.times(100, (index) => ({
     id: `todo:${index}`,
     text: `${index}번째 할일`,
     completed: true,
-    userId: 'user2',
+    userId: "user2",
   })),
   ..._.times(100, (index) => ({
     id: `todo:${index + 100}`,
     text: `${index}번째 TODO`,
     completed: false,
-    userId: 'user2',
+    userId: "user2",
   })),
   ..._.times(100, (index) => ({
     id: `todo:${index + 200}`,
     text: `${index}번째 Search`,
     completed: false,
-    userId: 'user2',
+    userId: "user2",
   })),
 ];
 
 let users = [
-  { id: 'user1' },
-  { id: 'user2' },
-  { id: 'user3' },
-  { id: 'user4' },
-  { id: 'user5' },
-  { id: 'user6' },
-  { id: 'user7' },
-  { id: 'user8' },
-  { id: 'user9' },
-  { id: 'user10' },
+  { id: "user1" },
+  { id: "user2" },
+  { id: "user3" },
+  { id: "user4" },
+  { id: "user5" },
+  { id: "user6" },
+  { id: "user7" },
+  { id: "user8" },
+  { id: "user9" },
+  { id: "user10" },
 ];
 
 const typeDefs = gql`
@@ -117,11 +118,11 @@ const typeDefs = gql`
 `;
 
 function cursorToId(id) {
-  return Buffer.from(id, 'base64').toString();
+  return Buffer.from(id, "base64").toString();
 }
 
 function idToCursor(id) {
-  return Buffer.from(id).toString('base64');
+  return Buffer.from(id).toString("base64");
 }
 
 const sleep = (sec) => {
@@ -140,6 +141,11 @@ const resolvers = {
       const limit = args.limit || 50;
 
       let userTodos = todos.filter((todo) => todo.userId === user.id);
+      if (args.search === "error") {
+        throw new GraphQLError("에러발생", {
+          extensions: { code: "YOUR_ERROR_CODE" },
+        });
+      }
       if (args.search) {
         // userTodos;
         userTodos = userTodos.filter((todo) => todo.text.includes(args.search));
@@ -158,6 +164,12 @@ const resolvers = {
     cursorTodos: async (user, args) => {
       await sleep(1000);
       let userTodos = todos.filter((todo) => todo.userId === user.id);
+
+      if (args.search === "error") {
+        throw new GraphQLError("에러발생", {
+          extensions: { code: "YOUR_ERROR_CODE" },
+        });
+      }
       if (args.search) {
         // userTodos;
         userTodos = userTodos.filter((todo) => todo.text.includes(args.search));
@@ -223,6 +235,13 @@ const resolvers = {
     createTodo: async (_, { text, userId }) => {
       await sleep(1000);
       let createId = String(+new Date());
+
+      if (text === "error") {
+        throw new GraphQLError("에러발생", {
+          extensions: { code: "MUTATION_YOUR_ERROR_CODE" },
+        });
+      }
+
       const newTodo = {
         id: createId,
         text: text,
