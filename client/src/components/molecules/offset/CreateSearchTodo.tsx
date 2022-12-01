@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   useCreateTodoMutation,
   OffsetTodoItems_TodoFragment,
-} from "../../../gql/generated/graphql";
-import Input from "../../atoms/Input/Input";
-import { createTodoUpdator } from "../../../mutations/offset/createTodoUpdator";
+} from '../../../gql/generated/graphql';
+import Input from '../../atoms/Input/Input';
+import { createTodoUpdator } from '../../../mutations/offset/createTodoUpdator';
 
 interface CrateTodoProps {
   user: OffsetTodoItems_TodoFragment;
@@ -17,7 +17,7 @@ const CreateSearchTodo = ({
   handleSearchTodos,
   alignment,
 }: CrateTodoProps) => {
-  const [text, setText] = useState<string>("");
+  const [text, setText] = useState<string>('');
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     setText(e.currentTarget.value);
@@ -30,8 +30,8 @@ const CreateSearchTodo = ({
   if (error) return <p>`Error! ${error.message}`</p>;
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === "Enter") {
-      if (alignment === "create") {
+    if (e.key === 'Enter') {
+      if (alignment === 'create') {
         onCreate();
       } else {
         onSearch();
@@ -44,14 +44,13 @@ const CreateSearchTodo = ({
       createTodo({
         variables: { text: text, userId: user.id },
       });
-      setText("");
+      setText('');
     } else {
-      alert("todo text XX");
+      alert('todo text XX');
     }
   };
 
   const onSearch = async () => {
-    console.log("qwer");
     handleSearchTodos(text);
   };
 

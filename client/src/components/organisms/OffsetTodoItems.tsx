@@ -9,6 +9,14 @@ interface TodoItemsProps {
 }
 
 const OffsetTodoItems = ({ user, onLoadMore }: TodoItemsProps) => {
+  if (!user.offsetTodos.length) {
+    return (
+      <div>
+        <div>⚠️ todo 없다는 것 보여주기</div>
+      </div>
+    );
+  }
+
   return (
     <TodoItemsContainer>
       {user.offsetTodos.map((todo) => {

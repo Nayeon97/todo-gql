@@ -1,19 +1,20 @@
-import { useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
-import { gql } from "@apollo/client";
-import styled from "styled-components";
-import { InputLabel, MenuItem, FormControl } from "@mui/material";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import CreateSearchTodo from "../components/molecules/offset/CreateSearchTodo";
-import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
-import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
-import ToggleSearch from "../components/atoms/ToggleSearch";
-import Spinner from "../components/atoms/Spinner";
+import { useState } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { gql } from '@apollo/client';
+import styled from 'styled-components';
+import { InputLabel, MenuItem, FormControl, css } from '@mui/material';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import CreateSearchTodo from '../components/molecules/offset/CreateSearchTodo';
+import OffsetTodoItems from '../components/organisms/OffsetTodoItems';
+import OrderByTodo from '../components/molecules/offset/OrderbyTodos';
+import ToggleSearch from '../components/atoms/ToggleSearch';
+import Spinner from '../components/atoms/Spinner';
 import {
   InputMaybe,
   Sort,
   useGetOffsetTodosQuery,
-} from "../gql/generated/graphql";
+} from '../gql/generated/graphql';
+import { Css } from '@mui/icons-material';
 
 gql`
   query getOffsetTodos(
@@ -49,12 +50,12 @@ gql`
 const OffsetTodos = () => {
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [alignment, setAlignment] = useState("create");
-  const [limit, setLimit] = useState("10");
+  const [alignment, setAlignment] = useState('create');
+  const [limit, setLimit] = useState('10');
 
   const { data, loading, fetchMore, refetch } = useGetOffsetTodosQuery({
     variables: {
-      userId: params.userId || "",
+      userId: params.userId || '',
       offset: 0,
       limit: 10,
       search: null,
@@ -62,9 +63,9 @@ const OffsetTodos = () => {
   });
 
   const getParams = () => {
-    const paramsSearch = searchParams.get("search");
-    const paramsOffset = Number(searchParams.get("offset"));
-    const paramsLimit = Number(searchParams.get("limit"));
+    const paramsSearch = searchParams.get('search');
+    const paramsOffset = Number(searchParams.get('offset'));
+    const paramsLimit = Number(searchParams.get('limit'));
 
     return { paramsSearch, paramsOffset, paramsLimit };
   };
@@ -143,7 +144,7 @@ const OffsetTodos = () => {
       ) : (
         data && (
           <TodosContainer>
-            <ToggleSearch alignment={alignment} setAlignment={setAlignment} />
+            <ToggleSearch setAlignment={setAlignment} />
             <CreateSearchTodo
               user={data.user}
               alignment={alignment}
@@ -177,6 +178,7 @@ export default OffsetTodos;
 
 const Container = styled.div`
   display: grid;
+  place-content: center;
 `;
 
 const TodosContainer = styled.div`
@@ -199,12 +201,5 @@ const SearchWrapper = styled.div`
     color: pink;
     padding: 0px 10px;
     font-weight: bold;
-  }
-`;
-
-const ButtonWrapper = styled.button`
-  margin-top: 20px;
-  button {
-    font-size: 15px;
   }
 `;

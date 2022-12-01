@@ -1,45 +1,33 @@
 /** @jsxImportSource @emotion/react */
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { ToggleButtonGroup, ToggleButton } from "@mui/material";
-import { css } from "@emotion/react";
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import styled from 'styled-components';
 
 interface ToggleSearchProps {
-  alignment: string;
   setAlignment: Dispatch<SetStateAction<string>>;
 }
 
-const ToggleSearch = ({ alignment, setAlignment }: ToggleSearchProps) => {
-  const handleChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
-  ) => {
-    setAlignment(newAlignment);
+const ToggleSearch = ({ setAlignment }: ToggleSearchProps) => {
+  const changeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setAlignment(e.target.value);
   };
 
   return (
-    <ToggleButtonGroup
-      color="primary"
-      value={alignment}
-      onChange={handleChange}
-      css={toggleButtonGroupStyle}
-    >
-      <ToggleButton value="create" css={toggleButtonStyle}>
-        create
-      </ToggleButton>
-      <ToggleButton value="search" css={toggleButtonStyle}>
-        search
-      </ToggleButton>
-    </ToggleButtonGroup>
+    <SelectContainer onChange={changeSelect}>
+      <option value="create">create</option>
+      <option value="search">search</option>
+    </SelectContainer>
   );
 };
 
 export default ToggleSearch;
 
-const toggleButtonGroupStyle = css`
-  height: 20px;
-  margin: 10px 0px;
-`;
-
-const toggleButtonStyle = css`
-  font-size: 16px;
+const SelectContainer = styled.select`
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+  background-color: skyblue;
+  border-radius: 10px;
+  font-size: 15px;
+  color: white;
 `;
