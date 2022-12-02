@@ -1,9 +1,9 @@
-import { ApolloClient, InMemoryCache, HttpLink, from } from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink, from } from "@apollo/client";
 import {
   offsetLimitPagination,
   relayStylePagination,
-} from '@apollo/client/utilities';
-import { onError } from '@apollo/client/link/error';
+} from "@apollo/client/utilities";
+import { onError } from "@apollo/client/link/error";
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -15,33 +15,33 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
-const httpLink = new HttpLink({ uri: 'http://localhost:4000/' });
+const httpLink = new HttpLink({ uri: "http://localhost:4000/" });
 
 const client = new ApolloClient({
   link: from([errorLink, httpLink]),
-  uri: 'http://localhost:4000/',
+  uri: "http://localhost:4000/",
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
         fields: {
-          user: { keyArgs: ['id'] },
+          user: { keyArgs: ["id"] },
         },
       },
       User: {
         fields: {
           offsetTodos: {
             ...offsetLimitPagination([
-              'id',
-              'search',
-              'orderBy',
-              ['text', 'completed'],
+              "id",
+              "search",
+              "orderBy",
+              ["text", "completed"],
             ]),
           },
           cursorTodos: relayStylePagination([
-            'id',
-            'search',
-            'orderBy',
-            ['text', 'completed'],
+            "id",
+            "search",
+            "orderBy",
+            ["text", "completed"],
           ]),
         },
       },
