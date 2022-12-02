@@ -6,6 +6,7 @@ import {
 import Input from "../../atoms/Input/Input";
 import { createTodoUpdator } from "../../../mutations/offset/createTodoUpdator";
 import {} from "@apollo/client/link/error";
+import SnackBar from "../../atoms/ErrorSnackbar";
 
 interface CrateTodoProps {
   user: OffsetTodoItems_TodoFragment;
@@ -38,11 +39,24 @@ const CreateSearchTodo = ({
     }
   };
 
+  if (error) {
+    return (
+      <div>
+        <SnackBar
+          isOpen={true}
+          text={error.graphQLErrors[0].message}
+          type="error"
+        />
+      </div>
+    );
+  }
+
   const onCreate = () => {
     if (text && user.id) {
       createTodo({
         variables: { text: text, userId: user.id },
-      }).catch((error) => console.log(error.message));
+      });
+
       setText("");
     } else {
       alert("todo text XX");
