@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import { gql } from "@apollo/client";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { useAllUsersQuery } from "../gql/generated/graphql";
-import { Card, Button } from "@mui/material";
-import Spinner from "../components/atoms/Spinner";
-
+import { gql } from '@apollo/client';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { useAllUsersQuery } from '../gql/generated/graphql';
+import { Button } from '@mui/material';
+import Spinner from '../components/atoms/Spinner';
 
 gql`
   query allUsers {

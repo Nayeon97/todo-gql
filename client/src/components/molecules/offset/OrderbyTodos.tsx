@@ -17,13 +17,13 @@ const OrderByTodo = ({ handleOrderByTodos }: OrderByTodoProps) => {
   const onClickOrderByText = (e: React.MouseEvent<HTMLButtonElement>) => {
     const text = e.currentTarget.value === 'asc' ? Sort.Asc : Sort.Desc;
     setOrderByText(text);
-    handleOrderByTodos(text, orderByCompleted);
+    handleOrderByTodos(text, null);
   };
 
   const onClickOrderByCompleted = (e: React.MouseEvent<HTMLButtonElement>) => {
     const completed = e.currentTarget.value === 'asc' ? Sort.Asc : Sort.Desc;
     setOrderByCompleted(completed);
-    handleOrderByTodos(orderByText, completed);
+    handleOrderByTodos(null, completed);
   };
 
   return (
@@ -58,7 +58,8 @@ export default OrderByTodo;
 
 const ButtonContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  place-content: start;
+  grid-auto-flow: column;
   margin-top: 5px;
 `;
 

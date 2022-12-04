@@ -1,19 +1,17 @@
-import { useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
-import { gql } from "@apollo/client";
-import styled from "styled-components";
-import { InputLabel, MenuItem, FormControl, css } from "@mui/material";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import CreateSearchTodo from "../components/molecules/offset/CreateSearchTodo";
-import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
-import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
-import ToggleSearch from "../components/atoms/ToggleSearch";
-import Spinner from "../components/atoms/Spinner";
+import { useState } from 'react';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { gql } from '@apollo/client';
+import styled from 'styled-components';
+import CreateSearchTodo from '../components/molecules/offset/CreateSearchTodo';
+import OffsetTodoItems from '../components/organisms/OffsetTodoItems';
+import OrderByTodo from '../components/molecules/offset/OrderbyTodos';
+import ToggleSearch from '../components/atoms/ToggleSearch';
+import Spinner from '../components/atoms/Spinner';
 import {
   InputMaybe,
   Sort,
   useGetOffsetTodosQuery,
-} from "../gql/generated/graphql";
+} from '../gql/generated/graphql';
 
 gql`
   query getOffsetTodos(
@@ -40,35 +38,29 @@ gql`
   }
 `;
 
-// 따로 Limit 설정하는 select element 추가
-// limit은 고정되어 있고, offset만 변경되는 것이므로
-// search, orderByText 분리
-// 1. 데이터 비어 있는 UI
-// 2. 에러 처리하기 Query, Mutation
-
 const OffsetTodos = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [alignment, setAlignment] = useState("create");
-  const [limit, setLimit] = useState("10");
+  const [alignment, setAlignment] = useState('create');
+  const [limit, setLimit] = useState('10');
 
   const { data, loading, fetchMore, refetch } = useGetOffsetTodosQuery({
     variables: {
-      userId: params.userId || "",
+      userId: params.userId || '',
       offset: 0,
       limit: 10,
       search: null,
-      orderBy: {
-        text: null,
-        completed: null,
-      },
     },
+    notifyOnNetworkStatusChange: true,
   });
 
+  if (loading) return <Spinner />;
+
   const getParams = () => {
-    const paramsSearch = searchParams.get("search");
-    const paramsOffset = Number(searchParams.get("offset"));
-    const paramsLimit = Number(searchParams.get("limit"));
+    const paramsSearch = searchParams.get('search');
+    const paramsOffset = Number(searchParams.get('offset'));
+    const paramsLimit = Number(searchParams.get('limit'));
 
     return { paramsSearch, paramsOffset, paramsLimit };
   };
@@ -134,33 +126,40 @@ const OffsetTodos = () => {
     });
   };
 
-  const handleChangeLimit = (event: SelectChangeEvent) => {
-    setLimit(event.target.value as string);
+  const handleLimit = (changeLimit: string) => {
+    if (params.userId) {
+      refetch({
+        userId: params.userId,
+        offset: 0,
+        limit: Number(changeLimit),
+        search: null,
+      });
+    }
+
+    setSearchParams({
+      search: `${''}`,
+      offset: `${0}`,
+      limit: `${changeLimit}`,
+    });
   };
 
   const { paramsSearch } = getParams();
 
   return (
     <Container>
+      <button onClick={() => navigate('/')}>userList</button>
       {loading ? (
         <Spinner />
       ) : (
         data && (
           <TodosContainer>
-            <ToggleSearch setAlignment={setAlignment} />
+            <ToggleSearch setAlignment={setAlignment} alignment={alignment} />
             <CreateSearchTodo
               user={data.user}
               alignment={alignment}
               handleSearchTodos={handleSearchTodos}
             />
             <OrderByTodo handleOrderByTodos={handleOrderByTodos} />
-            <FormControl>
-              <InputLabel>limit</InputLabel>
-              <Select value={limit} label="limit" onChange={handleChangeLimit}>
-                <MenuItem value={10}>10개씩 보기</MenuItem>
-                <MenuItem value={20}>20개씩 보기</MenuItem>
-              </Select>
-            </FormControl>
             {paramsSearch && (
               <SearchWrapper>
                 검색 결과
@@ -168,7 +167,14 @@ const OffsetTodos = () => {
               </SearchWrapper>
             )}
             <TodosWrapper>
-              <OffsetTodoItems user={data.user} onLoadMore={handleLoadMore} />
+              <OffsetTodoItems
+                user={data.user}
+                handleLoadMore={handleLoadMore}
+                handleOrderByTodos={handleOrderByTodos}
+                limit={limit}
+                setLimit={setLimit}
+                handleLimit={handleLimit}
+              />
             </TodosWrapper>
           </TodosContainer>
         )
@@ -180,13 +186,13 @@ const OffsetTodos = () => {
 export default OffsetTodos;
 
 const Container = styled.div`
-  display: grid;
-  place-content: center;
+  /* display: grid;
+  place-content: center; */
 `;
 
 const TodosContainer = styled.div`
-  display: grid;
-  justify-items: center;
+  /* display: grid;
+  justify-items: center; */
 `;
 
 const TodosWrapper = styled.div`

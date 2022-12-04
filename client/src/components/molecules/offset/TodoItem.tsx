@@ -1,13 +1,13 @@
-import styled from "styled-components";
-import ToggleCompleteTodo from "./ToggleCompleteTodo";
-import DeleteTodo from "./DeleteTodo";
-import EditTodo from "./EditTodo";
-import Button from "../../atoms/Button/Button";
+import ToggleCompleteTodo from './ToggleCompleteTodo';
+import DeleteTodo from './DeleteTodo';
+import EditTodo from './EditTodo';
+import Button from '../../atoms/Button/Button';
 import {
   OffsetTodoItems_TodoFragment,
   Todo,
-} from "../../../gql/generated/graphql";
-import { useState } from "react";
+} from '../../../gql/generated/graphql';
+import { useState } from 'react';
+import { TableCell, TableRow } from '@mui/material';
 
 interface TodoItemProps {
   todo: Todo;
@@ -18,15 +18,25 @@ const TodoItem = ({ todo, user }: TodoItemProps) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   return (
-    <>
-      <TodoItemContainer completed={todo.completed} key={todo.id}>
+    <TableRow
+      key={todo.id}
+      sx={{
+        '&:last-child td, &:last-child th': { border: 0 },
+        backgroundColor: todo.completed === true ? '#696977' : 'white',
+      }}
+    >
+      <TableCell component="th" scope="row">
         <ToggleCompleteTodo todo={todo} isEdit={isEdit} />
+      </TableCell>
+      <TableCell align="left">
         <EditTodo
           isEdit={isEdit}
           user={user}
           todo={todo}
           setIsEdit={setIsEdit}
         />
+      </TableCell>
+      <TableCell align="left">
         <Button
           onClick={() => {
             setIsEdit(true);
@@ -35,22 +45,12 @@ const TodoItem = ({ todo, user }: TodoItemProps) => {
           btnType="edit"
           disabled={isEdit ? true : false || todo.completed ? true : false}
         />
+      </TableCell>
+      <TableCell align="left">
         <DeleteTodo user={user} setIsEdit={setIsEdit} todo={todo} />
-      </TodoItemContainer>
-    </>
+      </TableCell>
+    </TableRow>
   );
 };
 
 export default TodoItem;
-
-const TodoItemContainer = styled.div<{ completed: boolean }>`
-  display: grid;
-  width: 450px;
-  grid-template-columns: repeat(4, 1fr);
-  place-items: center;
-  background-color: ${(props) => (props.completed ? "#d3d3d3" : "transparent")};
-  border-radius: 5px;
-  margin: 10px 10px;
-  padding: 10px 0px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.09);
-`;

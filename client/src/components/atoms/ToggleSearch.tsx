@@ -1,33 +1,35 @@
 /** @jsxImportSource @emotion/react */
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import styled from 'styled-components';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import React, { Dispatch, SetStateAction } from 'react';
 
 interface ToggleSearchProps {
+  alignment: string;
   setAlignment: Dispatch<SetStateAction<string>>;
 }
 
-const ToggleSearch = ({ setAlignment }: ToggleSearchProps) => {
-  const changeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setAlignment(e.target.value);
+const ToggleSearch = ({ alignment, setAlignment }: ToggleSearchProps) => {
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string
+  ) => {
+    setAlignment(newAlignment);
   };
 
   return (
-    <SelectContainer onChange={changeSelect}>
-      <option value="create">create</option>
-      <option value="search">search</option>
-    </SelectContainer>
+    <ToggleButtonGroup
+      value={alignment}
+      onChange={handleChange}
+      exclusive
+      color="primary"
+    >
+      <ToggleButton value="create" key="create">
+        Todo 추가
+      </ToggleButton>
+      <ToggleButton value="search" key="search">
+        Todo 검색
+      </ToggleButton>
+    </ToggleButtonGroup>
   );
 };
 
 export default ToggleSearch;
-
-const SelectContainer = styled.select`
-  margin-right: 10px;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: none;
-  background-color: skyblue;
-  border-radius: 10px;
-  font-size: 15px;
-  color: white;
-`;

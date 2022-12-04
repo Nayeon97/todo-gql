@@ -1,11 +1,11 @@
-import React from "react";
-import ReactLoading from "react-loading";
-import styled from "styled-components";
+import React from 'react';
+import { CircularProgress } from '@mui/material';
+import styled from 'styled-components';
 
 const Spinner = () => {
   return (
     <SpinnerWrapper>
-      <ReactLoading type={"bubbles"} color="pink" />
+      <CircularProgress />
     </SpinnerWrapper>
   );
 };

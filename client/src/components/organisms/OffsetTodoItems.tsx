@@ -1,14 +1,46 @@
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { gql } from '@apollo/client';
 import styled from 'styled-components';
-import { OffsetTodoItems_TodoFragment } from '../../gql/generated/graphql';
+import {
+  OffsetTodoItems_TodoFragment,
+  InputMaybe,
+  Sort,
+} from '../../gql/generated/graphql';
+import {
+  TableContainer,
+  Table,
+  TableRow,
+  TableCell,
+  TableHead,
+  TableBody,
+  Paper,
+  FormControl,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+} from '@mui/material';
 import TodoItem from '../molecules/offset/TodoItem';
 
 interface TodoItemsProps {
   user: OffsetTodoItems_TodoFragment;
-  onLoadMore: () => void;
+  handleOrderByTodos: (
+    orderByText: InputMaybe<Sort>,
+    orderByCompleted: InputMaybe<Sort>
+  ) => void;
+  handleLoadMore: () => void;
+  limit: string;
+  setLimit: Dispatch<SetStateAction<string>>;
+  handleLimit: (limit: string) => void;
 }
 
-const OffsetTodoItems = ({ user, onLoadMore }: TodoItemsProps) => {
+const OffsetTodoItems = ({
+  user,
+  handleLoadMore,
+  handleOrderByTodos,
+  limit,
+  setLimit,
+  handleLimit,
+}: TodoItemsProps) => {
   if (!user.offsetTodos.length) {
     return (
       <div>
@@ -17,35 +49,54 @@ const OffsetTodoItems = ({ user, onLoadMore }: TodoItemsProps) => {
     );
   }
 
+  const handleChangeLimit = (event: SelectChangeEvent) => {
+    const limit = event.target.value as string;
+    setLimit(event.target.value);
+    handleLimit(limit);
+  };
+
   return (
-    <TodoItemsContainer>
-      {user.offsetTodos.map((todo) => {
-        return <TodoItem key={todo.id} todo={todo} user={user} />;
-      })}
-      <ViewMoreButton>
-        <button onClick={onLoadMore}>더보기</button>
-      </ViewMoreButton>
-    </TodoItemsContainer>
+    <TableContainer component={Paper} sx={{ width: '800px', padding: '20px' }}>
+      <Table aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>완료여부</TableCell>
+            <TableCell align="left">할 일</TableCell>
+            <TableCell align="left">수정</TableCell>
+            <TableCell align="left">삭제</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {user.offsetTodos.map((todo) => {
+            return <TodoItem key={todo.id} todo={todo} user={user} />;
+          })}
+        </TableBody>
+      </Table>
+      <SelectContainer>
+        <button onClick={handleLoadMore}>더보기</button>
+        <span>{user.totalTodoCount}개 중 </span>
+        <FormControl sx={{ marginBottom: '30px', padding: '0px' }} size="small">
+          <Select value={limit} onChange={handleChangeLimit}>
+            <MenuItem value={10}>10개씩 보기</MenuItem>
+            <MenuItem value={20}>20개씩 보기</MenuItem>
+          </Select>
+        </FormControl>
+      </SelectContainer>
+    </TableContainer>
   );
 };
 
 export default OffsetTodoItems;
 
-const TodoItemsContainer = styled.div`
-  height: 500px;
-  overflow: auto;
-`;
-
-const ViewMoreButton = styled.div`
+const SelectContainer = styled.div`
   display: grid;
-  width: 450px;
-  place-items: center;
-  button {
-    background-color: skyblue;
-    padding: 10px;
-    border-radius: 25px;
-    color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.09);
+  grid-auto-flow: column;
+  justify-content: end;
+  margin-top: 20px;
+
+  span {
+    margin: 10px 8px;
+    color: #69696f;
   }
 `;
 
@@ -60,5 +111,6 @@ gql`
       ...DeleteTodo_Todo
       ...ToggleCompleteTodo_Todo
     }
+    totalTodoCount
   }
 `;
