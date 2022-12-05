@@ -1,11 +1,11 @@
-import ToggleCompleteTodo from "./ToggleCompleteTodo";
-import DeleteTodo from "./DeleteTodo";
-import EditTodo from "./EditTodo";
-import Button from "../../atoms/Button/Button";
-import { TodoItem_UserFragment, Todo } from "../../../gql/generated/graphql";
-import { useState } from "react";
-import { TableCell, TableRow } from "@mui/material";
-import { gql } from "@apollo/client";
+import ToggleCompleteTodo from './ToggleCompleteTodo';
+import DeleteTodo from './DeleteTodo';
+import EditTodo from './EditTodo';
+import Button from '../../atoms/Button/Button';
+import { TodoItem_UserFragment, Todo } from '../../../gql/generated/graphql';
+import { useState } from 'react';
+import { TableCell, TableRow } from '@mui/material';
+import { gql } from '@apollo/client';
 
 interface TodoItemProps {
   todo: Todo;
@@ -19,8 +19,8 @@ const TodoItem = ({ todo, user }: TodoItemProps) => {
     <TableRow
       key={todo.id}
       sx={{
-        "&:last-child td, &:last-child th": { border: 0 },
-        backgroundColor: todo.completed === true ? "#696977" : "white",
+        '&:last-child td, &:last-child th': { border: 0 },
+        backgroundColor: todo.completed === true ? '#696977' : 'white',
       }}
     >
       <TableCell component="th" scope="row">
@@ -67,31 +67,3 @@ gql`
     ...ToggleCompleteTodo_Todo
   }
 `;
-
-// gql`
-//   fragment StudentCard_Student on Student {
-//     id
-//     grade
-//     ...StudentCardName_Student
-//     ...StudentCardAddress_Student
-//     ...StudentCardGender_Student
-//   }
-// `;
-
-// interface StudentCardName {
-//   student: StudentCardName_StudentFragment;
-// }
-
-// gql`
-//   fragment StudentCardName_Name on Name {
-//     firstName
-//     lastName
-//   }
-
-//   fragment StudentCardName_Student on Student {
-//     id
-//     name {
-//       ...StudentCardName_Name
-//     }
-//   }
-// `;

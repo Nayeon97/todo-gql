@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { gql, NetworkStatus } from '@apollo/client';
 import styled from 'styled-components';
@@ -49,6 +49,12 @@ const OffsetTodos = () => {
   // 상태관리는 2개에서 1개로 하거나 아니면 2개 상태를 sync 해주는게 좋다
   const [limit, setLimit] = useState('10');
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setSearchParams({
+      limit: `${10}`,
+    });
+  }, []);
 
   const { data, loading, refetch, networkStatus } = useGetOffsetTodosQuery({
     notifyOnNetworkStatusChange: true,
@@ -123,6 +129,8 @@ const OffsetTodos = () => {
       search: `${paramsSearch}`,
       offset: `${paramsOffset}`,
       limit: `${paramsLimit}`,
+      text: `${orderByText}`,
+      completed: `${orderByCompleted}`,
     });
   };
 

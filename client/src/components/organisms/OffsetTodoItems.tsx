@@ -1,11 +1,11 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { gql } from "@apollo/client";
-import styled from "styled-components";
+import React from 'react';
+import { gql } from '@apollo/client';
+import styled from 'styled-components';
 import {
   OffsetTodoItems_UserFragment,
   InputMaybe,
   Sort,
-} from "../../gql/generated/graphql";
+} from '../../gql/generated/graphql';
 import {
   TableContainer,
   Table,
@@ -19,9 +19,8 @@ import {
   MenuItem,
   SelectChangeEvent,
   Pagination,
-} from "@mui/material";
-import TodoItem from "../molecules/offset/TodoItem";
-import SearchTodo from "../molecules/offset/SearchTodo";
+} from '@mui/material';
+import TodoItem from '../molecules/offset/TodoItem';
 
 interface TodoItemsProps {
   user: OffsetTodoItems_UserFragment;
@@ -31,7 +30,7 @@ interface TodoItemsProps {
   ) => void;
   onClickRefetchTodos: (offset: number) => void;
   limit: string;
-  setLimit: Dispatch<SetStateAction<string>>;
+  page: number;
   handleLimit: (limit: string) => void;
 }
 
@@ -39,12 +38,11 @@ const OffsetTodoItems = ({
   user,
   onClickRefetchTodos,
   limit,
-  setLimit,
   handleLimit,
+  page,
 }: TodoItemsProps) => {
   // page는 state로 관리하기 보다 부모 컴포넌트에서 관리하는게 좋다.
   // 상태관리 2개에서 1개로 관리하는게 좋다
-  const [page, setPage] = useState(1);
 
   if (!user.offsetTodos.length) {
     return (
@@ -56,18 +54,15 @@ const OffsetTodoItems = ({
 
   const handleChangeLimit = (event: SelectChangeEvent) => {
     const limit = event.target.value as string;
-    setLimit(event.target.value);
     handleLimit(limit);
-    setPage(1);
   };
 
   const changePage = (p: number) => {
-    setPage(p);
     onClickRefetchTodos(p);
   };
 
   return (
-    <TableContainer component={Paper} sx={{ width: "800px", padding: "20px" }}>
+    <TableContainer component={Paper} sx={{ width: '800px', padding: '20px' }}>
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -91,9 +86,8 @@ const OffsetTodoItems = ({
             changePage(page);
           }}
         />
-        {/* <button onClick={handleLoadMore}>더보기</button> */}
         <span>{user.totalTodoCount}개 중 </span>
-        <FormControl sx={{ marginBottom: "30px", padding: "0px" }} size="small">
+        <FormControl sx={{ marginBottom: '30px', padding: '0px' }} size="small">
           <Select value={limit} onChange={handleChangeLimit}>
             <MenuItem value={10}>10개씩 보기</MenuItem>
             <MenuItem value={20}>20개씩 보기</MenuItem>
