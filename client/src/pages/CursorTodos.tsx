@@ -9,7 +9,7 @@ import {
   Sort,
   useGetCursorTodosQuery,
 } from "../gql/generated/graphql";
-import { gql } from "@apollo/client";
+import { gql, NetworkStatus } from "@apollo/client";
 import OrderByTodo from "../components/molecules/cursor/OrderbyTodos";
 
 gql`
@@ -47,11 +47,9 @@ gql`
 const CursorTodos = () => {
   const params = useParams();
   const navigate = useNavigate();
-  // const [after, setAfter] = useState<string>("");
-  // const [nextPage, setNextPage] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
 
-  const { data, error, loading, fetchMore, refetch, networkStatus } =
+  const { data, error, fetchMore, refetch, networkStatus } =
     useGetCursorTodosQuery({
       variables: {
         userId: params.userId || "",
@@ -66,17 +64,6 @@ const CursorTodos = () => {
     data?.user?.cursorTodos?.edges?.[data.user.cursorTodos.edges.length - 1]
       ?.cursor;
   const hasNextPage = data?.user?.cursorTodos?.pageInfo?.hasNextPage ?? false;
-  console.log(networkStatus, after);
-
-  // useEffect(() => {
-  //   if (data?.user.cursorTodos.edges[0]) {
-  //     // setAfter(
-  //     //   data?.user.cursorTodos.edges.map((edge: any) => edge).slice(-1)[0]
-  //     //     .cursor
-  //     // );
-  //     setNextPage(data?.user.cursorTodos.pageInfo.hasNextPage || false);
-  //   }
-  // }, [data, search]);
 
   if (error) return <p>`Error! ${error.message}`</p>;
 
@@ -102,13 +89,13 @@ const CursorTodos = () => {
     if (!hasNextPage) {
       return;
     }
-    console.log("?", after);
-    fetchMore({ variables: { cursor: after } });
+
+    fetchMore({ variables: { after: after } });
   };
 
   return (
     <Container>
-      {loading ? (
+      {networkStatus === NetworkStatus.loading ? (
         <Spinner />
       ) : (
         data && (
@@ -139,6 +126,7 @@ const CursorTodos = () => {
                   onLoadMore={handleLoadMore}
                   end={hasNextPage}
                 />
+                {networkStatus === NetworkStatus.fetchMore && <Spinner />}
               </TodosWrapper>
             </TodosContainer>
           </>
