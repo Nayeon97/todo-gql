@@ -1,11 +1,11 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { gql } from '@apollo/client';
-import styled from 'styled-components';
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { gql } from "@apollo/client";
+import styled from "styled-components";
 import {
   OffsetTodoItems_TodoFragment,
   InputMaybe,
   Sort,
-} from '../../gql/generated/graphql';
+} from "../../gql/generated/graphql";
 import {
   TableContainer,
   Table,
@@ -18,8 +18,9 @@ import {
   Select,
   MenuItem,
   SelectChangeEvent,
-} from '@mui/material';
-import TodoItem from '../molecules/offset/TodoItem';
+  Pagination,
+} from "@mui/material";
+import TodoItem from "../molecules/offset/TodoItem";
 
 interface TodoItemsProps {
   user: OffsetTodoItems_TodoFragment;
@@ -27,7 +28,7 @@ interface TodoItemsProps {
     orderByText: InputMaybe<Sort>,
     orderByCompleted: InputMaybe<Sort>
   ) => void;
-  handleLoadMore: () => void;
+  handleLoadMore: (offset: number) => void;
   limit: string;
   setLimit: Dispatch<SetStateAction<string>>;
   handleLimit: (limit: string) => void;
@@ -36,11 +37,12 @@ interface TodoItemsProps {
 const OffsetTodoItems = ({
   user,
   handleLoadMore,
-  handleOrderByTodos,
   limit,
   setLimit,
   handleLimit,
 }: TodoItemsProps) => {
+  const [page, setPage] = useState(1);
+
   if (!user.offsetTodos.length) {
     return (
       <div>
@@ -53,10 +55,16 @@ const OffsetTodoItems = ({
     const limit = event.target.value as string;
     setLimit(event.target.value);
     handleLimit(limit);
+    setPage(1);
+  };
+
+  const changePage = (p: number) => {
+    setPage(p);
+    handleLoadMore(p);
   };
 
   return (
-    <TableContainer component={Paper} sx={{ width: '800px', padding: '20px' }}>
+    <TableContainer component={Paper} sx={{ width: "800px", padding: "20px" }}>
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -73,9 +81,16 @@ const OffsetTodoItems = ({
         </TableBody>
       </Table>
       <SelectContainer>
-        <button onClick={handleLoadMore}>더보기</button>
+        <Pagination
+          page={page}
+          count={user.totalTodoCount / Number(limit)}
+          onChange={(_, page) => {
+            changePage(page);
+          }}
+        />
+        {/* <button onClick={handleLoadMore}>더보기</button> */}
         <span>{user.totalTodoCount}개 중 </span>
-        <FormControl sx={{ marginBottom: '30px', padding: '0px' }} size="small">
+        <FormControl sx={{ marginBottom: "30px", padding: "0px" }} size="small">
           <Select value={limit} onChange={handleChangeLimit}>
             <MenuItem value={10}>10개씩 보기</MenuItem>
             <MenuItem value={20}>20개씩 보기</MenuItem>

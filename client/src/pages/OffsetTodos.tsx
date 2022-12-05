@@ -1,17 +1,19 @@
-import { useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { gql } from '@apollo/client';
-import styled from 'styled-components';
-import CreateSearchTodo from '../components/molecules/offset/CreateSearchTodo';
-import OffsetTodoItems from '../components/organisms/OffsetTodoItems';
-import OrderByTodo from '../components/molecules/offset/OrderbyTodos';
-import ToggleSearch from '../components/atoms/ToggleSearch';
-import Spinner from '../components/atoms/Spinner';
+import { useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { ApolloQueryResult, gql } from "@apollo/client";
+import styled from "styled-components";
+import CreateSearchTodo from "../components/molecules/offset/CreateSearchTodo";
+import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
+import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
+import ToggleSearch from "../components/atoms/ToggleSearch";
+import Spinner from "../components/atoms/Spinner";
 import {
+  GetOffsetTodosQuery,
   InputMaybe,
+  OffsetTodoItems_TodoFragment,
   Sort,
   useGetOffsetTodosQuery,
-} from '../gql/generated/graphql';
+} from "../gql/generated/graphql";
 
 gql`
   query getOffsetTodos(
@@ -38,48 +40,45 @@ gql`
   }
 `;
 
+type List = OffsetTodoItems_TodoFragment;
+
 const OffsetTodos = () => {
   const navigate = useNavigate();
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [alignment, setAlignment] = useState('create');
-  const [limit, setLimit] = useState('10');
+  const [alignment, setAlignment] = useState("create");
+  const [limit, setLimit] = useState("10");
 
   const { data, loading, fetchMore, refetch } = useGetOffsetTodosQuery({
     variables: {
-      userId: params.userId || '',
+      userId: params.userId || "",
       offset: 0,
       limit: 10,
       search: null,
     },
-    notifyOnNetworkStatusChange: true,
   });
 
   if (loading) return <Spinner />;
 
   const getParams = () => {
-    const paramsSearch = searchParams.get('search');
-    const paramsOffset = Number(searchParams.get('offset'));
-    const paramsLimit = Number(searchParams.get('limit'));
+    const paramsSearch = searchParams.get("search");
+    const paramsOffset = Number(searchParams.get("offset"));
+    const paramsLimit = Number(searchParams.get("limit"));
 
     return { paramsSearch, paramsOffset, paramsLimit };
   };
 
-  const handleLoadMore = () => {
+  const handleLoadMore = (offset: number) => {
     const { paramsSearch } = getParams();
-    const currentLength = data?.user?.offsetTodos.length || 0;
-    fetchMore({
-      variables: {
-        offset: currentLength,
-        limit: Number(limit),
-      },
-    }).then(() => {
-      setLimit(limit);
-      setSearchParams({
-        search: `${paramsSearch}`,
-        offset: `${data?.user?.offsetTodos.length}`,
-        limit: `${limit}`,
-      });
+    // const currentLength = data?.user?.offsetTodos.length || 0;
+    refetch({
+      offset: (offset - 1) * 10,
+      limit: Number(limit),
+    });
+    setSearchParams({
+      search: `${paramsSearch}`,
+      offset: `${(offset - 1) * 10}`,
+      limit: `${limit}`,
     });
   };
 
@@ -137,7 +136,7 @@ const OffsetTodos = () => {
     }
 
     setSearchParams({
-      search: `${''}`,
+      search: `${""}`,
       offset: `${0}`,
       limit: `${changeLimit}`,
     });
@@ -147,7 +146,7 @@ const OffsetTodos = () => {
 
   return (
     <Container>
-      <button onClick={() => navigate('/')}>userList</button>
+      <button onClick={() => navigate("/")}>userList</button>
       {loading ? (
         <Spinner />
       ) : (
