@@ -1,12 +1,12 @@
-import { Dispatch, SetStateAction } from "react";
-import { useRemoveTodoMutation } from "../../../gql/generated/graphql";
-import Button from "../../atoms/Button/Button";
-import { gql } from "@apollo/client";
+import { Dispatch, SetStateAction } from 'react';
+import { useRemoveTodoMutation } from '../../../gql/generated/graphql';
+import Button from '../../atoms/Button/Button';
+import { gql } from '@apollo/client';
 import {
   DeleteTodo_TodoFragment,
   DeleteTodo_UserFragment,
-} from "../../../gql/generated/graphql";
-import { deleteTodoUpdator } from "../../../mutations/offset/deleteTodoUpdator";
+} from '../../../gql/generated/graphql';
+import { deleteTodoUpdator } from '../../../mutations/offset/deleteTodoUpdator';
 
 interface DeleteTodoProps {
   // DeleteTodo User Fragment 따로 정의해서 사용 (생각보다 중요)
@@ -20,6 +20,9 @@ const DeleteTodo = ({ user, todo }: DeleteTodoProps) => {
 
   const [deleteTodo, { error }] = useRemoveTodoMutation({
     update: deleteTodoUpdator(user),
+    onError: (error) => {
+      alert(error.graphQLErrors[0].extensions.code);
+    },
   });
 
   if (error) return <p>`Error! ${error.message}`</p>;

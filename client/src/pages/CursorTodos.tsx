@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
-import CreateSearchTodo from "../components/molecules/cursor/CreateSearchTodo";
-import CursorTodoItems from "../components/organisms/CursorTodoItems";
-import Spinner from "../components/atoms/Spinner";
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import CreateSearchTodo from '../components/molecules/cursor/CreateSearchTodo';
+import CursorTodoItems from '../components/organisms/CursorTodoItems';
+import Spinner from '../components/atoms/Spinner';
 import {
   InputMaybe,
   Sort,
   useGetCursorTodosQuery,
-} from "../gql/generated/graphql";
-import { gql, NetworkStatus } from "@apollo/client";
-import OrderByTodo from "../components/molecules/cursor/OrderbyTodos";
+} from '../gql/generated/graphql';
+import { gql, NetworkStatus } from '@apollo/client';
+import OrderByTodo from '../components/molecules/cursor/OrderbyTodos';
 
 gql`
   query getCursorTodos(
@@ -47,15 +47,15 @@ gql`
 const CursorTodos = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>('');
 
   const { data, error, fetchMore, refetch, networkStatus } =
     useGetCursorTodosQuery({
       variables: {
-        userId: params.userId || "",
+        userId: params.userId || '',
         search,
         first: 0,
-        after: "",
+        after: '',
       },
       notifyOnNetworkStatusChange: true,
     });
@@ -72,9 +72,9 @@ const CursorTodos = () => {
     orderByText?: InputMaybe<Sort>,
     orderByCompleted?: InputMaybe<Sort>
   ) => {
-    setSearch(search || "");
+    setSearch(search || '');
     refetch({
-      userId: params.userId || "",
+      userId: params.userId || '',
       search,
       first: 0,
       after,
@@ -103,7 +103,7 @@ const CursorTodos = () => {
             <ButtonWrapper>
               <button
                 onClick={() => {
-                  navigate("/");
+                  navigate('/');
                 }}
               >
                 navigate userList

@@ -1,8 +1,8 @@
-import { gql } from "@apollo/client";
-import { ToggleCompleteTodo_TodoFragment } from "../../../gql/generated/graphql";
-import Button from "../../atoms/Button/Button";
-import { useToggleTodoMutation } from "../../../gql/generated/graphql";
-import { toggletTodoUpdator } from "../../../mutations/offset/toggletTodoUpdator";
+import { gql } from '@apollo/client';
+import { ToggleCompleteTodo_TodoFragment } from '../../../gql/generated/graphql';
+import Button from '../../atoms/Button/Button';
+import { useToggleTodoMutation } from '../../../gql/generated/graphql';
+import { toggletTodoUpdator } from '../../../mutations/offset/toggletTodoUpdator';
 
 interface ToggleCompleteTodoProps {
   todo: ToggleCompleteTodo_TodoFragment;
@@ -13,6 +13,9 @@ const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
   const { id, completed } = todo;
   const [toggleTodo, { error }] = useToggleTodoMutation({
     update: toggletTodoUpdator(),
+    onError: (error) => {
+      alert(error.graphQLErrors[0].extensions.code);
+    },
   });
 
   if (error) return <p>`Error! ${error.message}`</p>;
@@ -22,7 +25,7 @@ const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
       variables: { toggleTodoId: id, completed: completed },
       optimisticResponse: {
         toggleTodo: {
-          __typename: "Todo",
+          __typename: 'Todo',
           id: id,
           completed: !completed,
         },
@@ -33,8 +36,8 @@ const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
   return (
     <Button
       onClick={toggleShowComplete}
-      btnType={completed ? "complete" : "incomplete"}
-      name={completed ? "완료" : "미완료"}
+      btnType={completed ? 'complete' : 'incomplete'}
+      name={completed ? '완료' : '미완료'}
       disabled={isEdit ? true : false}
     />
   );
