@@ -4,14 +4,14 @@ import { useState } from "react";
 import styled from "styled-components";
 import {
   useEditTodoMutation,
-  OffsetTodoItems_TodoFragment,
+  EditTodoText_UserFragment,
   Todo,
 } from "../../../gql/generated/graphql";
 import { editTodoUpdator } from "../../../mutations/offset/editTodoUpdator";
 
 interface EditTodoProps {
   isEdit: boolean;
-  user: OffsetTodoItems_TodoFragment;
+  user: EditTodoText_UserFragment;
   todo: Todo;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
 }

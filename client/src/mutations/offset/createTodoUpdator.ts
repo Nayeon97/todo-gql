@@ -1,12 +1,12 @@
 import { MutationUpdaterFn } from "@apollo/client";
 import {
   CreateTodoMutation,
-  OffsetTodoItems_TodoFragment,
+  CreateTodo_UserFragment,
   Query,
 } from "../../gql/generated/graphql";
 
 export const createTodoUpdator =
-  (user: OffsetTodoItems_TodoFragment): MutationUpdaterFn<CreateTodoMutation> =>
+  (user: CreateTodo_UserFragment): MutationUpdaterFn<CreateTodoMutation> =>
   (cache, { data }) => {
     if (!data) return;
 

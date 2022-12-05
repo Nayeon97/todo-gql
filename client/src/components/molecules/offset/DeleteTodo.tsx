@@ -4,13 +4,13 @@ import Button from "../../atoms/Button/Button";
 import { gql } from "@apollo/client";
 import {
   DeleteTodo_TodoFragment,
-  OffsetTodoItems_TodoFragment,
+  DeleteTodo_UserFragment,
 } from "../../../gql/generated/graphql";
 import { deleteTodoUpdator } from "../../../mutations/offset/deleteTodoUpdator";
 
 interface DeleteTodoProps {
   // DeleteTodo User Fragment 따로 정의해서 사용 (생각보다 중요)
-  user: OffsetTodoItems_TodoFragment;
+  user: DeleteTodo_UserFragment;
   todo: DeleteTodo_TodoFragment;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
@@ -41,9 +41,7 @@ gql`
   fragment DeleteTodo_User on User {
     id
   }
-`;
 
-gql`
   fragment DeleteTodo_Todo on Todo {
     id
   }

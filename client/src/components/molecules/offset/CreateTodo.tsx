@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import {
   useCreateTodoMutation,
-  OffsetTodoItems_TodoFragment,
+  CreateTodo_UserFragment,
 } from "../../../gql/generated/graphql";
 import Input from "../../atoms/Input/Input";
 import { createTodoUpdator } from "../../../mutations/offset/createTodoUpdator";
 import {} from "@apollo/client/link/error";
+import { gql } from "@apollo/client";
 
 interface CrateTodoProps {
-  user: OffsetTodoItems_TodoFragment;
+  user: CreateTodo_UserFragment;
 }
 
 const CreateTodo = ({ user }: CrateTodoProps) => {
@@ -68,4 +69,10 @@ export default CreateTodo;
 const Form = styled.form`
   width: 100%;
   display: inline;
+`;
+
+gql`
+  fragment CreateTodo_User on User {
+    id
+  }
 `;

@@ -8,7 +8,6 @@ import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
 import Spinner from "../components/atoms/Spinner";
 import {
   InputMaybe,
-  OffsetTodoItems_TodoFragment,
   Sort,
   useGetOffsetTodosQuery,
 } from "../gql/generated/graphql";
@@ -38,8 +37,6 @@ gql`
     }
   }
 `;
-
-type List = OffsetTodoItems_TodoFragment;
 
 const OffsetTodos = () => {
   const navigate = useNavigate();
@@ -185,6 +182,22 @@ const OffsetTodos = () => {
 };
 
 export default OffsetTodos;
+
+gql`
+  fragment OffsetTodos_Todo on User {
+    id
+    offsetTodos {
+      id
+      text
+      completed
+      ...EditTodoText_Todo
+      ...DeleteTodo_Todo
+      ...ToggleCompleteTodo_Todo
+    }
+    totalTodoCount
+    ...OffsetTodoItems_User
+  }
+`;
 
 const Container = styled.div`
   /* display: grid;

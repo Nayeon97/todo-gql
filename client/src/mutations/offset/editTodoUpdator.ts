@@ -3,7 +3,6 @@ import {
   EditTodoMutation,
   EditTodoMutationVariables,
   EditTodoText_TodoFragmentDoc,
-  OffsetTodoItems_TodoFragment,
 } from "../../gql/generated/graphql";
 
 export const editTodoUpdator =

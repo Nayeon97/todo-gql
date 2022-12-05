@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { gql } from "@apollo/client";
 import styled from "styled-components";
 import {
-  OffsetTodoItems_TodoFragment,
+  OffsetTodoItems_UserFragment,
   InputMaybe,
   Sort,
 } from "../../gql/generated/graphql";
@@ -24,7 +24,7 @@ import TodoItem from "../molecules/offset/TodoItem";
 import SearchTodo from "../molecules/offset/SearchTodo";
 
 interface TodoItemsProps {
-  user: OffsetTodoItems_TodoFragment;
+  user: OffsetTodoItems_UserFragment;
   handleOrderByTodos: (
     orderByText: InputMaybe<Sort>,
     orderByCompleted: InputMaybe<Sort>
@@ -119,15 +119,10 @@ const SelectContainer = styled.div`
 `;
 
 gql`
-  fragment OffsetTodoItems_Todo on User {
+  fragment OffsetTodoItems_User on User {
     id
     offsetTodos {
-      id
-      text
-      completed
-      ...EditTodoText_Todo
-      ...DeleteTodo_Todo
-      ...ToggleCompleteTodo_Todo
+      ...TodoItem_Todo
     }
     totalTodoCount
   }

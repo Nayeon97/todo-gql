@@ -2,16 +2,14 @@ import ToggleCompleteTodo from "./ToggleCompleteTodo";
 import DeleteTodo from "./DeleteTodo";
 import EditTodo from "./EditTodo";
 import Button from "../../atoms/Button/Button";
-import {
-  OffsetTodoItems_TodoFragment,
-  Todo,
-} from "../../../gql/generated/graphql";
+import { TodoItem_UserFragment, Todo } from "../../../gql/generated/graphql";
 import { useState } from "react";
 import { TableCell, TableRow } from "@mui/material";
+import { gql } from "@apollo/client";
 
 interface TodoItemProps {
   todo: Todo;
-  user: OffsetTodoItems_TodoFragment;
+  user: TodoItem_UserFragment;
 }
 
 const TodoItem = ({ todo, user }: TodoItemProps) => {
@@ -54,3 +52,46 @@ const TodoItem = ({ todo, user }: TodoItemProps) => {
 };
 
 export default TodoItem;
+
+gql`
+  fragment TodoItem_User on User {
+    id
+  }
+
+  fragment TodoItem_Todo on Todo {
+    id
+    text
+    completed
+    ...EditTodoText_Todo
+    ...DeleteTodo_Todo
+    ...ToggleCompleteTodo_Todo
+  }
+`;
+
+// gql`
+//   fragment StudentCard_Student on Student {
+//     id
+//     grade
+//     ...StudentCardName_Student
+//     ...StudentCardAddress_Student
+//     ...StudentCardGender_Student
+//   }
+// `;
+
+// interface StudentCardName {
+//   student: StudentCardName_StudentFragment;
+// }
+
+// gql`
+//   fragment StudentCardName_Name on Name {
+//     firstName
+//     lastName
+//   }
+
+//   fragment StudentCardName_Student on Student {
+//     id
+//     name {
+//       ...StudentCardName_Name
+//     }
+//   }
+// `;
