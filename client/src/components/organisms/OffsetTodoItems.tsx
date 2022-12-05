@@ -21,6 +21,7 @@ import {
   Pagination,
 } from "@mui/material";
 import TodoItem from "../molecules/offset/TodoItem";
+import SearchTodo from "../molecules/offset/SearchTodo";
 
 interface TodoItemsProps {
   user: OffsetTodoItems_TodoFragment;
@@ -67,13 +68,13 @@ const OffsetTodoItems = ({
 
   return (
     <TableContainer component={Paper} sx={{ width: "800px", padding: "20px" }}>
-      <Table aria-label='simple table'>
+      <Table aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>완료여부</TableCell>
-            <TableCell align='left'>할 일</TableCell>
-            <TableCell align='left'>수정</TableCell>
-            <TableCell align='left'>삭제</TableCell>
+            <TableCell align="left">할 일</TableCell>
+            <TableCell align="left">수정</TableCell>
+            <TableCell align="left">삭제</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -92,7 +93,7 @@ const OffsetTodoItems = ({
         />
         {/* <button onClick={handleLoadMore}>더보기</button> */}
         <span>{user.totalTodoCount}개 중 </span>
-        <FormControl sx={{ marginBottom: "30px", padding: "0px" }} size='small'>
+        <FormControl sx={{ marginBottom: "30px", padding: "0px" }} size="small">
           <Select value={limit} onChange={handleChangeLimit}>
             <MenuItem value={10}>10개씩 보기</MenuItem>
             <MenuItem value={20}>20개씩 보기</MenuItem>

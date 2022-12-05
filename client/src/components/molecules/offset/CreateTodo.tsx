@@ -7,19 +7,12 @@ import {
 import Input from "../../atoms/Input/Input";
 import { createTodoUpdator } from "../../../mutations/offset/createTodoUpdator";
 import {} from "@apollo/client/link/error";
-import SnackBar from "../../atoms/ErrorSnackbar";
 
 interface CrateTodoProps {
   user: OffsetTodoItems_TodoFragment;
-  alignment: string;
-  handleSearchTodos: (search: string) => void;
 }
 
-const CreateSearchTodo = ({
-  user,
-  handleSearchTodos,
-  alignment,
-}: CrateTodoProps) => {
+const CreateTodo = ({ user }: CrateTodoProps) => {
   const [text, setText] = useState<string>("");
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -50,33 +43,24 @@ const CreateSearchTodo = ({
     });
   };
 
-  const onSearch = async () => {
-    handleSearchTodos(text);
-  };
-
   return (
     <>
       {/* 왠만하면 Form submit 활용하는게 접근성에 좋다 */}
       <Form
         onSubmit={(e) => {
           e.preventDefault();
-          if (alignment === "create") {
-            onCreate();
-          } else {
-            onSearch();
-          }
+          onCreate();
         }}
       >
-        <Input type='text' value={text} onChange={onChange} />
+        <Input type="text" value={text} onChange={onChange} />
       </Form>
     </>
   );
 };
 
-export default CreateSearchTodo;
+export default CreateTodo;
 
 const Form = styled.form`
   width: 100%;
-
   display: inline;
 `;

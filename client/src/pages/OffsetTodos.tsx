@@ -2,10 +2,9 @@ import { useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { gql } from "@apollo/client";
 import styled from "styled-components";
-import CreateSearchTodo from "../components/molecules/offset/CreateSearchTodo";
+import CreateTodo from "../components/molecules/offset/CreateTodo";
 import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
 import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
-import ToggleSearch, { Alignment } from "../components/atoms/ToggleSearch";
 import Spinner from "../components/atoms/Spinner";
 import {
   InputMaybe,
@@ -13,6 +12,7 @@ import {
   Sort,
   useGetOffsetTodosQuery,
 } from "../gql/generated/graphql";
+import SearchTodo from "../components/molecules/offset/SearchTodo";
 
 gql`
   query getOffsetTodos(
@@ -46,9 +46,7 @@ const OffsetTodos = () => {
   const params = useParams();
   // useState로 생각하고 하면 됨
   const [searchParams, setSearchParams] = useSearchParams();
-
   // 타입을 더 강하게 사용가능하면 강하게
-  const [alignment, setAlignment] = useState<Alignment>("create");
 
   // 상태관리는 2개에서 1개로 하거나 아니면 2개 상태를 sync 해주는게 좋다
   const [limit, setLimit] = useState("10");
@@ -154,19 +152,17 @@ const OffsetTodos = () => {
     <Container>
       <button onClick={() => navigate("/")}>userList</button>
       <TodosContainer>
-        <ToggleSearch setAlignment={setAlignment} alignment={alignment} />
-        <CreateSearchTodo
-          user={data.user}
-          alignment={alignment}
-          handleSearchTodos={handleSearchTodos}
-        />
+        <CreateTodo user={data.user} />
         <OrderByTodo handleOrderByTodos={handleOrderByTodos} />
-        {paramsSearch && (
-          <SearchWrapper>
-            검색 결과
-            <p>{paramsSearch}</p>
-          </SearchWrapper>
-        )}
+        <SearchContainer>
+          <SearchTodo handleSearchTodos={handleSearchTodos} />
+          {paramsSearch && (
+            <SearchWrapper>
+              검색 결과
+              <p>{paramsSearch}</p>
+            </SearchWrapper>
+          )}
+        </SearchContainer>
         <TodosWrapper>
           <OffsetTodoItems
             user={data.user}
@@ -199,11 +195,14 @@ const TodosWrapper = styled.div`
   margin-top: 10px;
 `;
 
+const SearchContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+`;
+
 const SearchWrapper = styled.div`
   display: flex;
   width: 100%;
-  margin-top: 10px;
-  margin-left: 30px;
   font-size: 13px;
   color: gray;
   p {
