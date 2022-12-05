@@ -1,16 +1,18 @@
 /** @jsxImportSource @emotion/react */
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
-import React, { Dispatch, SetStateAction } from 'react';
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import React, { Dispatch, SetStateAction } from "react";
+
+export type Alignment = "create" | "search";
 
 interface ToggleSearchProps {
-  alignment: string;
-  setAlignment: Dispatch<SetStateAction<string>>;
+  alignment: Alignment;
+  setAlignment: Dispatch<SetStateAction<Alignment>>;
 }
 
 const ToggleSearch = ({ alignment, setAlignment }: ToggleSearchProps) => {
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
+    newAlignment: Alignment
   ) => {
     setAlignment(newAlignment);
   };
@@ -20,12 +22,12 @@ const ToggleSearch = ({ alignment, setAlignment }: ToggleSearchProps) => {
       value={alignment}
       onChange={handleChange}
       exclusive
-      color="primary"
+      color='primary'
     >
-      <ToggleButton value="create" key="create">
+      <ToggleButton value='create' key='create'>
         Todo 추가
       </ToggleButton>
-      <ToggleButton value="search" key="search">
+      <ToggleButton value='search' key='search'>
         Todo 검색
       </ToggleButton>
     </ToggleButtonGroup>

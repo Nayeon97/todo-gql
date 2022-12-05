@@ -51,22 +51,20 @@ const CursorTodos = () => {
   // const [nextPage, setNextPage] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
 
-  const { data, error, loading, fetchMore, refetch, networkStatus } =
-    useGetCursorTodosQuery({
-      variables: {
-        userId: params.userId || "",
-        search,
-        first: 0,
-        after: "",
-      },
-      notifyOnNetworkStatusChange: true,
-    });
+  const { data, error, loading, fetchMore, refetch } = useGetCursorTodosQuery({
+    variables: {
+      userId: params.userId || "",
+      search,
+      first: 0,
+      after: "",
+    },
+  });
 
   const after =
     data?.user?.cursorTodos?.edges?.[data.user.cursorTodos.edges.length - 1]
       ?.cursor;
   const hasNextPage = data?.user?.cursorTodos?.pageInfo?.hasNextPage ?? false;
-  console.log(networkStatus, after);
+  console.log(after);
 
   // useEffect(() => {
   //   if (data?.user.cursorTodos.edges[0]) {

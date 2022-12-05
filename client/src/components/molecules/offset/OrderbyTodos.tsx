@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { InputMaybe, Sort } from '../../../gql/generated/graphql';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { InputMaybe, Sort } from "../../../gql/generated/graphql";
 
 interface OrderByTodoProps {
   handleOrderByTodos: (
@@ -9,20 +9,15 @@ interface OrderByTodoProps {
   ) => void;
 }
 
+// TODO: 현재 활성화된 정렬 상태 표시하기
 const OrderByTodo = ({ handleOrderByTodos }: OrderByTodoProps) => {
-  const [orderByText, setOrderByText] = useState<InputMaybe<Sort>>(null);
-  const [orderByCompleted, setOrderByCompleted] =
-    useState<InputMaybe<Sort>>(null);
-
   const onClickOrderByText = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const text = e.currentTarget.value === 'asc' ? Sort.Asc : Sort.Desc;
-    setOrderByText(text);
+    const text = e.currentTarget.value === "asc" ? Sort.Asc : Sort.Desc;
     handleOrderByTodos(text, null);
   };
 
   const onClickOrderByCompleted = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const completed = e.currentTarget.value === 'asc' ? Sort.Asc : Sort.Desc;
-    setOrderByCompleted(completed);
+    const completed = e.currentTarget.value === "asc" ? Sort.Asc : Sort.Desc;
     handleOrderByTodos(null, completed);
   };
 
@@ -30,22 +25,22 @@ const OrderByTodo = ({ handleOrderByTodos }: OrderByTodoProps) => {
     <>
       <ButtonContainer>
         <ButtonWrapper>
-          <Button value={'asc'} onClick={onClickOrderByText}>
+          <Button value={"asc"} onClick={onClickOrderByText}>
             text asc
           </Button>
         </ButtonWrapper>
         <ButtonWrapper>
-          <Button value="desc" onClick={onClickOrderByText}>
+          <Button value='desc' onClick={onClickOrderByText}>
             text desc
           </Button>
         </ButtonWrapper>
         <ButtonWrapper>
-          <Button value="asc" onClick={onClickOrderByCompleted}>
+          <Button value='asc' onClick={onClickOrderByCompleted}>
             completed asc
           </Button>
         </ButtonWrapper>
         <ButtonWrapper>
-          <Button value="desc" onClick={onClickOrderByCompleted}>
+          <Button value='desc' onClick={onClickOrderByCompleted}>
             completed desc
           </Button>
         </ButtonWrapper>

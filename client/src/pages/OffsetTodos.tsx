@@ -5,7 +5,7 @@ import styled from "styled-components";
 import CreateSearchTodo from "../components/molecules/offset/CreateSearchTodo";
 import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
 import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
-import ToggleSearch from "../components/atoms/ToggleSearch";
+import ToggleSearch, { Alignment } from "../components/atoms/ToggleSearch";
 import Spinner from "../components/atoms/Spinner";
 import {
   InputMaybe,
@@ -44,8 +44,13 @@ type List = OffsetTodoItems_TodoFragment;
 const OffsetTodos = () => {
   const navigate = useNavigate();
   const params = useParams();
+  // useState로 생각하고 하면 됨
   const [searchParams, setSearchParams] = useSearchParams();
-  const [alignment, setAlignment] = useState("create");
+
+  // 타입을 더 강하게 사용가능하면 강하게
+  const [alignment, setAlignment] = useState<Alignment>("create");
+
+  // 상태관리는 2개에서 1개로 하거나 아니면 2개 상태를 sync 해주는게 좋다
   const [limit, setLimit] = useState("10");
 
   const { data, loading, fetchMore, refetch } = useGetOffsetTodosQuery({
@@ -57,8 +62,6 @@ const OffsetTodos = () => {
     },
   });
 
-  if (loading) return <Spinner />;
-
   const getParams = () => {
     const paramsSearch = searchParams.get("search");
     const paramsOffset = Number(searchParams.get("offset"));
@@ -67,6 +70,7 @@ const OffsetTodos = () => {
     return { paramsSearch, paramsOffset, paramsLimit };
   };
 
+  // refetch 비슷하게 변경
   const handleLoadMore = (offset: number) => {
     const { paramsSearch } = getParams();
     // const currentLength = data?.user?.offsetTodos.length || 0;
@@ -143,40 +147,38 @@ const OffsetTodos = () => {
 
   const { paramsSearch } = getParams();
 
+  if (loading) return <Spinner />;
+  if (!data) return null;
+
   return (
     <Container>
       <button onClick={() => navigate("/")}>userList</button>
-      {loading ? (
-        <Spinner />
-      ) : (
-        data && (
-          <TodosContainer>
-            <ToggleSearch setAlignment={setAlignment} alignment={alignment} />
-            <CreateSearchTodo
-              user={data.user}
-              alignment={alignment}
-              handleSearchTodos={handleSearchTodos}
-            />
-            <OrderByTodo handleOrderByTodos={handleOrderByTodos} />
-            {paramsSearch && (
-              <SearchWrapper>
-                검색 결과
-                <p>{paramsSearch}</p>
-              </SearchWrapper>
-            )}
-            <TodosWrapper>
-              <OffsetTodoItems
-                user={data.user}
-                handleLoadMore={handleLoadMore}
-                handleOrderByTodos={handleOrderByTodos}
-                limit={limit}
-                setLimit={setLimit}
-                handleLimit={handleLimit}
-              />
-            </TodosWrapper>
-          </TodosContainer>
-        )
-      )}
+      <TodosContainer>
+        <ToggleSearch setAlignment={setAlignment} alignment={alignment} />
+        <CreateSearchTodo
+          user={data.user}
+          alignment={alignment}
+          handleSearchTodos={handleSearchTodos}
+        />
+        <OrderByTodo handleOrderByTodos={handleOrderByTodos} />
+        {paramsSearch && (
+          <SearchWrapper>
+            검색 결과
+            <p>{paramsSearch}</p>
+          </SearchWrapper>
+        )}
+        <TodosWrapper>
+          <OffsetTodoItems
+            user={data.user}
+            handleLoadMore={handleLoadMore}
+            handleOrderByTodos={handleOrderByTodos}
+            limit={limit}
+            // setLimit, handleLimit 하나로 통합
+            setLimit={setLimit}
+            handleLimit={handleLimit}
+          />
+        </TodosWrapper>
+      </TodosContainer>
     </Container>
   );
 };

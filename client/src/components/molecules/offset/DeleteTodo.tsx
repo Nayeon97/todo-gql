@@ -9,6 +9,7 @@ import {
 import { deleteTodoUpdator } from "../../../mutations/offset/deleteTodoUpdator";
 
 interface DeleteTodoProps {
+  // DeleteTodo User Fragment 따로 정의해서 사용 (생각보다 중요)
   user: OffsetTodoItems_TodoFragment;
   todo: DeleteTodo_TodoFragment;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
@@ -31,7 +32,7 @@ const DeleteTodo = ({ user, todo }: DeleteTodoProps) => {
     }
   };
 
-  return <Button onClick={onDelete} name="삭제" btnType="delete" />;
+  return <Button onClick={onDelete} name='삭제' btnType='delete' />;
 };
 
 export default DeleteTodo;

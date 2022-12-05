@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import styled from "styled-components";
 import {
   useCreateTodoMutation,
   OffsetTodoItems_TodoFragment,
-} from '../../../gql/generated/graphql';
-import Input from '../../atoms/Input/Input';
-import { createTodoUpdator } from '../../../mutations/offset/createTodoUpdator';
-import {} from '@apollo/client/link/error';
-import SnackBar from '../../atoms/ErrorSnackbar';
+} from "../../../gql/generated/graphql";
+import Input from "../../atoms/Input/Input";
+import { createTodoUpdator } from "../../../mutations/offset/createTodoUpdator";
+import {} from "@apollo/client/link/error";
+import SnackBar from "../../atoms/ErrorSnackbar";
 
 interface CrateTodoProps {
   user: OffsetTodoItems_TodoFragment;
@@ -19,48 +20,34 @@ const CreateSearchTodo = ({
   handleSearchTodos,
   alignment,
 }: CrateTodoProps) => {
-  const [text, setText] = useState<string>('');
+  const [text, setText] = useState<string>("");
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     setText(e.currentTarget.value);
   };
 
-  const [createTodo, { error }] = useCreateTodoMutation({
+  // 비동기 요청이나 onError나 onCompleted에 따라 흐름이 달라져서 주의해야함
+  const [createTodo] = useCreateTodoMutation({
     update: createTodoUpdator(user),
+    // 뮤테이션에서는 보통 onError에서 처리
+    onError: (error) => {
+      // 코드를 사용하는게 중요
+      alert(error.graphQLErrors[0].extensions.code);
+    },
+    onCompleted: () => {
+      setText("");
+    },
   });
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === 'Enter') {
-      if (alignment === 'create') {
-        onCreate();
-      } else {
-        onSearch();
-      }
+  const onCreate = async () => {
+    if (!text || !user.id) {
+      alert("todo text XX");
+      return;
     }
-  };
 
-  if (error) {
-    return (
-      <div>
-        <SnackBar
-          isOpen={true}
-          text={error.graphQLErrors[0].message}
-          type="error"
-        />
-      </div>
-    );
-  }
-
-  const onCreate = () => {
-    if (text && user.id) {
-      createTodo({
-        variables: { text: text, userId: user.id },
-      });
-
-      setText('');
-    } else {
-      alert('todo text XX');
-    }
+    await createTodo({
+      variables: { text: text, userId: user.id },
+    });
   };
 
   const onSearch = async () => {
@@ -69,14 +56,27 @@ const CreateSearchTodo = ({
 
   return (
     <>
-      <Input
-        type="text"
-        value={text}
-        onChange={onChange}
-        onKeyPress={handleKeyPress}
-      />
+      {/* 왠만하면 Form submit 활용하는게 접근성에 좋다 */}
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (alignment === "create") {
+            onCreate();
+          } else {
+            onSearch();
+          }
+        }}
+      >
+        <Input type='text' value={text} onChange={onChange} />
+      </Form>
     </>
   );
 };
 
 export default CreateSearchTodo;
+
+const Form = styled.form`
+  width: 100%;
+
+  display: inline;
+`;
