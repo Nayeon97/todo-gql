@@ -23,7 +23,7 @@ const EditTodo = ({ isEdit, user, todo, setIsEdit }: EditTodoProps) => {
   };
 
   const [editTodoItem] = useEditTodoMutation({
-    update: editTodoUpdator(user),
+    update: editTodoUpdator(),
     onCompleted: () => {
       setIsEdit(false);
       alert("수정 완료");
@@ -70,6 +70,12 @@ const TextWrapper = styled.input<{ completed: boolean }>`
   background-color: transparent;
   border: none;
   font-size: 15px;
+`;
+
+gql`
+  fragment EditTodoText_User on User {
+    id
+  }
 `;
 
 gql`

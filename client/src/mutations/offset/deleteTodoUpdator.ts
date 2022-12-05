@@ -3,17 +3,17 @@ import produce from "immer";
 import {
   Query,
   RemoveTodoMutation,
-  OffsetTodoItems_TodoFragment,
+  DeleteTodo_UserFragment,
 } from "../../gql/generated/graphql";
 
 export const deleteTodoUpdator =
-  (user: OffsetTodoItems_TodoFragment): MutationUpdaterFn<RemoveTodoMutation> =>
+  (userId: DeleteTodo_UserFragment): MutationUpdaterFn<RemoveTodoMutation> =>
   (cache, { data }) => {
     if (!data?.removeTodo) {
       return;
     }
     cache.modify({
-      id: cache.identify(user),
+      id: cache.identify(userId),
       fields: {
         cursorTodos(
           existingTodos: Query["user"]["cursorTodos"],

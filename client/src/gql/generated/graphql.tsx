@@ -138,6 +138,12 @@ export type EditTodoText_TodoFragment = { __typename?: 'Todo', id: string, text:
 
 export type ToggleCompleteTodo_TodoFragment = { __typename?: 'Todo', id: string, completed: boolean };
 
+export type DeleteTodo_UserFragment = { __typename?: 'User', id: string };
+
+export type EditTodoText_UserFragment = { __typename?: 'User', id: string };
+
+export type ToggletCompleteTodo_UserFragment = { __typename?: 'User', id: string };
+
 export type CursorTodoItems_TodoFragment = { __typename?: 'User', id: string, cursorTodos: { __typename?: 'TodoConnection', edges: Array<{ __typename?: 'TodoEdge', cursor: string, node: { __typename?: 'Todo', id: string, text: string, completed: boolean } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean } } };
 
 export type OffsetTodoItems_TodoFragment = { __typename?: 'User', id: string, totalTodoCount: number, offsetTodos: Array<{ __typename?: 'Todo', id: string, text: string, completed: boolean }> };
@@ -200,6 +206,21 @@ export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AllUsersQuery = { __typename?: 'Query', allUsers: Array<{ __typename?: 'User', id: string }> };
 
+export const DeleteTodo_UserFragmentDoc = gql`
+    fragment DeleteTodo_User on User {
+  id
+}
+    `;
+export const EditTodoText_UserFragmentDoc = gql`
+    fragment EditTodoText_User on User {
+  id
+}
+    `;
+export const ToggletCompleteTodo_UserFragmentDoc = gql`
+    fragment ToggletCompleteTodo_User on User {
+  id
+}
+    `;
 export const EditTodoText_TodoFragmentDoc = gql`
     fragment EditTodoText_Todo on Todo {
   id

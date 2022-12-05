@@ -38,6 +38,12 @@ const DeleteTodo = ({ user, todo }: DeleteTodoProps) => {
 export default DeleteTodo;
 
 gql`
+  fragment DeleteTodo_User on User {
+    id
+  }
+`;
+
+gql`
   fragment DeleteTodo_Todo on Todo {
     id
   }

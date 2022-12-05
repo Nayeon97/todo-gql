@@ -43,6 +43,12 @@ const ToggleCompleteTodo = ({ todo, isEdit }: ToggleCompleteTodoProps) => {
 export default ToggleCompleteTodo;
 
 gql`
+  fragment ToggletCompleteTodo_User on User {
+    id
+  }
+`;
+
+gql`
   fragment ToggleCompleteTodo_Todo on Todo {
     id
     completed

@@ -7,7 +7,7 @@ import {
 } from "../../gql/generated/graphql";
 
 export const editTodoUpdator =
-  (user: OffsetTodoItems_TodoFragment): MutationUpdaterFn<EditTodoMutation> =>
+  (): MutationUpdaterFn<EditTodoMutation> =>
   (cache, { data }) => {
     if (!data?.editTodo) {
       return;

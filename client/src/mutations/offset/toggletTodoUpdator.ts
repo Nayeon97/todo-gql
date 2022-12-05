@@ -5,6 +5,8 @@ import {
   GetCursorTodosQuery,
   GetCursorTodosQueryVariables,
   GetCursorTodosDocument,
+  GetOffsetTodosQuery,
+  GetOffsetTodosQueryVariables,
 } from "../../gql/generated/graphql";
 
 export const toggletTodoUpdator =
@@ -13,7 +15,7 @@ export const toggletTodoUpdator =
     if (!data?.toggleTodo) {
       return;
     }
-    cache.updateQuery<GetCursorTodosQuery, GetCursorTodosQueryVariables>(
+    cache.updateQuery<GetOffsetTodosQuery, GetOffsetTodosQueryVariables>(
       { query: GetCursorTodosDocument },
       (todos) => {
         const targetId = data.toggleTodo.id;
@@ -21,11 +23,11 @@ export const toggletTodoUpdator =
           if (!draft) {
             return;
           }
-          const index = draft.user.cursorTodos.edges.findIndex(
-            (todo) => todo.node.id === targetId
+          const index = draft.user.offsetTodos.findIndex(
+            (todo) => todo.id === targetId
           );
           if (index !== -1)
-            draft.user.cursorTodos.edges[index].node.completed =
+            draft.user.offsetTodos[index].completed =
               !data.toggleTodo.completed;
         });
       }
