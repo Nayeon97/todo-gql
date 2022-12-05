@@ -29,7 +29,7 @@ interface TodoItemsProps {
     orderByText: InputMaybe<Sort>,
     orderByCompleted: InputMaybe<Sort>
   ) => void;
-  handleLoadMore: (offset: number) => void;
+  onClickRefetchTodos: (offset: number) => void;
   limit: string;
   setLimit: Dispatch<SetStateAction<string>>;
   handleLimit: (limit: string) => void;
@@ -37,7 +37,7 @@ interface TodoItemsProps {
 
 const OffsetTodoItems = ({
   user,
-  handleLoadMore,
+  onClickRefetchTodos,
   limit,
   setLimit,
   handleLimit,
@@ -63,7 +63,7 @@ const OffsetTodoItems = ({
 
   const changePage = (p: number) => {
     setPage(p);
-    handleLoadMore(p);
+    onClickRefetchTodos(p);
   };
 
   return (

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { gql } from "@apollo/client";
+import { gql, NetworkStatus } from "@apollo/client";
 import styled from "styled-components";
 import CreateTodo from "../components/molecules/offset/CreateTodo";
 import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
@@ -51,7 +51,8 @@ const OffsetTodos = () => {
   // 상태관리는 2개에서 1개로 하거나 아니면 2개 상태를 sync 해주는게 좋다
   const [limit, setLimit] = useState("10");
 
-  const { data, loading, fetchMore, refetch } = useGetOffsetTodosQuery({
+  const { data, loading, refetch, networkStatus } = useGetOffsetTodosQuery({
+    notifyOnNetworkStatusChange: true,
     variables: {
       userId: params.userId || "",
       offset: 0,
@@ -69,7 +70,7 @@ const OffsetTodos = () => {
   };
 
   // refetch 비슷하게 변경
-  const handleLoadMore = (offset: number) => {
+  const onClickRefetchTodos = (offset: number) => {
     const { paramsSearch } = getParams();
     // const currentLength = data?.user?.offsetTodos.length || 0;
     refetch({
@@ -163,17 +164,21 @@ const OffsetTodos = () => {
             </SearchWrapper>
           )}
         </SearchContainer>
-        <TodosWrapper>
-          <OffsetTodoItems
-            user={data.user}
-            handleLoadMore={handleLoadMore}
-            handleOrderByTodos={handleOrderByTodos}
-            limit={limit}
-            // setLimit, handleLimit 하나로 통합
-            setLimit={setLimit}
-            handleLimit={handleLimit}
-          />
-        </TodosWrapper>
+        {networkStatus === NetworkStatus.fetchMore ? (
+          <Spinner />
+        ) : (
+          <TodosWrapper>
+            <OffsetTodoItems
+              user={data.user}
+              onClickRefetchTodos={onClickRefetchTodos}
+              handleOrderByTodos={handleOrderByTodos}
+              limit={limit}
+              // setLimit, handleLimit 하나로 통합
+              setLimit={setLimit}
+              handleLimit={handleLimit}
+            />
+          </TodosWrapper>
+        )}
       </TodosContainer>
     </Container>
   );

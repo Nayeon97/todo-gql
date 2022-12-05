@@ -32,7 +32,7 @@ const DeleteTodo = ({ user, todo }: DeleteTodoProps) => {
     }
   };
 
-  return <Button onClick={onDelete} name='삭제' btnType='delete' />;
+  return <Button onClick={onDelete} name="삭제" btnType="delete" />;
 };
 
 export default DeleteTodo;

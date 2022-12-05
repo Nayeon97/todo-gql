@@ -1,13 +1,13 @@
-import ToggleCompleteTodo from './ToggleCompleteTodo';
-import DeleteTodo from './DeleteTodo';
-import EditTodo from './EditTodo';
-import Button from '../../atoms/Button/Button';
+import ToggleCompleteTodo from "./ToggleCompleteTodo";
+import DeleteTodo from "./DeleteTodo";
+import EditTodo from "./EditTodo";
+import Button from "../../atoms/Button/Button";
 import {
   OffsetTodoItems_TodoFragment,
   Todo,
-} from '../../../gql/generated/graphql';
-import { useState } from 'react';
-import { TableCell, TableRow } from '@mui/material';
+} from "../../../gql/generated/graphql";
+import { useState } from "react";
+import { TableCell, TableRow } from "@mui/material";
 
 interface TodoItemProps {
   todo: Todo;
@@ -21,8 +21,8 @@ const TodoItem = ({ todo, user }: TodoItemProps) => {
     <TableRow
       key={todo.id}
       sx={{
-        '&:last-child td, &:last-child th': { border: 0 },
-        backgroundColor: todo.completed === true ? '#696977' : 'white',
+        "&:last-child td, &:last-child th": { border: 0 },
+        backgroundColor: todo.completed === true ? "#696977" : "white",
       }}
     >
       <TableCell component="th" scope="row">
