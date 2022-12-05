@@ -4,13 +4,15 @@ import { gql } from "@apollo/client";
 import styled from "styled-components";
 import CreateSearchTodo from "../components/molecules/offset/CreateSearchTodo";
 import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
+import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
+import ToggleSearch from "../components/atoms/ToggleSearch";
 import Spinner from "../components/atoms/Spinner";
 import {
   InputMaybe,
+  OffsetTodoItems_TodoFragment,
   Sort,
   useGetOffsetTodosQuery,
 } from "../gql/generated/graphql";
-import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
 
 gql`
   query getOffsetTodos(
@@ -37,55 +39,78 @@ gql`
   }
 `;
 
+type List = OffsetTodoItems_TodoFragment;
+
 const OffsetTodos = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const [limit, setLimit] = useState(10);
-  // 따로 Limit 설정하는 select element 추가
-  const [search, setSearch] = useState<string>("");
-  const { data, error, loading, fetchMore, refetch } = useGetOffsetTodosQuery({
+  const [alignment, setAlignment] = useState("create");
+  const [limit, setLimit] = useState("10");
+
+  const { data, loading, fetchMore, refetch } = useGetOffsetTodosQuery({
     variables: {
       userId: params.userId || "",
       offset: 0,
-      limit,
+      limit: 10,
+      search: null,
     },
   });
 
-  if (error) return <p>`Error! ${error.message}`</p>;
+  if (loading) return <Spinner />;
 
-  const handleLoadMore = () => {
-    const currentLength = data?.user?.offsetTodos.length || 0;
-    fetchMore({
-      variables: {
-        offset: currentLength,
-      },
-    }).then((fetchMoreResult) => {
-      console.log(fetchMoreResult.data.user.offsetTodos.length);
-      setLimit(currentLength + fetchMoreResult.data?.user?.offsetTodos.length);
-      // limit은 고정되어 있고, offset만 변경되는 것이므로
-      setSearchParams({
-        search: `${search}`,
-        offset: `${data?.user?.offsetTodos.length}`,
-        limit: `${
-          currentLength + fetchMoreResult.data?.user?.offsetTodos.length
-        }`,
-      });
+  const getParams = () => {
+    const paramsSearch = searchParams.get("search");
+    const paramsOffset = Number(searchParams.get("offset"));
+    const paramsLimit = Number(searchParams.get("limit"));
+
+    return { paramsSearch, paramsOffset, paramsLimit };
+  };
+
+  const handleLoadMore = (offset: number) => {
+    const { paramsSearch } = getParams();
+    // const currentLength = data?.user?.offsetTodos.length || 0;
+    refetch({
+      offset: (offset - 1) * 10,
+      limit: Number(limit),
+    });
+    setSearchParams({
+      search: `${paramsSearch}`,
+      offset: `${(offset - 1) * 10}`,
+      limit: `${limit}`,
     });
   };
 
-  // search, orderByText 분리
-  const getData = (
-    search?: string,
-    orderByText?: InputMaybe<Sort>,
-    orderByCompleted?: InputMaybe<Sort>
-  ) => {
+  const handleSearchTodos = (text: string) => {
+    const { paramsOffset, paramsLimit } = getParams();
+
     if (params.userId) {
       refetch({
         userId: params.userId,
-        offset: 0,
-        limit,
-        search: search,
+        offset: paramsOffset,
+        limit: paramsLimit,
+        search: text,
+      });
+    }
+
+    setSearchParams({
+      search: `${text}`,
+      offset: `${paramsOffset}`,
+      limit: `${paramsLimit}`,
+    });
+  };
+
+  const handleOrderByTodos = (
+    orderByText?: InputMaybe<Sort>,
+    orderByCompleted?: InputMaybe<Sort>
+  ) => {
+    const { paramsSearch, paramsOffset, paramsLimit } = getParams();
+    if (params.userId) {
+      refetch({
+        userId: params.userId,
+        offset: paramsOffset,
+        limit: paramsLimit,
+        search: null,
         orderBy: {
           text: orderByText,
           completed: orderByCompleted,
@@ -93,41 +118,61 @@ const OffsetTodos = () => {
       });
     }
     setSearchParams({
-      search: `${search}`,
-      offset: `${data?.user?.offsetTodos.length}`,
-      limit: `${limit}`,
+      search: `${paramsSearch}`,
+      offset: `${paramsOffset}`,
+      limit: `${paramsLimit}`,
     });
   };
 
-  // 1. 데이터 비어 있는 UI
-  // 2. 에러 처리하기 Query, Mutation
+  const handleLimit = (changeLimit: string) => {
+    if (params.userId) {
+      refetch({
+        userId: params.userId,
+        offset: 0,
+        limit: Number(changeLimit),
+        search: null,
+      });
+    }
+
+    setSearchParams({
+      search: `${""}`,
+      offset: `${0}`,
+      limit: `${changeLimit}`,
+    });
+  };
+
+  const { paramsSearch } = getParams();
 
   return (
     <Container>
+      <button onClick={() => navigate("/")}>userList</button>
       {loading ? (
         <Spinner />
       ) : (
         data && (
           <TodosContainer>
-            <ButtonWrapper
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              navigate userList
-            </ButtonWrapper>
-            <div>
-              <CreateSearchTodo user={data.user} getData={getData} />
-            </div>
-            <OrderByTodo getData={getData} search={search} />
-            {search && (
+            <ToggleSearch setAlignment={setAlignment} alignment={alignment} />
+            <CreateSearchTodo
+              user={data.user}
+              alignment={alignment}
+              handleSearchTodos={handleSearchTodos}
+            />
+            <OrderByTodo handleOrderByTodos={handleOrderByTodos} />
+            {paramsSearch && (
               <SearchWrapper>
                 검색 결과
-                <p>{search}</p>
+                <p>{paramsSearch}</p>
               </SearchWrapper>
             )}
             <TodosWrapper>
-              <OffsetTodoItems user={data.user} onLoadMore={handleLoadMore} />
+              <OffsetTodoItems
+                user={data.user}
+                handleLoadMore={handleLoadMore}
+                handleOrderByTodos={handleOrderByTodos}
+                limit={limit}
+                setLimit={setLimit}
+                handleLimit={handleLimit}
+              />
             </TodosWrapper>
           </TodosContainer>
         )
@@ -139,13 +184,13 @@ const OffsetTodos = () => {
 export default OffsetTodos;
 
 const Container = styled.div`
-  display: grid;
-  place-content: center;
+  /* display: grid;
+  place-content: center; */
 `;
 
 const TodosContainer = styled.div`
-  display: grid;
-  justify-items: center;
+  /* display: grid;
+  justify-items: center; */
 `;
 
 const TodosWrapper = styled.div`
@@ -163,12 +208,5 @@ const SearchWrapper = styled.div`
     color: pink;
     padding: 0px 10px;
     font-weight: bold;
-  }
-`;
-
-const ButtonWrapper = styled.button`
-  margin-top: 20px;
-  button {
-    font-size: 15px;
   }
 `;

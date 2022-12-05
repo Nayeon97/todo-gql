@@ -1,13 +1,13 @@
-import { gql } from "@apollo/client";
-import { Dispatch, SetStateAction } from "react";
-import { useState } from "react";
-import styled from "styled-components";
+import { gql } from '@apollo/client';
+import { Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
+import styled from 'styled-components';
 import {
   useEditTodoMutation,
   OffsetTodoItems_TodoFragment,
   Todo,
-} from "../../../gql/generated/graphql";
-import { editTodoUpdator } from "../../../mutations/offset/editTodoUpdator";
+} from '../../../gql/generated/graphql';
+import { editTodoUpdator } from '../../../mutations/offset/editTodoUpdator';
 
 interface EditTodoProps {
   isEdit: boolean;
@@ -34,7 +34,7 @@ const EditTodo = ({ isEdit, user, todo, setIsEdit }: EditTodoProps) => {
       variables: { editTodoId: todo.id, editTodoText2: editTodoText },
       optimisticResponse: {
         editTodo: {
-          __typename: "Todo",
+          __typename: 'Todo',
           id: todo.id,
           text: editTodoText,
           completed: todo.completed,
@@ -44,7 +44,7 @@ const EditTodo = ({ isEdit, user, todo, setIsEdit }: EditTodoProps) => {
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       clickEdit();
     }
   };
@@ -64,9 +64,8 @@ export default EditTodo;
 
 const TextWrapper = styled.input<{ completed: boolean }>`
   width: 200px;
-  margin: 0px 20px;
-  color: ${(props) => (props.completed ? "white" : "black")};
-  text-decoration: ${(props) => (props.completed ? "line-through" : "")};
+  color: ${(props) => (props.completed ? 'white' : 'black')};
+  text-decoration: ${(props) => (props.completed ? 'line-through' : '')};
   background-color: transparent;
   border: none;
   font-size: 15px;

@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import styled from 'styled-components';
-import CreateSearchTodo from '../components/molecules/cursor/CreateSearchTodo';
-import CursorTodoItems from '../components/organisms/CursorTodoItems';
-import Spinner from '../components/atoms/Spinner';
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
+import CreateSearchTodo from "../components/molecules/cursor/CreateSearchTodo";
+import CursorTodoItems from "../components/organisms/CursorTodoItems";
+import Spinner from "../components/atoms/Spinner";
 import {
   InputMaybe,
   Sort,
   useGetCursorTodosQuery,
-} from '../gql/generated/graphql';
-import { gql } from '@apollo/client';
-import OrderByTodo from '../components/molecules/cursor/OrderbyTodos';
+} from "../gql/generated/graphql";
+import { gql } from "@apollo/client";
+import OrderByTodo from "../components/molecules/cursor/OrderbyTodos";
 
 gql`
   query getCursorTodos(
@@ -47,13 +47,13 @@ gql`
 const CursorTodos = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [after, setAfter] = useState<string>('');
+  const [after, setAfter] = useState<string>("");
   const [nextPage, setNextPage] = useState<boolean>(false);
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState<string>("");
 
   const { data, error, loading, fetchMore, refetch } = useGetCursorTodosQuery({
     variables: {
-      userId: params.userId || '',
+      userId: params.userId || "",
       search,
       first: 0,
       after,
@@ -77,9 +77,9 @@ const CursorTodos = () => {
     orderByText?: InputMaybe<Sort>,
     orderByCompleted?: InputMaybe<Sort>
   ) => {
-    setSearch(search || '');
+    setSearch(search || "");
     refetch({
-      userId: params.userId || '',
+      userId: params.userId || "",
       search,
       first: 0,
       after,
@@ -110,7 +110,7 @@ const CursorTodos = () => {
             <ButtonWrapper>
               <button
                 onClick={() => {
-                  navigate('/');
+                  navigate("/");
                 }}
               >
                 navigate userList

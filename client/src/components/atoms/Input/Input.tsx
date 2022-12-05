@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 interface InputProps {
   value: string;
@@ -23,10 +23,11 @@ const Input = ({ value, type, onChange, onKeyPress }: InputProps) => {
 export default Input;
 
 const InputWrapper = styled.input`
-  width: 300px;
+  width: 400px;
   height: 20px;
   color: black;
-  background-color: #f1f3f5;
+  background-color: rgb(247, 247, 250);
+  border: red 20px;
   padding: 15px;
   border-radius: 10px;
   font-size: 15px;

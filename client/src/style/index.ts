@@ -5,9 +5,8 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;  
   }
-
   body {
-    width: 500px;
+    width: 1000px;
     height: 700px;
     position: relative;
     background: white;
@@ -17,18 +16,15 @@ const GlobalStyle = createGlobalStyle`
     margin-top: 50px;
     overflow: auto;
   }
-
   button {
     border: none;
     cursor: pointer;
     background-color: transparent;
   }
-
   input {
     outline: none;
     border: none;
   }
-
   textarea:focus, input:focus, select:focus{
     outline: none;
     border: none;

@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 interface ButtonProps {
   name: string;
@@ -20,23 +20,21 @@ export default Button;
 
 // btnType : delete(삭제), edit(편집), incomplete(미완료)
 const ButtonWrapper = styled.button<{ btnType: string }>`
-  min-width: 70px;
   font-size: 15px;
-  padding: 10px 10px;
   border-radius: 5px;
   outline: none;
   color: ${(props) => {
     switch (props.btnType) {
-      case "delete":
-        return "#FF6363";
-      case "edit":
-        return "#A3DA8D";
-      case "incomplete":
-        return "#FFAB76";
-      case "complete":
-        return "white";
-      case "default":
-        return "black";
+      case 'delete':
+        return '#FF6363';
+      case 'edit':
+        return '#A3DA8D';
+      case 'incomplete':
+        return '#FFAB76';
+      case 'complete':
+        return 'white';
+      case 'default':
+        return 'black';
     }
   }};
 

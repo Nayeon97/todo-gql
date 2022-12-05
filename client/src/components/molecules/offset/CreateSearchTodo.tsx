@@ -5,16 +5,21 @@ import {
 } from '../../../gql/generated/graphql';
 import Input from '../../atoms/Input/Input';
 import { createTodoUpdator } from '../../../mutations/offset/createTodoUpdator';
-import styled from 'styled-components';
+import {} from '@apollo/client/link/error';
+import SnackBar from '../../atoms/ErrorSnackbar';
 
 interface CrateTodoProps {
   user: OffsetTodoItems_TodoFragment;
-  getData: (search: string) => void;
+  alignment: string;
+  handleSearchTodos: (search: string) => void;
 }
 
-const CreateSearchTodo = ({ user, getData }: CrateTodoProps) => {
+const CreateSearchTodo = ({
+  user,
+  handleSearchTodos,
+  alignment,
+}: CrateTodoProps) => {
   const [text, setText] = useState<string>('');
-  const [select, setSelect] = useState<string>('create');
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     setText(e.currentTarget.value);
@@ -24,11 +29,9 @@ const CreateSearchTodo = ({ user, getData }: CrateTodoProps) => {
     update: createTodoUpdator(user),
   });
 
-  if (error) return <p>`Error! ${error.message}`</p>;
-
   const handleKeyPress = (e: React.KeyboardEvent<HTMLElement>) => {
     if (e.key === 'Enter') {
-      if (select === 'create') {
+      if (alignment === 'create') {
         onCreate();
       } else {
         onSearch();
@@ -36,23 +39,24 @@ const CreateSearchTodo = ({ user, getData }: CrateTodoProps) => {
     }
   };
 
+  if (error) {
+    return (
+      <div>
+        <SnackBar
+          isOpen={true}
+          text={error.graphQLErrors[0].message}
+          type="error"
+        />
+      </div>
+    );
+  }
+
   const onCreate = () => {
     if (text && user.id) {
       createTodo({
         variables: { text: text, userId: user.id },
-        // optimisticResponse: {
-        //   createTodo: {
-        //     todoEdge: {
-        //       cursor: "12345",
-        //       node: {
-        //         id: user.id,
-        //         text: text,
-        //         completed: false,
-        //       },
-        //     },
-        //   },
-        // },
       });
+
       setText('');
     } else {
       alert('todo text XX');
@@ -60,19 +64,11 @@ const CreateSearchTodo = ({ user, getData }: CrateTodoProps) => {
   };
 
   const onSearch = async () => {
-    getData(text);
-  };
-
-  const changeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelect(e.target.value);
+    handleSearchTodos(text);
   };
 
   return (
     <>
-      <SelectContainer onChange={changeSelect}>
-        <option value="create">create</option>
-        <option value="search">search</option>
-      </SelectContainer>
       <Input
         type="text"
         value={text}
@@ -84,14 +80,3 @@ const CreateSearchTodo = ({ user, getData }: CrateTodoProps) => {
 };
 
 export default CreateSearchTodo;
-
-const SelectContainer = styled.select`
-  margin-right: 10px;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: none;
-  background-color: skyblue;
-  border-radius: 10px;
-  font-size: 15px;
-  color: white;
-`;

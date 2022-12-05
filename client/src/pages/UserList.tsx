@@ -1,7 +1,9 @@
+/** @jsxImportSource @emotion/react */
 import { gql } from '@apollo/client';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useAllUsersQuery } from '../gql/generated/graphql';
+import { Button } from '@mui/material';
 import Spinner from '../components/atoms/Spinner';
 
 gql`
@@ -27,20 +29,22 @@ const UserList = () => {
             return (
               <UserCard key={user.id}>
                 <UserIdWrapper>{user.id}</UserIdWrapper>
-                <button
-                  onClick={() => {
-                    navigate(`cursor/@${user.id}`);
-                  }}
-                >
-                  cursor
-                </button>
-                <button
-                  onClick={() => {
-                    navigate(`/offset/@${user.id}`);
-                  }}
-                >
-                  offset
-                </button>
+                <div>
+                  <Button
+                    onClick={() => {
+                      navigate(`cursor/@${user.id}`);
+                    }}
+                  >
+                    cursor
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      navigate(`/offset/@${user.id}`);
+                    }}
+                  >
+                    offset
+                  </Button>
+                </div>
               </UserCard>
             );
           })
