@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { ApolloQueryResult, gql } from "@apollo/client";
+import { gql } from "@apollo/client";
 import styled from "styled-components";
 import CreateSearchTodo from "../components/molecules/offset/CreateSearchTodo";
 import OffsetTodoItems from "../components/organisms/OffsetTodoItems";
@@ -8,7 +8,6 @@ import OrderByTodo from "../components/molecules/offset/OrderbyTodos";
 import ToggleSearch from "../components/atoms/ToggleSearch";
 import Spinner from "../components/atoms/Spinner";
 import {
-  GetOffsetTodosQuery,
   InputMaybe,
   OffsetTodoItems_TodoFragment,
   Sort,
