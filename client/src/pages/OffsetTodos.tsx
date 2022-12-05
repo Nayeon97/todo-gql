@@ -198,6 +198,7 @@ const TodosWrapper = styled.div`
 const SearchContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  padding: 20px;
 `;
 
 const SearchWrapper = styled.div`

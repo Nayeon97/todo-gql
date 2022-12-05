@@ -72,7 +72,7 @@ const OffsetTodoItems = ({
         <TableHead>
           <TableRow>
             <TableCell>완료여부</TableCell>
-            <TableCell align="left">할 일</TableCell>
+            <TableCell align="left">할 일 </TableCell>
             <TableCell align="left">수정</TableCell>
             <TableCell align="left">삭제</TableCell>
           </TableRow>

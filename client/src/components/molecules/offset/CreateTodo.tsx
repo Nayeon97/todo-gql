@@ -52,7 +52,12 @@ const CreateTodo = ({ user }: CrateTodoProps) => {
           onCreate();
         }}
       >
-        <Input type="text" value={text} onChange={onChange} />
+        <Input
+          type="text"
+          value={text}
+          onChange={onChange}
+          placeholder="Todo 추가"
+        />
       </Form>
     </>
   );

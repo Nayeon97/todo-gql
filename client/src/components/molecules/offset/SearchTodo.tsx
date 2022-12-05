@@ -23,7 +23,7 @@ const SearchTodo = ({ handleSearchTodos }: SearchTodoProps) => {
         type="text"
         value={text}
         onChange={onChange}
-        placeholder="검색 키워드"
+        placeholder="Todo 검색"
       />
     </form>
   );

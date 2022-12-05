@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 interface InputProps {
   value: string;
@@ -9,13 +9,20 @@ interface InputProps {
   onKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const Input = ({ value, type, onChange, onKeyPress }: InputProps) => {
+const Input = ({
+  value,
+  type,
+  placeholder,
+  onChange,
+  onKeyPress,
+}: InputProps) => {
   return (
     <InputWrapper
       value={value}
       onChange={onChange}
       type={type}
       onKeyPress={onKeyPress}
+      placeholder={placeholder}
     />
   );
 };
